@@ -10,7 +10,7 @@ Some charts are used by Devtron for its functionality and other charts are also 
 
 The Charts with its functionality is listed below:
 
-//- [iam](https://github.com/) as an end-to-end indentiy and access management with Keycloak
+- [iam](https://github.com/) as an end-to-end indentiy and access management with Keycloak
 - [bashub](https://github.com/) as terminal command history/repository with Bashhub
 - [vaultwarden](https://github.com/) as an end-to-end indentiy and access management with Keycloak
 
