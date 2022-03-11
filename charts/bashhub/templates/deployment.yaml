@@ -59,3 +59,46 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+
+# ---
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: bashhub
+#   labels:
+#     app: bashhub
+# spec:
+#   selector:
+#     matchLabels:
+#       app: bashhub
+#   serviceName: bashhub
+#   template:
+#     metadata:
+#       labels:
+#         app: bashhub
+#     spec:
+#       containers:
+#       - name: bashhub
+#         image: ephemera/bashhub-server # TODO make own container with jakoberpf/bashhub-server
+#         imagePullPolicy: Always
+#         env:
+#           - name: BH_URL
+#             value: https://bashhub.erpf.de
+#         ports:
+#         - containerPort: 8080
+#           name: http
+#           protocol: TCP
+#         # resources:
+#         #   requests:
+#         #     memory: "64Mi"
+#         #     cpu: "250m"
+#         #   limits:
+#         #     memory: "128Mi"
+#         #     cpu: "500m"
+#         volumeMounts:
+#         - name: bashhub
+#           mountPath: /data
+#       volumes:
+#         - name: bashhub
+#           persistentVolumeClaim:
+#             claimName: bashhub
