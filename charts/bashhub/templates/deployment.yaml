@@ -40,15 +40,6 @@ spec:
           env:
             - name: BH_URL
               value: {{ .Values.app.url }}
-          # Due to the token authetication of the bashhub endpoint we cannot use the livenessProbe and readinessProbe
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           volumeMounts:
             - name: bashhub-data
               mountPath: /data
