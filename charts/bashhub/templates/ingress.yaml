@@ -76,17 +76,28 @@ spec:
 #           port: 80
 #   tls:
 #     secretName: bashhub-erpf-de-tls
-    
-# ---
-# apiVersion: cert-manager.io/v1
-# kind: Certificate
-# metadata:
-#   name: bashhub-erpf-de-tls
-# spec:
-#   secretName: bashhub-erpf-de-tls
-#   issuerRef:
-#     name: cloudflare-letsencrypt-prod
-#     kind: ClusterIssuer
-#   commonName: bashhub.erpf.de
-#   dnsNames:
-#   - "bashhub.erpf.de"
+
+{{- if .Values.ingress.certManager.enabled -}} 
+{{- $fullName := include "bashhub.fullname" . -}}
+{{- range .Values.ingress.hosts }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "bashhub.labels" . | nindent 4 }}
+  {{- with .Values.ingress.certManager.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  secretName: {{ $fullName }}-tls
+  issuerRef:
+    name: {{ .Values.ingress.certManager.issuerRef.name }} # cloudflare-letsencrypt-prod
+    kind: {{ .Values.ingress.certManager.issuerRef.kind }} # ClusterIssuer
+  commonName: {{ .host }}
+  dnsNames:
+    - {{ .host }}
+{{- end }}
+{{- end }}
