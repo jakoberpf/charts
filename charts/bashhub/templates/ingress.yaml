@@ -67,19 +67,22 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: { $fullName }}-gateway
+  labels:
+    {{- include "bashhub.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
 spec:
   selector:
     istio: ingressgateway
   servers:
     {{- range .Values.ingress.hosts }}
     - port:
-      {{- if .host.tls -}} 
+      {{- if or .tls .Values.ingress.certManager.enabled -}} 
         number: 443
         name: https
         protocol: HTTPS
       tls:
-        mode: {{ .host.tls.mode }}
-        credentialName: {{ .host }}
+        mode: {{ default "SIMPLE" .tls.mode }}
+        credentialName: {{ defautl .host .tls.secretName }}
       {{- else -}}
         number: 80
         name: http
@@ -94,6 +97,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: { $fullName }}-virtualService
+  labels:
+    {{- include "bashhub.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
 spec:
   hosts:
     {{- range .Values.ingress.hosts }}
@@ -127,10 +133,10 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}  
 spec:
-  secretName: {{ .host }}-tls
+  secretName: {{ .host }}
   issuerRef:
     name: {{ .Values.ingress.certManager.issuerRef.name }} # cloudflare-letsencrypt-prod
-    kind: {{ .Values.ingress.certManager.issuerRef.kind }} # ClusterIssuer
+    kind: {{ default "ClusterIssuer" .Values.ingress.certManager.issuerRef.kind }}
   commonName: {{ .host }}
   dnsNames:
     - {{ .host }}
