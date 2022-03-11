@@ -82,7 +82,7 @@ spec:
         protocol: HTTPS
       tls:
         mode: {{ default "SIMPLE" .tls.mode }}
-        credentialName: {{ defautl .host .tls.secretName }}
+        credentialName: {{ default .host .tls.secretName }}
       {{- else -}}
         number: 80
         name: http
