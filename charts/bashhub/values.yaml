@@ -13,7 +13,7 @@ app:
   url: https://bashhub.example.com
 
 persistence:
-  enabled: true
+  enabled: false
   pv:
     create: false
     name: bashub-pv
@@ -52,15 +52,21 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: bashhub.example.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  hosts: []
+    # - host: bashhub.example.com
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
+    #   tls:
+    #     mode: SIMPLE
+    #     secretName: bashhub-example-tls
   tls: []
-  #  - secretName: chart-example-tls
+  #  - secretName: bashhub-example-tls
   #    hosts:
   #      - bashhub.example.com
+  istioGateway:
+    enabled: false
+    annotations: {}
   certManager:
     enabled: false
     annotations: {}
@@ -76,9 +82,9 @@ resources:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 1
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 

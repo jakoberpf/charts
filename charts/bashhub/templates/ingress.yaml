@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled ( not .Values.ingress.istioGateway.enabled ) -}}
 {{- $fullName := include "bashhub.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
@@ -60,22 +60,57 @@ spec:
     {{- end }}
 {{- end }}
 
-# --
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: IngressRoute
-# metadata:
-#   name: bashhub
-# spec:
-#   entryPoints:
-#     - websecure
-#   routes:
-#     - match: Host(`bashhub.erpf.de`) # Hostname to match
-#       kind: Rule
-#       services: # Service to redirect requests to
-#         - name: bashhub
-#           port: 80
-#   tls:
-#     secretName: bashhub-erpf-de-tls
+{{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}} 
+{{- $fullName := include "bashhub.fullname" . -}}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: { $fullName }}-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    {{- range .Values.ingress.hosts }}
+    - port:
+      {{- if .{{ .host.tls -}} 
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: {{ .host.tls.mode }}
+        credentialName: {{ .host }}
+      {{- else -}}
+        number: 80
+        name: http
+        protocol: HTTP
+      {{- end }}
+      hosts:
+        - {{ .host }}
+    {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: { $fullName }}-virtualService
+spec:
+  hosts:
+    {{- range .Values.ingress.hosts }}
+    - {{ .host }}
+    {{- end }}
+  gateways:
+    - { $fullName }}-gateway
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 80
+          host: {{ include "bashhub.fullname" . }}
+{{- end }}
 
 {{- if .Values.ingress.certManager.enabled -}} 
 {{- $fullName := include "bashhub.fullname" . -}}
@@ -84,7 +119,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ $fullName }}
+  name: {{ .host }}
   labels:
     {{- include "bashhub.labels" . | nindent 4 }}
   {{- with .Values.ingress.certManager.annotations }}
@@ -92,7 +127,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}  
 spec:
-  secretName: {{ $fullName }}-tls
+  secretName: {{ .host }}-tls
   issuerRef:
     name: {{ .Values.ingress.certManager.issuerRef.name }} # cloudflare-letsencrypt-prod
     kind: {{ .Values.ingress.certManager.issuerRef.kind }} # ClusterIssuer
