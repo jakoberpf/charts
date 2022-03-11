@@ -59,3 +59,34 @@ spec:
           {{- end }}
     {{- end }}
 {{- end }}
+
+# --
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: bashhub
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - match: Host(`bashhub.erpf.de`) # Hostname to match
+#       kind: Rule
+#       services: # Service to redirect requests to
+#         - name: bashhub
+#           port: 80
+#   tls:
+#     secretName: bashhub-erpf-de-tls
+    
+# ---
+# apiVersion: cert-manager.io/v1
+# kind: Certificate
+# metadata:
+#   name: bashhub-erpf-de-tls
+# spec:
+#   secretName: bashhub-erpf-de-tls
+#   issuerRef:
+#     name: cloudflare-letsencrypt-prod
+#     kind: ClusterIssuer
+#   commonName: bashhub.erpf.de
+#   dnsNames:
+#   - "bashhub.erpf.de"
