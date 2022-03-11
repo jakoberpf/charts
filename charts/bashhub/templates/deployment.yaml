@@ -40,6 +40,14 @@ spec:
           env:
             - name: BH_URL
               value: {{ .Values.app.url }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
           volumeMounts:
             - name: bashhub-data
               mountPath: /data
