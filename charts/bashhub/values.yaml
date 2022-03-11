@@ -57,10 +57,10 @@ ingress:
     #   paths:
     #     - path: /
     #       pathType: ImplementationSpecific
-    #   tls:
+    #   tls: # use for istio gateway tls
     #     mode: SIMPLE
     #     secretName: bashhub-example-tls
-  tls: []
+  tls: [] # use for kubernetes ingress tls
   #  - secretName: bashhub-example-tls
   #    hosts:
   #      - bashhub.example.com
@@ -69,6 +69,9 @@ ingress:
     annotations: {}
   certManager:
     enabled: false
+    # issuerRef: 
+    #   name: cloudflare-letsencrypt-prod
+    #   kind: ClusterIssuer
     annotations: {}
 
 resources:
