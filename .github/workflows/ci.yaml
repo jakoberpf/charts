@@ -2,8 +2,8 @@ name: Lint and Test Charts
 
 on:
   push:
-    paths:
-      - 'charts/*'
+    branches:
+      - 'feature/vaultwarden'
   pull_request:
     paths:
       - 'charts/**'
