@@ -70,6 +70,9 @@ metadata:
   labels:
     {{- include "bashhub.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
 spec:
   selector:
     istio: ingressgateway
@@ -100,6 +103,9 @@ metadata:
   labels:
     {{- include "bashhub.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
 spec:
   hosts:
     {{- range .Values.ingress.hosts }}
