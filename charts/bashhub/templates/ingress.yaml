@@ -128,8 +128,10 @@ spec:
           host: {{ $fullName }}
 {{- end }}
 
-{{- if .Values.ingress.certManager.enabled -}} 
+{{- if .Values.ingress.certManager.enabled -}}
+{{- $root := . -}}
 {{- $fullName := include "bashhub.fullname" . -}}
+{{- $certManagerLabels := include "bashhub.labels" . -}}
 {{- range .Values.ingress.hosts }}
 ---
 apiVersion: cert-manager.io/v1
@@ -137,16 +139,16 @@ kind: Certificate
 metadata:
   name: {{ .host }}
   labels:
-    {{- include "bashhub.labels" . | nindent 4 }}
-  {{- with .Values.ingress.certManager.annotations }}
+    {{- $certManagerLabels | nindent 4 }}
+  {{- with $root.Values.ingress.certManager.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
-  {{- end }}  
+  {{- end }}
 spec:
   secretName: {{ .host }}
   issuerRef:
-    name: {{ .Values.ingress.certManager.issuerRef.name }} # cloudflare-letsencrypt-prod
-    kind: {{ default "ClusterIssuer" .Values.ingress.certManager.issuerRef.kind }}
+    name: {{ $root.Values.ingress.certManager.issuerRef.name }}
+    kind: {{ $root.Values.ingress.certManager.issuerRef.kind | default "ClusterIssuer" }}
   commonName: {{ .host }}
   dnsNames:
     - {{ .host }}
