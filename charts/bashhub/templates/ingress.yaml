@@ -60,13 +60,14 @@ spec:
     {{- end }}
 {{- end }}
 
-{{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}} 
+{{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}}
+{{- $root := . -}}
 {{- $fullName := include "bashhub.fullname" . -}}
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: { $fullName }}-gateway
+  name: {{ $fullName }}-gateway
   labels:
     {{- include "bashhub.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
@@ -78,28 +79,31 @@ spec:
     istio: ingressgateway
   servers:
     {{- range .Values.ingress.hosts }}
+    {{- $item := . -}}
+    {{- with $ }}
     - port:
-      {{- if or .tls .Values.ingress.certManager.enabled -}} 
+      {{- if or $item.tls $root.Values.ingress.certManager.enabled }} 
         number: 443
         name: https
         protocol: HTTPS
       tls:
-        mode: {{ default "SIMPLE" .tls.mode }}
-        credentialName: {{ default .host .tls.secretName }}
-      {{- else -}}
+        mode: {{ $item.tls.mode | default "SIMPLE" }}
+        credentialName: {{ $item.tls.secretName | default $item.host }}
+      {{- else }}
         number: 80
         name: http
         protocol: HTTP
       {{- end }}
       hosts:
-        - {{ .host }}
+        - {{ $item.host }}
+    {{- end }}
     {{- end }}
 
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: { $fullName }}-virtualService
+  name: {{ $fullName }}-virtualService
   labels:
     {{- include "bashhub.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
@@ -112,7 +116,7 @@ spec:
     - {{ .host }}
     {{- end }}
   gateways:
-    - { $fullName }}-gateway
+    - {{ $fullName }}-gateway
   http:
     - match:
       - uri:
@@ -121,7 +125,7 @@ spec:
       - destination:
           port:
             number: 80
-          host: {{ include "bashhub.fullname" . }}
+          host: {{ $fullName }}
 {{- end }}
 
 {{- if .Values.ingress.certManager.enabled -}} 
