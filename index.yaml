@@ -3,6 +3,16 @@ entries:
   bashhub:
   - apiVersion: v2
     appVersion: 0.2.5
+    created: "2022-03-13T19:00:23.000960667Z"
+    description: A Helm chart for Kubernetes
+    digest: e1974471bc4e8820437b56526ea1e2c0e51e0d33820640da8a3308b13ece6e74
+    name: bashhub
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/bashhub-0.1.7/bashhub-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 0.2.5
     created: "2022-03-13T18:25:56.274059683Z"
     description: A Helm chart for Kubernetes
     digest: 2f8ecd929d1dfe7926d51d1843f6728906c7c200cc3b8c32563e93560ad0bb40
@@ -82,4 +92,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-03-13T18:25:56.274185084Z"
+generated: "2022-03-13T19:00:23.001070567Z"
