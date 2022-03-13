@@ -59,9 +59,9 @@ ingress:
     #       pathType: ImplementationSpecific
     #   tls: # use for istio gateway tls
     #     mode: SIMPLE
-    #     secretName: bashhub-example-tls
+    #     secretName: bashhub.example.de
   tls: [] # use for kubernetes ingress tls
-  #  - secretName: bashhub-example-tls
+  #  - secretName: bashhub.example.de
   #    hosts:
   #      - bashhub.example.com
   istioGateway:
