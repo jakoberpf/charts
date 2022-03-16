@@ -44,7 +44,7 @@ spec:
           volumeMounts:
             - name: bashhub-data
               mountPath: /data
-          {{- end -}}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- if .Values.persistence.enabled -}}
@@ -52,7 +52,7 @@ spec:
         - name: bashhub-data
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.pvc.name }}
-      {{- end -}}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
