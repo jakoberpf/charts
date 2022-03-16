@@ -40,15 +40,19 @@ spec:
           env:
             - name: BH_URL
               value: {{ .Values.app.url }}
+          {{- if .Values.persistence.enabled -}}
           volumeMounts:
             - name: bashhub-data
               mountPath: /data
+          {{- end -}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled -}}
       volumes:
         - name: bashhub-data
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.pvc.name }}
+      {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
