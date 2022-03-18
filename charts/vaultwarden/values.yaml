@@ -1,22 +1,43 @@
-# Default values for vaultwarden.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  repository: vaultwarden/server # TODO Build own image jakoberpf/vaultwarden
+  pullPolicy: Always
+  tag: "1.24.0"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+app:
+  domain: https://vaultwarden.example.com
+  websocket_enabled: true
+  show_password_hint: false
+  web_vault_enabled: true
+  smtp:
+    host: smtp.example.com
+    from: vaultwarden@example.de
+    port: 587
+    ssl: true
+  signups:
+    allowed: false
+    verify: true
+    domains_whitelist: example.com
+
+persistence:
+  enabled: false
+  pv:
+    create: false
+    name: vaultwarden-pv
+  pvc: 
+    name: vaultwarden-pvc
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
+  # Specifies whether a service account should be associated with role bindings and access controlls
+  rbac:
+    enabled: true
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -38,7 +59,10 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  http:
+    port: 80
+  websocket:
+    port: 3012
 
 ingress:
   enabled: false
@@ -46,34 +70,42 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
+  hosts: []
+    # - host: vaultwarden.example.com
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
+    #   tls: # use for istio gateway tls
+    #     mode: SIMPLE
+    #     secretName: vaultwarden.example.de
+  tls: [] # use for kubernetes ingress tls
+  #  - secretName: vaultwarden.example.de
   #    hosts:
-  #      - chart-example.local
+  #      - vaultwarden.example.com
+  istioGateway:
+    enabled: false
+    annotations: {}
+  certManager:
+    enabled: false
+    # issuerRef: 
+    #   name: cloudflare-letsencrypt-prod
+    #   kind: ClusterIssuer
+    annotations: {}
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
 
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 1
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 
