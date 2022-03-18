@@ -18,7 +18,7 @@ data:
   ## vaultwarden.
 
   ## Main data folder
-  DATA_FOLDER: '/data'
+  DATA_FOLDER: "/data"
 
   ## Database URL
   ## When using SQLite, this is the path to the DB file, default to %DATA_FOLDER%/db.sqlite3
@@ -60,10 +60,10 @@ data:
 
   ## Web vault settings
   # WEB_VAULT_FOLDER=web-vault/
-  WEB_VAULT_ENABLED: {{ .Values.app.web_vault_enabled }}
+  WEB_VAULT_ENABLED: "{{ .Values.app.web_vault_enabled }}"
 
   ## Enables websocket notifications
-  WEBSOCKET_ENABLED: {{ .Values.app.websocket_enabled }}
+  WEBSOCKET_ENABLED: "{{ .Values.app.websocket_enabled }}"
 
   ## Controls the WebSocket server address and port
   # WEBSOCKET_ADDRESS=0.0.0.0
@@ -203,13 +203,13 @@ data:
   # EMAIL_TOKEN_SIZE=6
 
   ## Controls if new users can register
-  SIGNUPS_ALLOWED: {{ .Values.app.signups.allowed }}
+  SIGNUPS_ALLOWED: "{{ .Values.app.signups.allowed }}"
 
   ## Controls if new users need to verify their email address upon registration
   ## Note that setting this option to true prevents logins until the email address has been verified!
   ## The welcome email will include a verification link, and login attempts will periodically
   ## trigger another verification email to be sent.
-  SIGNUPS_VERIFY: {{ .Values.app.signups.verify }}
+  SIGNUPS_VERIFY: "{{ .Values.app.signups.verify }}"
 
   ## If SIGNUPS_VERIFY is set to true, this limits how many seconds after the last time
   ## an email verification link has been sent another verification email will be sent
@@ -221,7 +221,7 @@ data:
 
   ## Controls if new users from a list of comma-separated domains can register
   ## even if SIGNUPS_ALLOWED is set to false
-  SIGNUPS_DOMAINS_WHITELIST: {{ .Values.app.signups.domains_whitelist }}
+  SIGNUPS_DOMAINS_WHITELIST: "{{ .Values.app.signups.domains_whitelist }}"
 
   ## Controls which users can create new orgs.
   ## Blank or 'all' means all users can create orgs (this is the default):
@@ -273,14 +273,14 @@ data:
   ## Controls whether a password hint should be shown directly in the web page if
   ## SMTP service is not configured. Not recommended for publicly-accessible instances
   ## as this provides unauthenticated access to potentially sensitive data.
-  SHOW_PASSWORD_HINT: {{ .Values.app.show_password_hint }}
+  SHOW_PASSWORD_HINT: "{{ .Values.app.show_password_hint }}"
 
   ## Domain settings
   ## The domain must match the address from where you access the server
   ## It's recommended to configure this value, otherwise certain functionality might not work,
   ## like attachment downloads, email links and U2F.
   ## For U2F to work, the server must use HTTPS, you can use Let's Encrypt for free certs
-  DOMAIN: {{ .Values.app.domain }}
+  DOMAIN: "{{ .Values.app.domain }}"
 
   ## Allowed iframe ancestors (Know the risks!)
   ## https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
@@ -341,11 +341,11 @@ data:
   ## Mail specific settings, set SMTP_HOST and SMTP_FROM to enable the mail service.
   ## To make sure the email links are pointing to the correct host, set the DOMAIN variable.
   ## Note: if SMTP_USERNAME is specified, SMTP_PASSWORD is mandatory
-  SMTP_HOST: {{ .Values.app.smtp.host }}
-  SMTP_FROM: {{ .Values.app.smtp.from }}
+  SMTP_HOST: "{{ .Values.app.smtp.host }}"
+  SMTP_FROM: "{{ .Values.app.smtp.from }}"
   # SMTP_FROM_NAME=Vaultwarden
   # SMTP_SECURITY=starttls               # ("starttls", "force_tls", "off") Enable a secure connection. Default is "starttls" (Explicit - ports 587 or 25), "force_tls" (Implicit - port 465) or "off", no encryption (port 25)
-  SMTP_PORT: {{ .Values.app.smtp.port }} # Ports 587 (submission) and 25 (smtp) are standard without encryption and with encryption via STARTTLS (Explicit TLS). Port 465 is outdated and used with Implicit TLS.
+  SMTP_PORT: "{{ .Values.app.smtp.port }}" # Ports 587 (submission) and 25 (smtp) are standard without encryption and with encryption via STARTTLS (Explicit TLS). Port 465 is outdated and used with Implicit TLS.
   # SMTP_TIMEOUT=15
 
   ## Defaults for SSL is "Plain" and "Login" and nothing for Non-SSL connections.

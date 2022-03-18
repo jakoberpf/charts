@@ -11,17 +11,17 @@ fullnameOverride: ""
 
 app:
   domain: https://vaultwarden.example.com
-  websocket_enabled: 'true'
-  show_password_hint: 'false'
-  web_vault_enabled: 'true'
+  websocket_enabled: true
+  show_password_hint: false
+  web_vault_enabled: true
   smtp:
     host: smtp.example.com
     from: vaultwarden@example.de
     port: '587'
-    ssl: 'true'
+    ssl: true
   signups:
-    allowed: 'false'
-    verify: 'true'
+    allowed: false
+    verify: true
     domains_whitelist: example.com
 
 persistence:
