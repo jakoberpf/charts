@@ -37,16 +37,41 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            - name: websocket
+              containerPort: 3012
+              protocol: TCP
+          envFrom:
+          - configMapRef:
+              name: {{ include "vaultwarden.fullname" . }}
+          env:
+          - name: SMTP_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "vaultwarden.fullname" . }}-smtp
+                key: user
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "vaultwarden.fullname" . }}-smtp
+                key: password
+          - name: ADMIN_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "vaultwarden.fullname" . }}-token
+                key: token
+          {{- if .Values.persistence.enabled -}}
+          volumeMounts:
+            - name: vaultwarden-data
+              mountPath: /data
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled -}}
+      volumes:
+        - name: vaultwarden-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.pvc.name }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
