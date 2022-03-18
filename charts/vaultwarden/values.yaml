@@ -17,7 +17,7 @@ app:
   smtp:
     host: smtp.example.com
     from: vaultwarden@example.de
-    port: '587'
+    port: 587
     ssl: true
   signups:
     allowed: false
