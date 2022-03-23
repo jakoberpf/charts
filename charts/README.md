@@ -1,8 +1,6 @@
-[![Join Discord](https://img.shields.io/badge/Join%20us%20on-Discord-e01563.svg)](https://discord.gg/72JDKy4)
+# Erpf Charts
 
-# Devtron Charts
-
-This Repository contains all the charts used by Devtron for different components and is maintained by Devtron.
+This Repository contains all the charts used by Erpf for different components and is maintained by Jakob Erpf.
 
 ## Introduction
 
@@ -24,5 +22,3 @@ These charts are currently not available on the official helm repository therefo
 helm repo add erpf http://helm.erpf.de
 helm install <release-name> erpf/<chart-name>
 ```
-
-Each Chart also has a seperate Readme file to understand the usage in Devtron.
