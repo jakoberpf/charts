@@ -59,14 +59,14 @@ spec:
               secretKeyRef:
                 name: {{ include "vaultwarden.fullname" . }}-token
                 key: token
-          {{- if .Values.persistence.enabled -}}
+          {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: vaultwarden-data
               mountPath: /data
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.persistence.enabled -}}
+      {{- if .Values.persistence.enabled }}
       volumes:
         - name: vaultwarden-data
           persistentVolumeClaim:
