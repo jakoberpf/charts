@@ -1,0 +1,5 @@
+apiVersion: v2
+name: onlyoffice
+description: A Helm chart for OnlyOffice
+type: application
+version: 0.0.1
