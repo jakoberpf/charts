@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "onlyoffice.fullname" . }}-community
+  labels:
+    {{- include "onlyoffice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.community.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.websocket.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "onlyoffice.fullname" . }}-controlpanel
+  labels:
+    {{- include "onlyoffice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.controlpanel.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "onlyoffice.fullname" . }}-documents
+  labels:
+    {{- include "onlyoffice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.documents.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "onlyoffice.fullname" . }}-mail
+  labels:
+    {{- include "onlyoffice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.smtp.port }}
+      targetPort: smtp
+      protocol: TCP
+      name: smtp
+    - port: {{ .Values.service.imap.port }}
+      targetPort: imap
+      protocol: TCP
+      name: imap
+    - port: {{ .Values.service.pop.port }}
+      targetPort: pop
+      protocol: TCP
+      name: pop
+  selector:
+    {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
