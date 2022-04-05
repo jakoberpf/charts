@@ -31,11 +31,14 @@ spec:
         - name: {{ .Chart.Name }}-documents
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image-documents.repository }}:{{ .Values.image.documents.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.image.documents.repository }}:{{ .Values.image.documents.tag }}"
+          imagePullPolicy: {{ .Values.image.documents.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
               protocol: TCP
           livenessProbe:
             httpGet:

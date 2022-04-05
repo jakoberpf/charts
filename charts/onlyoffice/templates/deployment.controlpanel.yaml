@@ -32,10 +32,13 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.controlpanel.repository }}:{{ .Values.image.controlpanel.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.controlpanel.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
               protocol: TCP
           livenessProbe:
             httpGet:
