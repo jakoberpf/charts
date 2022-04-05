@@ -5,14 +5,18 @@ metadata:
   labels:
     {{- include "onlyoffice.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.service.community.type }}
   ports:
-    - port: {{ .Values.service.community.port }}
+    - port: {{ .Values.service.community.ports.http }}
       targetPort: http
       protocol: TCP
       name: http
-    - port: {{ .Values.service.websocket.port }}
-      targetPort: http
+    - port: {{ .Values.service.community.ports.https }}
+      targetPort: https
+      protocol: TCP
+      name: https
+    - port: {{ .Values.service.community.ports.websocket }}
+      targetPort: websocket
       protocol: TCP
       name: http
   selector:
@@ -25,12 +29,16 @@ metadata:
   labels:
     {{- include "onlyoffice.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.service.controlpanel.type }}
   ports:
-    - port: {{ .Values.service.controlpanel.port }}
+    - port: {{ .Values.service.controlpanel.ports.http }}
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.controlpanel.ports.https }}
+      targetPort: https
+      protocol: TCP
+      name: https
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
 
@@ -41,12 +49,16 @@ metadata:
   labels:
     {{- include "onlyoffice.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.service.documents.type }}
   ports:
-    - port: {{ .Values.service.documents.port }}
+    - port: {{ .Values.service.documents.ports.http }}
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.documents.ports.https }}
+      targetPort: https
+      protocol: TCP
+      name: https
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
 
@@ -57,19 +69,19 @@ metadata:
   labels:
     {{- include "onlyoffice.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.service.mail.type }}
   ports:
-    - port: {{ .Values.service.smtp.port }}
+    - port: {{ .Values.service.mail.ports.smtp }}
       targetPort: smtp
       protocol: TCP
       name: smtp
-    - port: {{ .Values.service.imap.port }}
+    - port: {{ .Values.service.mail.ports.imap }}
       targetPort: imap
       protocol: TCP
       name: imap
-    - port: {{ .Values.service.pop.port }}
-      targetPort: pop
+    - port: {{ .Values.service.mail.ports.smtp_tls }}
+      targetPort: smtp_tls
       protocol: TCP
-      name: pop
+      name: smtp_tls
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
