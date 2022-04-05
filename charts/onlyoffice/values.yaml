@@ -1,7 +1,3 @@
-# Default values for onlyoffice.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
@@ -49,8 +45,28 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  port: 80
+  community:
+    type: ClusterIP
+    ports: 
+      http: 80
+      https: 443
+      websocket: 5222
+  controlpanel:
+    type: ClusterIP
+    ports:
+      http: 80
+      https: 443
+  documents:
+    type: ClusterIP
+    ports:
+      http: 80
+      https: 443
+  mail:
+    type: ClusterIP
+    ports:
+      smtp: 25
+      imap: 143
+      smtp_tls: 587
 
 ingress:
   enabled: false
