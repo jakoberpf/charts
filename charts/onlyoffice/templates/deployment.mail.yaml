@@ -40,7 +40,7 @@ spec:
             - name: imap
               containerPort: 143
               protocol: TCP
-            - name: smtp_tls
+            - name: smtptls
               containerPort: 587
               protocol: TCP
           livenessProbe:

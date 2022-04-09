@@ -3,3 +3,8 @@ name: onlyoffice
 description: A Helm chart for OnlyOffice
 type: application
 version: 0.0.1
+dependencies:
+  - name: mysql
+    version: "8.8.34"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: mysql.deploy
