@@ -79,9 +79,9 @@ spec:
       targetPort: imap
       protocol: TCP
       name: imap
-    - port: {{ .Values.service.mail.ports.smtp_tls }}
-      targetPort: smtp_tls
+    - port: {{ .Values.service.mail.ports.smtptls }}
+      targetPort: smtptls
       protocol: TCP
-      name: smtp_tls
+      name: smtptls
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
