@@ -78,6 +78,7 @@ ingress:
     #   tls: # use for istio gateway tls
     #     mode: SIMPLE
     #     secretName: vaultwarden.example.de
+    #     redirect: true
   tls: [] # use for kubernetes ingress tls
   #  - secretName: vaultwarden.example.de
   #    hosts:
