@@ -19,10 +19,16 @@ apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
   namespace: istio-system
-  name: example-istiocontrolplane
+  name: istiocontrolplane
 spec:
   hub: docker.io/querycapistio
   profile: demo
+  components:
+    ingressGateways:
+      - name: istio-ingressgateway
+        k8s:
+          service:
+            type: NodePort
 EOF
 
 # deploy charts
