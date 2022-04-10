@@ -8,6 +8,7 @@ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=example In
 
 # generate certificates
 for CHART_DIR in ${CHART_DIRS}; do
+  echo "Generating certificates for ${CHART_DIR}"
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
   helm install "${CHART_NAME}" "${CHART_DIR}"
   
