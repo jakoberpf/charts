@@ -73,10 +73,14 @@ jobs:
           version: '1.13.2'
       - name: yq - portable yaml processor
         uses: mikefarah/yq@v4.24.2
-      - name: Deploy chart
+      - name: Deploy charts
         run: .github/minikube.sh
-      - name: Check pods
-        run: kubectl get pods -n default
+      # - name: Verify deployments
+      #   run: .github/verify-deploy.sh
+      - name: Generate certificates
+        run: .github/tls.sh
+      - name: Verify Istio
+        run: .github/verify-istio.sh
       # - name: Build image
       #   run: |
       #     export SHELL=/bin/bash
