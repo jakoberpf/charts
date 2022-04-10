@@ -27,5 +27,6 @@ EOF
 
 # deploy charts
 for CHART_DIR in ${CHART_DIRS}; do
-  helm install try "${CHART_DIR}"
+  CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
+  helm install "${CHART_NAME}" "${CHART_DIR}"
 done
