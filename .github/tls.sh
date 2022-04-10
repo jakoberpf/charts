@@ -8,9 +8,7 @@ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=example In
 
 # generate certificates
 for CHART_DIR in ${CHART_DIRS}; do
-  echo "Generating certificates for ${CHART_DIR}"
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
-  helm install "${CHART_NAME}" "${CHART_DIR}"
   
   openssl req -out "${CHART_NAME}.csr" -newkey rsa:2048 -nodes -keyout "${CHART_NAME}.key" -subj "/CN=${CHART_NAME}.example.com/O=${CHART_NAME} organization"
   openssl x509 -req -sha256 -days 365 -CA example.com.crt -CAkey example.com.key -set_serial 0 -in "${CHART_NAME}.csr" -out "${CHART_NAME}.crt"
