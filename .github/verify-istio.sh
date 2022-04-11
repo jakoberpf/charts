@@ -14,6 +14,8 @@ for CHART_DIR in ${CHART_DIRS}; do
   INGRESS_HOST="$(minikube ip)"
   INGRESS_DNS="${CHART_NAME}.example.com"
 
+  kubectl get service --all-namespaces
+
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
