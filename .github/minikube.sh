@@ -31,19 +31,15 @@ spec:
             type: NodePort
 EOF
 
-sleep 120
+while [ "$(kubectl get pods -l=name='istio-operator' -n istio-operator -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
+   sleep 2
+   echo "Waiting for Istio-Operator to be ready."
+done
 
-kubectl get pods -l=name='istio-operator' -n istio-operator
-
-# while [ "$(kubectl get pods -l=app='istio-operator' -n istio-system -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
-#    sleep 2
-#    echo "Waiting for Istio-Operator to be ready."
-# done
-
-# while [ "$(kubectl get pods -l=app='istio-ingressgateway' -n istio-system -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
-#    sleep 2
-#    echo "Waiting for Istio-IngressGateway to be ready."
-# done
+while [ "$(kubectl get pods -l=app='istio-ingressgateway' -n istio-system -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
+   sleep 2
+   echo "Waiting for Istio-IngressGateway to be ready."
+done
 
 kubectl get service -n istio-system
 
