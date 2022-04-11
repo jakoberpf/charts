@@ -20,7 +20,6 @@ for CHART_DIR in ${CHART_DIRS}; do
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
 
   echo "Running IstioGateway (HTTP) Test"
-  curl https://google.com
 
   echo ${INGRESS_DNS}
   echo ${INGRESS_HOST}
