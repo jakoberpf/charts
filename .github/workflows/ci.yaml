@@ -67,7 +67,7 @@ jobs:
       - name: Start KinD
         uses: engineerd/setup-kind@v0.5.0
         with:
-          config: kind.yaml
+          config: .github/kind.yaml
         # uses: manusa/actions-setup-minikube@v2.4.3
         # with:
         #   minikube version: v1.24.0
