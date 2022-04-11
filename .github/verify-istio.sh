@@ -15,14 +15,15 @@ for CHART_DIR in ${CHART_DIRS}; do
   # sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
 
   touch values-istio.yaml
-  yq -i '.persistence.enabled = true' values-istio.yaml
+  # yq -i '.persistence.enabled = true' values-istio.yaml
   yq -i '.ingress.enabled = true' values-istio.yaml
   yq -i '.ingress.hosts[0].host = "vaultwarden.example.com"' values-istio.yaml
   yq -i '.ingress.hosts[0].tls.secretName = "vaultwarden-credential"' values-istio.yaml
   yq -i '.ingress.istioGateway.enabled = true' values-istio.yaml
   yq -i '.ingress.certManager.enabled = false' values-istio.yaml
   yq -i '.ingress.certManager.issuerRef.name = "cloudflare-letsencrypt-prod"' values-istio.yaml
-  # rm values-istio.yaml
+
+  helm upgrade ${CHART_NAME} . --namespace ${CHART_NAME} --values=values.yaml --values=values-istio.yaml
 
   echo "Setting up Istio Environment Variables"
   INGRESS_HOST="10.147.19.98"
@@ -41,7 +42,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running IstioGateway (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}")
   if [[ "$CODE" -ne 200 ]] ; then
     echo "IstioGateway (HTTPS): $CODE"
   else
@@ -57,7 +58,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running DNS (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}")
   if [[ "$CODE" -ne 200 ]] ; then
     echo "DNS (HTTPS): $CODE"
   else
