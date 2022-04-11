@@ -8,7 +8,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
 
   echo "Adding hosts entry"
-  sudo echo "127.0.0.1 ${CHART_NAME}.example.com" | sudo tee -a /etc/hosts
+  sudo echo "127.0.0.1 ${CHART_NAME}.example.com" # | sudo tee -a /etc/hosts
 
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
@@ -20,6 +20,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
 
   echo "Running IstioGateway (HTTP) Test"
+  curl https://google.com
   curl -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
 
