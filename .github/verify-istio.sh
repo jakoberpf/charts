@@ -14,7 +14,15 @@ for CHART_DIR in ${CHART_DIRS}; do
   echo "Adding hosts entry"
   # sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
 
-  # yq -i '.a.b[0].c = "cool"' file.yaml
+  touch values-istio.yaml
+  yq -i '.persistence.enabled = true' values-istio.yaml
+  yq -i '.ingress.enabled = true' values-istio.yaml
+  yq -i '.ingress.hosts[0].host = "vaultwarden.example.com"' values-istio.yaml
+  yq -i '.ingress.hosts[0].tls.secretName = "vaultwarden-credential"' values-istio.yaml
+  yq -i '.ingress.istioGateway.enabled = true' values-istio.yaml
+  yq -i '.ingress.certManager.enabled = false' values-istio.yaml
+  yq -i '.ingress.certManager.issuerRef.name = "cloudflare-letsencrypt-prod"' values-istio.yaml
+  # rm values-istio.yaml
 
   echo "Setting up Istio Environment Variables"
   INGRESS_HOST="10.147.19.98"
