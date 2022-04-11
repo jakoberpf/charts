@@ -7,10 +7,12 @@ CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref 
 for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
 
+  echo "Adding hosts entry"
   sudo echo "127.0.0.1 ${CHART_NAME}.example.com" | sudo tee -a /etc/hosts
 
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
+  echo "Setting up Istio Environment Variables"
   INGRESS_HOST="$(minikube ip)"
   INGRESS_DNS="${CHART_NAME}.example.com"
 
@@ -20,6 +22,7 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   curl -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
 
+  echo "Running IstioGateway (HTTP) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
 
   if [[ "$CODE" -ne 200 ]] ; then
@@ -28,6 +31,7 @@ for CHART_DIR in ${CHART_DIRS}; do
     echo "IstioGateway (HTTP): OK"
   fi
 
+  echo "Running IstioGateway (HTTPS) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
 
   if [[ "$CODE" -ne 200 ]] ; then
@@ -36,6 +40,7 @@ for CHART_DIR in ${CHART_DIRS}; do
     echo "IstioGateway (HTTPS): OK"
   fi
 
+  echo "Running DNS (HTTP) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}")
 
   if [[ "$CODE" -ne 200 ]] ; then
@@ -44,6 +49,7 @@ for CHART_DIR in ${CHART_DIRS}; do
     echo "DNS (HTTP): OK"
   fi
 
+  echo "Running DNS (HTTPS) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
 
   if [[ "$CODE" -ne 200 ]] ; then
