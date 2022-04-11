@@ -13,7 +13,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
   echo "Setting up Istio Environment Variables"
-  INGRESS_HOST="$(minikube ip)"
+  INGRESS_HOST="127.0.0.1" # "$(minikube ip)"
   INGRESS_DNS="${CHART_NAME}.example.com"
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
@@ -26,7 +26,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   echo ${INGRESS_PORT}
 
   sudo lsof -i -P -n | grep LISTEN
-  
+
   curl -v -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
 
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
