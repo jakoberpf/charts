@@ -1,9 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
-
-# install istio
 istioctl operator init --hub=docker.io/querycapistio --tag=1.13.1 # get version from https://github.com/querycap/istio
 
 ISTIO_NAMESPACE=istio-system
@@ -39,10 +36,4 @@ done
 while [ "$(kubectl get pods -l=app='istio-ingressgateway' -n istio-system -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
    sleep 2
    echo "Waiting for Istio-IngressGateway to be ready."
-done
-
-# deploy charts
-for CHART_DIR in ${CHART_DIRS}; do
-  CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
-  helm install "${CHART_NAME}" "${CHART_DIR}"
 done

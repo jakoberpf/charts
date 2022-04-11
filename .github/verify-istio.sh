@@ -8,7 +8,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
 
   echo "Adding hosts entry"
-  sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
+  # sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
 
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
@@ -21,7 +21,7 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   echo "Running IstioGateway (HTTP) Test"
 
-  sudo lsof -i -P -n | grep LISTEN
+  # sudo lsof -i -P -n | grep LISTEN
 
   curl -v -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
 
