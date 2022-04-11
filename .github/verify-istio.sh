@@ -1,11 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+GIT_ROOT=$(git rev-parse --show-toplevel)
+
 CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
 
 # test charts
 for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
+
+  cd ${CHART_DIR}
 
   echo "Adding hosts entry"
   # sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
@@ -13,11 +17,12 @@ for CHART_DIR in ${CHART_DIRS}; do
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
   echo "Setting up Istio Environment Variables"
-  INGRESS_HOST="127.0.0.1"
+  INGRESS_HOST="10.147.19.98"
   INGRESS_DNS="${CHART_NAME}.example.com"
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
+  INGRESS_EXPECT_CODE=$(yq '.istio.code' test.yaml)
 
   echo "Running IstioGateway (HTTP) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
@@ -28,7 +33,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running IstioGateway (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
   if [[ "$CODE" -ne 200 ]] ; then
     echo "IstioGateway (HTTPS): $CODE"
   else
@@ -44,11 +49,13 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running DNS (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
   if [[ "$CODE" -ne 200 ]] ; then
     echo "DNS (HTTPS): $CODE"
   else
     echo "DNS (HTTPS): OK"
   fi
+
+  cd ${GIT_ROOT}
 
 done
