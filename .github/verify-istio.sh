@@ -57,5 +57,4 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   cd ${GIT_ROOT}
-
 done
