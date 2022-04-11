@@ -25,40 +25,41 @@ for CHART_DIR in ${CHART_DIRS}; do
   echo ${INGRESS_DNS}
   echo ${INGRESS_HOST}
   echo ${INGRESS_PORT}
-  
+
   curl -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
 
-  if [[ "$CODE" -ne 200 ]] ; then
-    echo "IstioGateway (HTTP): $CODE"
-  else
-    echo "IstioGateway (HTTP): OK"
-  fi
+  # if [[ "$CODE" -ne 200 ]] ; then
+  #   echo "IstioGateway (HTTP): $CODE"
+  # else
+  #   echo "IstioGateway (HTTP): OK"
+  # fi
 
-  echo "Running IstioGateway (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
+  # echo "Running IstioGateway (HTTPS) Test"
+  # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
 
-  if [[ "$CODE" -ne 200 ]] ; then
-    echo "IstioGateway (HTTPS): $CODE"
-  else
-    echo "IstioGateway (HTTPS): OK"
-  fi
+  # if [[ "$CODE" -ne 200 ]] ; then
+  #   echo "IstioGateway (HTTPS): $CODE"
+  # else
+  #   echo "IstioGateway (HTTPS): OK"
+  # fi
 
-  echo "Running DNS (HTTP) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}")
+  # echo "Running DNS (HTTP) Test"
+  # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}")
 
-  if [[ "$CODE" -ne 200 ]] ; then
-    echo "DNS (HTTP): $CODE"
-  else
-    echo "DNS (HTTP): OK"
-  fi
+  # if [[ "$CODE" -ne 200 ]] ; then
+  #   echo "DNS (HTTP): $CODE"
+  # else
+  #   echo "DNS (HTTP): OK"
+  # fi
 
-  echo "Running DNS (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
+  # echo "Running DNS (HTTPS) Test"
+  # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
 
-  if [[ "$CODE" -ne 200 ]] ; then
-    echo "DNS (HTTPS): $CODE"
-  else
-    echo "DNS (HTTPS): OK"
-  fi
+  # if [[ "$CODE" -ne 200 ]] ; then
+  #   echo "DNS (HTTPS): $CODE"
+  # else
+  #   echo "DNS (HTTPS): OK"
+  # fi
+
 done
