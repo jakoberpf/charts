@@ -13,6 +13,9 @@ for CHART_DIR in ${CHART_DIRS}; do
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
   echo "Setting up Istio Environment Variables"
+
+  minikube ip
+  
   INGRESS_HOST="$(minikube ip)"
   INGRESS_DNS="${CHART_NAME}.example.com"
 
