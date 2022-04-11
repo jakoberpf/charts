@@ -21,6 +21,11 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   echo "Running IstioGateway (HTTP) Test"
   curl https://google.com
+
+  echo ${INGRESS_DNS}
+  echo ${INGRESS_HOST}
+  echo ${INGRESS_PORT}
+  
   curl -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
 
