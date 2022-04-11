@@ -26,6 +26,29 @@ spec:
         k8s:
           service:
             type: NodePort
+            ports:
+              - name: status-port
+                protocol: TCP
+                port: 15021
+                targetPort: 15021
+              - name: http2
+                protocol: TCP
+                port: 80
+                targetPort: 8080
+                nodePort: 30080
+              - name: https
+                protocol: TCP
+                port: 443
+                targetPort: 8443
+                nodePort: 30443
+              - name: tcp
+                protocol: TCP
+                port: 31400
+                targetPort: 31400
+              - name: tls
+                protocol: TCP
+                port: 15443
+                targetPort: 15443
 EOF
 
 while [ "$(kubectl get pods -l=name='istio-operator' -n istio-operator -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
