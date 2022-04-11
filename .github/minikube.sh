@@ -41,8 +41,6 @@ while [ "$(kubectl get pods -l=app='istio-ingressgateway' -n istio-system -o jso
    echo "Waiting for Istio-IngressGateway to be ready."
 done
 
-kubectl get service -n istio-system
-
 # deploy charts
 for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
