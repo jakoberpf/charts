@@ -13,27 +13,14 @@ for CHART_DIR in ${CHART_DIRS}; do
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
   echo "Setting up Istio Environment Variables"
-
-  minikube ip
-
   INGRESS_HOST="$(minikube ip)"
   INGRESS_DNS="${CHART_NAME}.example.com"
-
-  kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports}'
-
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
-
-  kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}'
-
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
-
-  kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}'
-
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
 
-  curl -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
-
   echo "Running IstioGateway (HTTP) Test"
+  curl -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
 
   if [[ "$CODE" -ne 200 ]] ; then
