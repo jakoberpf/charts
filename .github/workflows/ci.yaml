@@ -64,14 +64,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Start minikube
+      - name: Start Minikube
         uses: medyagh/setup-minikube@master
         with:
           kubernetes-version: v1.22.7
-      - uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
+      - name: Install Istio
+        uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
         with:
           version: '1.13.2'
-      - name: yq - portable yaml processor
+      - name: Install YQ
         uses: mikefarah/yq@v4.24.2
       - name: Deploy charts
         run: .github/minikube.sh
