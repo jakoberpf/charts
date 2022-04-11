@@ -8,12 +8,12 @@ for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
 
   echo "Adding hosts entry"
-  sudo echo "127.0.0.1 ${CHART_NAME}.example.com" # | sudo tee -a /etc/hosts
+  sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
 
   # yq -i '.a.b[0].c = "cool"' file.yaml
 
   echo "Setting up Istio Environment Variables"
-  INGRESS_HOST="127.0.0.1" # "$(minikube ip)"
+  INGRESS_HOST="127.0.0.1"
   INGRESS_DNS="${CHART_NAME}.example.com"
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
@@ -21,16 +21,11 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   echo "Running IstioGateway (HTTP) Test"
 
-  echo ${INGRESS_DNS}
-  echo ${INGRESS_HOST}
-  echo ${INGRESS_PORT}
-
   sudo lsof -i -P -n | grep LISTEN
 
   curl -v -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}"
 
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
-
+  # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
   # if [[ "$CODE" -ne 200 ]] ; then
   #   echo "IstioGateway (HTTP): $CODE"
   # else
@@ -39,7 +34,6 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   # echo "Running IstioGateway (HTTPS) Test"
   # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
-
   # if [[ "$CODE" -ne 200 ]] ; then
   #   echo "IstioGateway (HTTPS): $CODE"
   # else
@@ -48,7 +42,6 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   # echo "Running DNS (HTTP) Test"
   # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}")
-
   # if [[ "$CODE" -ne 200 ]] ; then
   #   echo "DNS (HTTP): $CODE"
   # else
@@ -57,7 +50,6 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   # echo "Running DNS (HTTPS) Test"
   # CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}/status/200")
-
   # if [[ "$CODE" -ne 200 ]] ; then
   #   echo "DNS (HTTPS): $CODE"
   # else
