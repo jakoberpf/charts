@@ -65,9 +65,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Start Minikube
-        uses: medyagh/setup-minikube@master
+        uses: manusa/actions-setup-minikube@v2.4.3
         with:
-          kubernetes-version: v1.22.7
+          kubernetes version: v1.22.7
       - name: Install Istio
         uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
         with:
