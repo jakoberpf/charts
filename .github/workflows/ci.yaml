@@ -69,7 +69,7 @@ jobs:
         with:
           minikube version: 'v1.24.0'
           kubernetes version: v1.22.7
-          start args: "--ports=30080:30080"
+          # start args: "--ports=30080:30080"
       - name: Install Istio
         uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
         with:
