@@ -60,6 +60,3 @@ while [ "$(kubectl get pods -l=app='istio-ingressgateway' -n istio-system -o jso
    sleep 2
    echo "Waiting for Istio-IngressGateway to be ready."
 done
-
-ssh -i /home/runner/work/_temp/.minikube/machines/minikube docker@$(minikube ip) -NL \*:30080:0.0.0.0:30080
-ssh -i /home/runner/work/_temp/.minikube/machines/minikube docker@$(minikube ip) -NL \*:30443:0.0.0.0:30443
