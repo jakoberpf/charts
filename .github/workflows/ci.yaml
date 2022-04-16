@@ -81,8 +81,8 @@ jobs:
         run: .github/verify-deploy.sh
       - name: Generate certificates
         run: .github/tls.sh
-      - name: Verify Istio
-        run: .github/verify-istio.sh
+      # - name: Verify Istio
+      #   run: .github/verify-istio.sh
       # - name: Build image
       #   run: |
       #     export SHELL=/bin/bash
