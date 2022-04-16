@@ -84,20 +84,26 @@ spec:
     {{- $item := . -}}
     {{- with $ }}
     - port:
-      {{- if or $item.tls $root.Values.ingress.certManager.enabled }} 
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - {{ $item.host }}
+      {{- if or $item.tls $root.Values.ingress.certManager.enabled }}
+        {{- if $item.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
         number: 443
         name: https
         protocol: HTTPS
       tls:
         mode: {{ $item.tls.mode | default "SIMPLE" }}
         credentialName: {{ $item.tls.secretName | default $item.host }}
-      {{- else }}
-        number: 80
-        name: http
-        protocol: HTTP
-      {{- end }}
       hosts:
         - {{ $item.host }}
+      {{- end }}
     {{- end }}
     {{- end }}
 
