@@ -12,6 +12,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   cd ${CHART_DIR}
   
   SECRETS=( $(yq e -o=j -I=0 '.secrets[]' test.yaml) )
+  
   for secret in "${SECRETS[@]}"; do
     secretname=( $(echo "${secret}" | yq e '.name' - ) )
     data=( $(echo "${secret}" | yq e -o=j -I=0 ".data" - ) )
