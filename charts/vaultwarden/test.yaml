@@ -1,2 +1,13 @@
 istio:
   code: 200
+
+secrets:
+  - name: vaultwarden-smtp
+    type: Opaque
+    data:
+      user: XGVoOng4k36uyAWR
+      password: OrkphBVxXTuDjhUR
+  - name: vaultwarden-token
+    type: Opaque
+    data:
+      token: fXBmN+Tu9xYTAIRK/ZRlM5xf2M3Swfa8AdsFTY3DGXSqeJFg0U6mAaFkNI1a+9I5
