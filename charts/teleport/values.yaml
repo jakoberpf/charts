@@ -1,6 +1,11 @@
-# Default values for teleport.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+teleport-cluster:
+  chartMode: custom
+  image: ronaldmiranda/teleport-arm
+  teleportVersionOverride: 9.1.2
+  service:
+    type: ClusterIP
+  extraArgs:
+    - --insecure-no-tls
 
 replicaCount: 1
 
