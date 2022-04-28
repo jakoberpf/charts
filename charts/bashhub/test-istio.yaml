@@ -1,2 +1,3 @@
 istio:
   code: 401
+  subpath: ""

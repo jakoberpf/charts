@@ -31,9 +31,10 @@ for CHART_DIR in ${CHART_DIRS}; do
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
   INGRESS_EXPECT_CODE=$(yq '.istio.code' test-istio.yaml)
+  INGRESS_EXPECT_SUBPATH=$(yq '.istio.subpath' test-istio.yaml)
 
   echo "Running IstioGateway (HTTP) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}${INGRESS_EXPECT_SUBPATH}")
   if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "IstioGateway (HTTP): $CODE"
   else
@@ -41,7 +42,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running IstioGateway (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}${INGRESS_EXPECT_SUBPATH}")
   if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "IstioGateway (HTTPS): $CODE"
   else
@@ -49,7 +50,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running DNS (HTTP) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}${INGRESS_EXPECT_SUBPATH}")
   if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "DNS (HTTP): $CODE"
   else
@@ -57,7 +58,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   echo "Running DNS (HTTPS) Test"
-  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}${INGRESS_EXPECT_SUBPATH}")
   if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "DNS (HTTPS): $CODE"
   else
