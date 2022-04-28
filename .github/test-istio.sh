@@ -17,8 +17,8 @@ for CHART_DIR in ${CHART_DIRS}; do
   touch values-istio.yaml
   # yq -i '.persistence.enabled = true' values-istio.yaml
   yq -i '.ingress.enabled = true' values-istio.yaml
-  yq -i '.ingress.hosts[0].host = "vaultwarden.example.com"' values-istio.yaml
-  yq -i '.ingress.hosts[0].tls.secretName = "vaultwarden-credential"' values-istio.yaml
+  hostName="${CHART_NAME}.example.com" yq -i '.ingress.hosts[0].host = env(hostName)' values-istio.yaml
+  secretName="${CHART_NAME}-credential" yq -i '.ingress.hosts[0].tls.secretName = env(secretName)' values-istio.yaml
   yq -i '.ingress.istioGateway.enabled = true' values-istio.yaml
   yq -i '.ingress.certManager.enabled = false' values-istio.yaml
   yq -i '.ingress.certManager.issuerRef.name = "cloudflare-letsencrypt-prod"' values-istio.yaml
@@ -31,11 +31,11 @@ for CHART_DIR in ${CHART_DIRS}; do
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
   TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
-  INGRESS_EXPECT_CODE=$(yq '.istio.code' test.yaml)
+  INGRESS_EXPECT_CODE=$(yq '.istio.code' test-istio.yaml)
 
   echo "Running IstioGateway (HTTP) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
-  if [[ "$CODE" -ne 200 ]] ; then
+  if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "IstioGateway (HTTP): $CODE"
   else
     echo "IstioGateway (HTTP): OK"
@@ -43,7 +43,7 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   echo "Running IstioGateway (HTTPS) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}")
-  if [[ "$CODE" -ne 200 ]] ; then
+  if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "IstioGateway (HTTPS): $CODE"
   else
     echo "IstioGateway (HTTPS): OK"
@@ -51,7 +51,7 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   echo "Running DNS (HTTP) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I "http://${INGRESS_DNS}:${INGRESS_PORT}")
-  if [[ "$CODE" -ne 200 ]] ; then
+  if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "DNS (HTTP): $CODE"
   else
     echo "DNS (HTTP): OK"
@@ -59,7 +59,7 @@ for CHART_DIR in ${CHART_DIRS}; do
 
   echo "Running DNS (HTTPS) Test"
   CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} --resolve "${INGRESS_DNS}:${SECURE_INGRESS_PORT}:${INGRESS_HOST}" --cacert ${GIT_ROOT}/.tls/example.com.crt "https://${INGRESS_DNS}:${SECURE_INGRESS_PORT}")
-  if [[ "$CODE" -ne 200 ]] ; then
+  if [[ "$CODE" -ne $INGRESS_EXPECT_CODE ]] ; then
     echo "DNS (HTTPS): $CODE"
   else
     echo "DNS (HTTPS): OK"
