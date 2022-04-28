@@ -24,6 +24,10 @@ for CHART_DIR in ${CHART_DIRS}; do
       secretdata="${secretdata} --from-literal=${fieldkey}=${fieldvalue}"
     done
 
+    if [ ! "$(kubectl get namespaces -o json | jq -r ".items[].metadata.name | select (. == \"${CHART_NAME}\")")" == "${CHART_NAME}" ]; then
+      kubectl create namespace "${CHART_NAME}"
+    fi
+
     if [ ! "$(kubectl get -n "${CHART_NAME}" secrets -o json | jq -r ".items[].metadata.name | select (. == \"${secretname}\")")" == "${secretname}" ]; then
       kubectl create -n "${CHART_NAME}" secret generic $secretname $secretdata
     else
