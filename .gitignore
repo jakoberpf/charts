@@ -1,2 +1,3 @@
 *.tls
 *.kube
+*generated-test-values.yaml

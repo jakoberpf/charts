@@ -14,16 +14,16 @@ for CHART_DIR in ${CHART_DIRS}; do
   # echo "Adding hosts entry"
   # sudo echo "127.0.0.1 ${CHART_NAME}.example.com"
 
-  touch values-istio.yaml
-  # yq -i '.persistence.enabled = true' values-istio.yaml
-  yq -i '.ingress.enabled = true' values-istio.yaml
-  hostName="${CHART_NAME}.example.com" yq -i '.ingress.hosts[0].host = env(hostName)' values-istio.yaml
-  secretName="${CHART_NAME}-credential" yq -i '.ingress.hosts[0].tls.secretName = env(secretName)' values-istio.yaml
-  yq -i '.ingress.istioGateway.enabled = true' values-istio.yaml
-  yq -i '.ingress.certManager.enabled = false' values-istio.yaml
-  yq -i '.ingress.certManager.issuerRef.name = "cloudflare-letsencrypt-prod"' values-istio.yaml
+  touch generated-test-values.yaml
+  # yq -i '.persistence.enabled = true' generated-test-values.yaml
+  yq -i '.ingress.enabled = true' generated-test-values.yaml
+  hostName="${CHART_NAME}.example.com" yq -i '.ingress.hosts[0].host = env(hostName)' generated-test-values.yaml
+  secretName="${CHART_NAME}-credential" yq -i '.ingress.hosts[0].tls.secretName = env(secretName)' generated-test-values.yaml
+  yq -i '.ingress.istioGateway.enabled = true' generated-test-values.yaml
+  yq -i '.ingress.certManager.enabled = false' generated-test-values.yaml
+  yq -i '.ingress.certManager.issuerRef.name = "cloudflare-letsencrypt-prod"' generated-test-values.yaml
 
-  helm upgrade ${CHART_NAME} . --namespace ${CHART_NAME} --values=values.yaml --values=values-istio.yaml
+  helm upgrade ${CHART_NAME} . --namespace ${CHART_NAME} --values=values.yaml --values=generated-test-values.yaml
 
   echo "Setting up Istio Environment Variables"
   INGRESS_HOST="10.147.19.98"
