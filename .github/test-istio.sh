@@ -26,7 +26,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   helm upgrade ${CHART_NAME} . --namespace ${CHART_NAME} --values=values.yaml --values=values-istio.yaml
 
   echo "Setting up Istio Environment Variables"
-  INGRESS_HOST="172.0.0.1"
+  INGRESS_HOST="10.147.19.98"
   INGRESS_DNS="${CHART_NAME}.example.com"
   INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
   SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
@@ -34,7 +34,7 @@ for CHART_DIR in ${CHART_DIRS}; do
   INGRESS_EXPECT_CODE=$(yq '.istio.code' test.yaml)
 
   echo "Running IstioGateway (HTTP) Test"
-  CODE=$(curl -vv --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
+  CODE=$(curl --write-out %{http_code} --output /dev/null -s -I -HHost:${INGRESS_DNS} "http://${INGRESS_HOST}:${INGRESS_PORT}")
   if [[ "$CODE" -ne 200 ]] ; then
     echo "IstioGateway (HTTP): $CODE"
   else

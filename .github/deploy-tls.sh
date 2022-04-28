@@ -20,6 +20,11 @@ for CHART_DIR in ${CHART_DIRS}; do
     openssl req -out "${CHART_NAME}.example.com.csr" -newkey rsa:2048 -nodes -keyout "${CHART_NAME}.example.com.key" -subj "/CN=${CHART_NAME}.example.com/O=${CHART_NAME} organization"
     openssl x509 -req -sha256 -days 365 -CA ${GIT_ROOT}/.tls/example.com.crt -CAkey ${GIT_ROOT}/.tls/example.com.key -set_serial 0 -in "${CHART_NAME}.example.com.csr" -out "${CHART_NAME}.example.com.crt"
   fi
-  kubectl create -n istio-system secret tls "${CHART_NAME}-credential" --key="${CHART_NAME}.example.com.key" --cert="${CHART_NAME}.example.com.crt"
+  if [ ! "$(kubectl get -n istio-system secrets -o json | jq -r ".items[].metadata.name | select (. == \"${CHART_NAME}-credential\")")" == "${CHART_NAME}-credential" ]; then
+    kubectl create -n istio-system secret tls "${CHART_NAME}-credential" --key="${CHART_NAME}.example.com.key" --cert="${CHART_NAME}.example.com.crt"
+  else
+    kubectl delete -n istio-system secret "${CHART_NAME}-credential"
+    kubectl create -n istio-system secret tls "${CHART_NAME}-credential" --key="${CHART_NAME}.example.com.key" --cert="${CHART_NAME}.example.com.crt"
+  fi
   cd ${GIT_ROOT}
 done
