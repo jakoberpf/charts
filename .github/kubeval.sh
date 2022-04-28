@@ -14,6 +14,6 @@ tar -xf /tmp/kubeval.tar.gz kubeval
 for CHART_DIR in ${CHART_DIRS}; do
   cd "${CHART_DIR}"
   helm dependency build
-  helm template . | ./kubeval --strict --ignore-missing-schemas --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
+  helm template . | ${GIT_ROOT}/kubeval --strict --ignore-missing-schemas --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
   cd "${GIT_ROOT}"
 done
