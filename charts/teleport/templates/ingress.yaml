@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled ( not .Values.ingress.istioGateway.enabled ) -}}
 {{- $fullName := include "teleport.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
@@ -58,4 +58,109 @@ spec:
               {{- end }}
           {{- end }}
     {{- end }}
+{{- end }}
+
+{{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}}
+{{- $root := . -}}
+{{- $fullName := include "teleport.fullname" . -}}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "teleport.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    {{- range .Values.ingress.hosts }}
+    {{- $item := . -}}
+    {{- with $ }}
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - {{ $item.host }}
+      {{- if or $item.tls $root.Values.ingress.certManager.enabled }}
+        {{- if $item.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: {{ $item.tls.mode | default "SIMPLE" }}
+        credentialName: {{ $item.tls.secretName | default $item.host }}
+      hosts:
+        - {{ $item.host }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "teleport.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    {{- range .Values.ingress.hosts }}
+    - {{ .host }}
+    {{- end }}
+  gateways:
+    - {{ $fullName }}
+  http:
+    # - match:
+    #   - uri:
+    #       prefix: /
+    #   route:
+    - route:
+      - destination:
+          port:
+            number: 443
+          host: {{ $fullName }}
+{{- end }}
+
+{{- if .Values.ingress.certManager.enabled -}}
+{{- $root := . -}}
+{{- $fullName := include "teleport.fullname" . -}}
+{{- $certManagerLabels := include "teleport.labels" . -}}
+{{- range .Values.ingress.hosts }}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .host }}
+  labels:
+    {{- $certManagerLabels | nindent 4 }}
+  {{- with $root.Values.ingress.certManager.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ .host }}
+  issuerRef:
+    name: {{ $root.Values.ingress.certManager.issuerRef.name }}
+    kind: {{ $root.Values.ingress.certManager.issuerRef.kind | default "ClusterIssuer" }}
+  commonName: {{ .host }}
+  dnsNames:
+    - {{ .host }}
+
+{{- end }}
 {{- end }}
