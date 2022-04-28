@@ -15,7 +15,7 @@ for CHART_DIR in ${CHART_DIRS}; do
     kubectl label namespace "${CHART_NAME}" istio-injection=enabled
   fi
 
-  helm install "${CHART_NAME}" "${CHART_DIR}" --namespace "${CHART_NAME}"
+  helm upgrade "${CHART_NAME}" "${CHART_DIR}" --namespace "${CHART_NAME}" --install
 
   .github/wait-until-pods-ready.sh 30 1
 done
