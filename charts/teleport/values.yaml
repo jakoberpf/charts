@@ -12,6 +12,7 @@ fullnameOverride: ""
 teleport: {}
 
 teleport-cluster:
+  # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
   chartMode: custom
   image: ronaldmiranda/teleport-arm
   teleportVersionOverride: 9.1.2
@@ -19,6 +20,9 @@ teleport-cluster:
     type: ClusterIP
   extraArgs:
     - --insecure-no-tls
+  persistence:
+    enabled: false
+    existingClaim: teleport-pvc
 
 persistence:
   enabled: false
