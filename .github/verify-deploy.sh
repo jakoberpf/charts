@@ -16,4 +16,6 @@ for CHART_DIR in ${CHART_DIRS}; do
   fi
 
   helm install "${CHART_NAME}" "${CHART_DIR}" --namespace "${CHART_NAME}"
+
+  .github/wait-until-pods-ready.sh 30 1
 done

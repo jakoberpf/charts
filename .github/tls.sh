@@ -15,15 +15,11 @@ fi
 # generate certificates
 for CHART_DIR in ${CHART_DIRS}; do
   CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
-  
   mkdir -p ${CHART_DIR}/.tls && cd ${CHART_DIR}/.tls
-
   if [[ ! -f "${CHART_NAME}.example.com.csr" || ! -f "${CHART_NAME}.example.com.key" || ! -f "${CHART_NAME}.example.com.crt" ]]; then
     openssl req -out "${CHART_NAME}.example.com.csr" -newkey rsa:2048 -nodes -keyout "${CHART_NAME}.example.com.key" -subj "/CN=${CHART_NAME}.example.com/O=${CHART_NAME} organization"
     openssl x509 -req -sha256 -days 365 -CA ${GIT_ROOT}/.tls/example.com.crt -CAkey ${GIT_ROOT}/.tls/example.com.key -set_serial 0 -in "${CHART_NAME}.example.com.csr" -out "${CHART_NAME}.example.com.crt"
   fi
-
   kubectl create -n istio-system secret tls "${CHART_NAME}-credential" --key="${CHART_NAME}.example.com.key" --cert="${CHART_NAME}.example.com.crt"
-
   cd ${GIT_ROOT}
 done
