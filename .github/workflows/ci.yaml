@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Submodules
-        run: git submodule update --init
       - name: Run chart-testing (lint)
         uses: helm/chart-testing-action@main
         with:
@@ -25,8 +23,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Submodules
-        run: git submodule update --init
       - name: Run helm-docs
         run: .github/helm-docs.sh
 
