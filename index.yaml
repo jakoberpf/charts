@@ -3,6 +3,16 @@ entries:
   bashhub:
   - apiVersion: v2
     appVersion: 0.2.5
+    created: "2022-04-30T13:04:38.143311815Z"
+    description: A Helm chart for Kubernetes
+    digest: 8f6b36b7b0741f744146149a4b6750b3fab99a65b6d9b9ccdb5ace8ea58cab1e
+    name: bashhub
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/bashhub-0.1.12/bashhub-0.1.12.tgz
+    version: 0.1.12
+  - apiVersion: v2
+    appVersion: 0.2.5
     created: "2022-04-28T17:07:29.861981529Z"
     description: A Helm chart for Kubernetes
     digest: 6eb420451465b2c3ba549137d4fe11238a4649067cca82447d52bba7ae04e8eb
@@ -121,7 +131,32 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/bashhub-0.1.0/bashhub-0.1.0.tgz
     version: 0.1.0
+  teleport:
+  - apiVersion: v2
+    appVersion: 9.0.4
+    created: "2022-04-30T13:04:38.274324543Z"
+    dependencies:
+    - name: teleport-cluster
+      repository: file://clone/examples/chart/teleport-cluster
+      version: 10.0.0-dev
+    description: A Helm chart for Kubernetes
+    digest: d9b499f4c98992ad2b35c4df30fcb0ed865b8009d4be8afaf03e56af2a936799
+    name: teleport
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/teleport-0.0.1/teleport-0.0.1.tgz
+    version: 0.0.1
   vaultwarden:
+  - apiVersion: v2
+    appVersion: 1.24.0
+    created: "2022-04-30T13:04:38.403517847Z"
+    description: A Helm chart for Kubernetes
+    digest: f7caf5c4f04e7d72af0d8e17be53bcf0a1c240c634334bca651b6e7997c6b80a
+    name: vaultwarden
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.7/vaultwarden-0.1.7.tgz
+    version: 0.1.7
   - apiVersion: v2
     appVersion: 1.24.0
     created: "2022-04-28T17:07:30.041072177Z"
@@ -192,4 +227,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-04-28T17:07:30.041221776Z"
+generated: "2022-04-30T13:04:38.40373915Z"
