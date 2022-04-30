@@ -15,7 +15,7 @@ teleport-cluster:
   # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
   chartMode: custom
   image: ronaldmiranda/teleport-arm
-  teleportVersionOverride: 9.0.2
+  teleportVersionOverride: 9.0.4
   service:
     type: ClusterIP
   extraArgs:
