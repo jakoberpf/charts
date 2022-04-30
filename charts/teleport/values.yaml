@@ -18,19 +18,11 @@ teleport-cluster:
   teleportVersionOverride: 9.0.4
   service:
     type: ClusterIP
+  persistence:
+    enabled: true
+    existingClaimName: teleport-pvc
   extraArgs:
     - --insecure-no-tls
-  persistence:
-    enabled: false
-    existingClaim: teleport-pvc
-
-persistence:
-  enabled: false
-  pv:
-    create: false
-    name: teleport-pv
-  pvc: 
-    name: teleport-pvc
 
 # serviceAccount:
 #   # Specifies whether a service account should be created
