@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Submodules
+        run: git submodule update --init
       - name: Run kubeval
         env:
           KUBERNETES_VERSION: ${{ matrix.k8s }}
@@ -64,6 +66,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Submodules
+        run: git submodule update --init
       - name: Start Minikube
         uses: manusa/actions-setup-minikube@v2.4.3
         with:
