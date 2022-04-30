@@ -19,7 +19,7 @@ teleport-cluster:
   service:
     type: ClusterIP
   persistence:
-    enabled: true
+    enabled: false
     existingClaimName: teleport-pvc
   extraArgs:
     - --insecure-no-tls
