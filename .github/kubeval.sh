@@ -10,7 +10,7 @@ SCHEMA_LOCATION="https://raw.githubusercontent.com/instrumenta/kubernetes-json-s
 curl --silent --show-error --fail --location --output /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/"${KUBEVAL_VERSION}"/kubeval-linux-amd64.tar.gz
 tar -xf /tmp/kubeval.tar.gz kubeval
 
-git submodule init charts/teleport/clone
+git submodule update --init
 
 # validate charts
 for CHART_DIR in ${CHART_DIRS}; do
