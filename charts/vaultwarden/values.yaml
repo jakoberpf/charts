@@ -72,17 +72,12 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts: []
     # - host: vaultwarden.example.com
-    #   paths:
-    #     - path: /
-    #       pathType: ImplementationSpecific
-    #   tls: # use for istio gateway tls
-    #     mode: SIMPLE
-    #     secretName: vaultwarden.example.de
-    #     redirect: true
-  tls: [] # use for kubernetes ingress tls
-  #  - secretName: vaultwarden.example.de
-  #    hosts:
-  #      - vaultwarden.example.com
+    # - host: bitwarden.example.com
+  tls:
+    enabled: false
+    redirect: false
+    mode: SIMPLE
+    # secretName: vaultwarden-tls
   istioGateway:
     enabled: false
     annotations: {}

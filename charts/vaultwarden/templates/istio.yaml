@@ -1,0 +1,81 @@
+{{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}}
+{{- $root := . -}}
+{{- $fullName := include "vaultwarden.fullname" . -}}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "vaultwarden.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        {{- range .Values.ingress.hosts }}
+        - {{ .host }}
+        {{- end }}
+      {{- if or .Values.ingress.tls.enabled }}
+        {{- if .Values.ingress.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
+        credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
+      hosts:
+        {{- range .Values.ingress.hosts }}
+        - {{ .host }}
+        {{- end }}
+      {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "vaultwarden.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    {{- range .Values.ingress.hosts }}
+    - {{ .host }}
+    {{- end }}
+  gateways:
+    - {{ $fullName }}
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 80
+          host: {{ $fullName }}
+    - match:
+      - uri:
+          prefix: /notifications/hub
+      route:
+      - destination:
+          port:
+            number: 3012
+          host: {{ $fullName }}
+{{- end }}
