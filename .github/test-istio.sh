@@ -17,7 +17,8 @@ for CHART_DIR in ${CHART_DIRS}; do
   # yq -i '.persistence.enabled = true' generated-test-values.yaml
   yq -i '.ingress.enabled = true' generated-test-values.yaml
   hostName="${CHART_NAME}.example.com" yq -i '.ingress.hosts[0].host = env(hostName)' generated-test-values.yaml
-  secretName="${CHART_NAME}-credential" yq -i '.ingress.hosts[0].tls.secretName = env(secretName)' generated-test-values.yaml
+  secretName="${CHART_NAME}-credential" yq -i '.ingress.tls.secretName = env(secretName)' generated-test-values.yaml
+  yq -i '.ingress.tls.enabled = true' generated-test-values.yaml
   yq -i '.ingress.istioGateway.enabled = true' generated-test-values.yaml
   yq -i '.ingress.certManager.enabled = false' generated-test-values.yaml
   yq -i '.ingress.certManager.issuerRef.name = "cloudflare-letsencrypt-prod"' generated-test-values.yaml
