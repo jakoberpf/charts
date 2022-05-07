@@ -5,6 +5,12 @@ mysql:
   image:
     repository: mysql/mysql-server
 
+enabled:
+  community: false
+  controlpanel: false
+  documents: true
+  mail: false
+
 image:
   community:
     repository: jakoberpf/onlyoffice-communityserver
