@@ -1,31 +1,54 @@
 replicaCount: 1
 
-mysql:
+rabbitmq:
   deploy: true
+  metrics:
+    enabled: true
+
+redis:
+  deploy: true
+  metrics:
+    enabled: true
   image:
-    repository: mysql/mysql-server
+    debug: true
+
+postgresql:
+  deploy: true
+  primary:
+    # persistence:
+    #   size: PERSISTENT_SIZE
+    initdb:
+      scriptsConfigMap: onlyoffice-init-db-scripts
+  auth:
+    database: postgres
+  metrics:
+    enabled: true
 
 enabled:
-  community: false
-  controlpanel: false
+  community: true
+  controlpanel: true
   documents: true
-  mail: false
+  mail: true
 
 image:
   community:
-    repository: jakoberpf/onlyoffice-communityserver
+    # repository: jakoberpf/onlyoffice-communityserver
+    repository: onlyoffice/communityserver
     pullPolicy: Always
-    tag: "11.0.0.1458"
+    tag: "latest"
   controlpanel:
-    repository: jakoberpf/onlyoffice-controlpanel
+    # repository: jakoberpf/onlyoffice-controlpanel
+    repository: onlyoffice/controlpanel
     pullPolicy: Always
-    tag: "2.9.0.351"
+    tag: "latest"
   documents:
-    repository: jakoberpf/onlyoffice-documentserver
+    # repository: jakoberpf/onlyoffice-documentserver
+    repository: onlyoffice/documentserver
     pullPolicy: Always
-    tag: "6.0.2"
+    tag: "latest"
   mail:
-    repository: jakoberpf/onlyoffice-mailserver
+    # repository: jakoberpf/onlyoffice-mailserver
+    repository: onlyoffice/mailserver
     pullPolicy: Always
     tag: "latest"
 

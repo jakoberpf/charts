@@ -4,7 +4,15 @@ description: A Helm chart for OnlyOffice
 type: application
 version: 0.0.1
 dependencies:
-  - name: mysql
-    version: "8.8.34"
+  - name: rabbitmq
+    version: "8.27.0"
     repository: "https://charts.bitnami.com/bitnami"
-    condition: mysql.deploy
+    condition: rabbitmq.deploy
+  - name: redis
+    version: "16.9.0"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.deploy
+  - name: postgresql
+    version: "11.1.28"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.deploy
