@@ -1,3 +1,4 @@
+{{- if .Values.enabled.community }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,7 +22,9 @@ spec:
       name: websocket
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+{{- end }}
 
+{{- if .Values.enabled.controlpanel }}
 ---
 apiVersion: v1
 kind: Service
@@ -42,7 +45,9 @@ spec:
       name: https
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+{{- end }}
 
+{{- if .Values.enabled.documents }}
 ---
 apiVersion: v1
 kind: Service
@@ -63,7 +68,9 @@ spec:
       name: https
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+{{- end }}
 
+{{- if .Values.enabled.mail }}
 ---
 apiVersion: v1
 kind: Service
@@ -88,3 +95,4 @@ spec:
       name: smtptls
   selector:
     {{- include "onlyoffice.selectorLabels" . | nindent 4 }}
+{{- end }}
