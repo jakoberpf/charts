@@ -1,3 +1,6 @@
+[submodule "charts/onlyoffice/upstream/docs"]
+	path = charts/onlyoffice/upstream/docs
+	url = git@github.com:ONLYOFFICE/Kubernetes-Docs.git
 [submodule "charts/teleport/clone"]
 	path = charts/teleport/clone
 	url = https://github.com/gravitational/teleport.git
