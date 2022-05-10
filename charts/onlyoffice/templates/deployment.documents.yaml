@@ -49,6 +49,13 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
+          env:
+            - name: JWT_ENABLED
+              value: "{{ .Values.jwt.enabled }}"
+            - name: JWT_HEADER
+              value: {{ .Values.jwt.header }}
+            - name: JWT_SECRET
+              value: {{ .Values.jwt.secret }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

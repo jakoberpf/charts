@@ -1,6 +1,8 @@
 # onlyoffice
 
-[Orignal Docker-Compose](https://github.com/ONLYOFFICE/Docker-CommunityServer/blob/master/docker-compose.workspace.yml)
+[Original Docker-Compose](https://github.com/ONLYOFFICE/Docker-CommunityServer/blob/master/docker-compose.workspace.yml)
+[Original Docker Manual](https://helpcenter.onlyoffice.com/de/installation/workspace-install-docker-integrated.aspx)
+[Original Documents Server Helm Chart](https://github.com/ONLYOFFICE/Kubernetes-Docs)
 
 ```yaml
 version: '3'

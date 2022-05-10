@@ -1,5 +1,8 @@
 replicaCount: 1
 
+# nfs-server-provisioner:
+#   deploy: true
+
 mysql:
   deploy: true
 
@@ -30,6 +33,11 @@ enabled:
   controlpanel: true
   documents: true
   mail: true
+
+jwt:
+  enabled: true
+  header: "AuthorizationJwt"
+  secret: "SNl5Wl+HgQPDqoTFH5SgfnWPZqXkycx6yexQXDBffij4vAfgPZlW9lSE0+5XQ9oP"
 
 image:
   community:
