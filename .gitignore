@@ -5,3 +5,4 @@ charts/*/charts
 charts/*/Chart.lock
 /.monokle
 /.envrc
+/.idea
