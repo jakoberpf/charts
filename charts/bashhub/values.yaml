@@ -54,23 +54,18 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts: []
     # - host: bashhub.example.com
-    #   paths:
-    #     - path: /
-    #       pathType: ImplementationSpecific
-    #   tls: # use for istio gateway tls
-    #     mode: SIMPLE
-    #     secretName: bashhub.example.de
-  tls: [] # use for kubernetes ingress tls
-  #  - secretName: bashhub.example.de
-  #    hosts:
-  #      - bashhub.example.com
+  tls:
+    enabled: false
+    redirect: false
+    mode: SIMPLE
+    # secretName: bashhub-tls
   istioGateway:
     enabled: false
     annotations: {}
   certManager:
     enabled: false
     # issuerRef: 
-    #   name: cloudflare-letsencrypt-prod
+    #   name: cloudflare-letsencrypt-staging
     #   kind: ClusterIssuer
     annotations: {}
 
