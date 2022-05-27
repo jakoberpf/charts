@@ -4,15 +4,15 @@ nfs-server-provisioner:
   deploy: true
 
 mysql:
-  deploy: false
+  deploy: true
 
 rabbitmq:
-  deploy: true
+  deploy: false
   metrics:
     enabled: true
 
 redis:
-  deploy: true
+  deploy: false
   architecture: standalone
   auth:
     enabled: false
@@ -20,7 +20,7 @@ redis:
     enabled: true
 
 postgresql:
-  deploy: true
+  deploy: false
   primary:
     initdb:
       scriptsConfigMap: postgresql-init-db-scripts
@@ -85,6 +85,11 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+persistence:
+  enabled: true
+  storageClass: "nfs"
+  size: "200Mi"
+  
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

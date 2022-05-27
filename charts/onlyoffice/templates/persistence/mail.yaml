@@ -1,0 +1,53 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mail-data
+spec:
+  storageClassName: {{ .Values.persistence.storageClass }}
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mail-certs
+spec:
+  storageClassName: {{ .Values.persistence.storageClass }}
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mail-log
+spec:
+  storageClassName: {{ .Values.persistence.storageClass }}
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mail-mysql
+spec:
+  storageClassName: {{ .Values.persistence.storageClass }}
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+{{- end }}
