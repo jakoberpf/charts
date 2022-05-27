@@ -24,6 +24,15 @@ dependencies:
     version: "11.1.28"
     repository: "https://charts.bitnami.com/bitnami"
     condition: postgresql.deploy
-  # - name: documentserver
-  #   version: "22.5.4"
-  #   repository: file://upstream/docs
+  - name: prometheus
+    version: "15.9.0"
+    repository: "https://prometheus-community.github.io/helm-charts"
+    condition: prometheus.deploy
+  - name: prometheus-statsd-exporter
+    version: "0.4.2"
+    repository: "https://prometheus-community.github.io/helm-charts"
+    condition: prometheus-statsd-exporter.deploy
+  - name: documentserver
+    version: "22.5.4"
+    repository: file://upstream/docs
+    condition: documentserver.enabled
