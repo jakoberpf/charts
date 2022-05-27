@@ -13,8 +13,9 @@ rabbitmq:
 
 redis:
   deploy: true
-  sentinel:
-    enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
   metrics:
     enabled: true
 
