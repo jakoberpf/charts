@@ -1,7 +1,7 @@
 replicaCount: 1
 
-# nfs-server-provisioner:
-#   deploy: true
+nfs-server-provisioner:
+  deploy: true
 
 mysql:
   deploy: true
@@ -13,10 +13,10 @@ rabbitmq:
 
 redis:
   deploy: true
+  sentinel:
+    enabled: true
   metrics:
     enabled: true
-  image:
-    debug: true
 
 postgresql:
   deploy: true
