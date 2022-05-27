@@ -40,11 +40,13 @@ prometheus-statsd-exporter:
     eventFlushInterval: 30000ms
 
 documentserver:
-  enabled: false
+  enabled: true
   securityContext:
     enabled: true
   persistence:
     existingClaim: ds-files
+  connections:
+    dbExistingSecret: onlyoffice-postgresql
 
 enabled:
   community: true
@@ -57,7 +59,7 @@ connections:
   dbUser: postgres
   dbPort: "5432"
   dbName: postgres
-  dbExistingSecret: postgresql
+  dbExistingSecret: onlyoffice-postgresql
   dbSecretKeyName: postgres-password
   dbPassword: ""
   redisHost: redis-master
