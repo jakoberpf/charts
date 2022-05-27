@@ -151,3 +151,5 @@ volumes:
   controlpanel_log:
   mysql_data:
 ```
+
+Update dependencies: `rm -f Chart.lock && helm dependency build`
