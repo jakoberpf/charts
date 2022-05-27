@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-init-db-scripts
+data:
+  createdb.sql: |-
+{{ .Files.Get "files/createdb.sql" | indent 4}}

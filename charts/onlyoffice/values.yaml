@@ -22,7 +22,7 @@ postgresql:
   deploy: true
   primary:
     initdb:
-      scriptsConfigMap: onlyoffice-init-db-scripts
+      scriptsConfigMap: postgresql-init-db-scripts
   auth:
     database: postgres
   metrics:
