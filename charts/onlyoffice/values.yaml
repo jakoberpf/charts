@@ -5,6 +5,8 @@ nfs-server-provisioner:
 
 mysql:
   deploy: true
+  auth:
+    existingSecret: mysql-credentials
 
 rabbitmq:
   deploy: false
