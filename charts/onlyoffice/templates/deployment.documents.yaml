@@ -58,6 +58,8 @@ spec:
               value: {{ .Values.jwt.secret }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+# "/app/onlyoffice/DocumentServer/data"
+# "/app/onlyoffice/DocumentServer/logs"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

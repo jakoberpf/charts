@@ -9,7 +9,7 @@ dependencies:
     repository: "https://kubernetes-sigs.github.io/nfs-ganesha-server-and-external-provisioner"
     condition: nfs-server-provisioner.deploy
   - name: mysql
-    version: "8.9.6"
+    version: "9.1.1"
     repository: "https://charts.bitnami.com/bitnami"
     condition: mysql.deploy
   - name: rabbitmq

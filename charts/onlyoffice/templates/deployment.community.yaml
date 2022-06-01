@@ -43,7 +43,7 @@ spec:
               protocol: TCP
             - name: websocket
               containerPort: 5222
-              protocol: TCP        
+              protocol: TCP
           # livenessProbe:
           #   httpGet:
           #     path: /
@@ -52,8 +52,60 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
+          env:
+            - name: ONLYOFFICE_CORE_MACHINEKEY
+              value: core_secret
+            # - name: CONTROL_PANEL_PORT_80_TCP
+            #   value: 80
+            # - name: CONTROL_PANEL_PORT_80_TCP_ADDR
+            #   value: onlyoffice-control-panel
+            # - name: DOCUMENT_SERVER_PORT_80_TCP_ADDR
+            #   value: onlyoffice-document-server
+            - name: DOCUMENT_SERVER_JWT_ENABLED
+              value: "{{ .Values.jwt.enabled }}"
+            - name: DOCUMENT_SERVER_JWT_HEADER
+              value: {{ .Values.jwt.header }}
+            - name: DOCUMENT_SERVER_JWT_SECRET
+              value: {{ .Values.jwt.secret }}
+            - name: MYSQL_SERVER_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: mysql-root-password
+            - name: MYSQL_SERVER_DB_NAME
+              value: onlyoffice
+            - name: MYSQL_SERVER_HOST
+              value: onlyoffice-mysql
+            - name: MYSQL_SERVER_USER
+              value: onlyoffice_user
+            - name: MYSQL_SERVER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: mysql-password
+            # - name: MAIL_SERVER_API_PORT
+            #   value: 8081
+            # - name: MAIL_SERVER_API_HOST
+            #   value: onlyoffice-mail-server
+            # - name: MAIL_SERVER_DB_HOST
+            #   value: onlyoffice-mysql-server
+            # - name: MAIL_SERVER_DB_PORT
+            #   value: 3306
+            # - name: MAIL_SERVER_DB_NAME
+            #   value: onlyoffice_mailserver
+            # - name: MAIL_SERVER_DB_USER
+            #   value: onlyoffice_mailserver_user
+            # - name: MAIL_SERVER_DB_PASS
+            #   value: onlyoffice_mailserver_user_pass 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          # volumeMounts:
+          #   - mountPath: "/app/onlyoffice/CommunityServer/data"
+          #     name: data
+          #   - mountPath: "/app/onlyoffice/CommunityServer/logs"
+          #     name: logs
+          #   - mountPath: "/app/onlyoffice/CommunityServer/letsencrypt"
+          #     name: letsencrypt
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -66,4 +118,14 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      # volumes:
+      #   - name: data
+      #     persistentVolumeClaim:
+      #       claimName: community-data
+      #   - name: logs
+      #     persistentVolumeClaim:
+      #       claimName: community-log
+      #   - name: letsencrypt
+      #     persistentVolumeClaim:
+      #       claimName: community-letsencrypt
 {{- end }}

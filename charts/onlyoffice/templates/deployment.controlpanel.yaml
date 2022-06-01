@@ -51,6 +51,8 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+# "/app/onlyoffice/ControlPanel/data"
+# "/app/onlyoffice/ControlPanel/logs"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
