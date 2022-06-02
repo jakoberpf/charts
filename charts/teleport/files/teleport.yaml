@@ -1,0 +1,25 @@
+teleport:
+  log:
+    output: stderr
+    severity: INFO
+auth_service:
+  enabled: true
+  cluster_name: {{ .Values.teleport.domain }}
+  tokens:
+  # These commands will generate random 32-chacter alphanumeric strings to use as join tokens
+  - "proxy,node:$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)"
+  - "trusted_cluster:$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)"
+  listen_addr: 0.0.0.0:3025
+  public_addr: {{ .Values.teleport.domain }}:3025
+proxy_service:
+  enabled: true
+  # listen_addr: 0.0.0.0:3080
+  public_addr: {{ .Values.teleport.domain }}:443
+ssh_service:
+  enabled: true
+  labels:
+    cluster: custom
+  commands:
+  - name: kernel
+    command: [/bin/uname, -r]
+    period: 5m

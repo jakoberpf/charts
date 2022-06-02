@@ -9,12 +9,13 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-teleport: {}
+teleport:
+  domain: teleport.example.com
 
 teleport-cluster:
   # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
   chartMode: custom
-  image: ronaldmiranda/teleport-arm
+  # image: ronaldmiranda/teleport-arm
   teleportVersionOverride: 9.0.4
   service:
     type: ClusterIP
@@ -58,17 +59,11 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts: []
     # - host: teleport.example.com
-    #   paths:
-    #     - path: /
-    #       pathType: ImplementationSpecific
-    #   tls: # use for istio gateway tls
-    #     mode: SIMPLE
-    #     secretName: teleport.example.de
-    #     redirect: true
-  tls: [] # use for kubernetes ingress tls
-  #  - secretName: teleport.example.de
-  #    hosts:
-  #      - teleport.example.com
+  tls:
+    enabled: false
+    redirect: false
+    mode: SIMPLE
+    # secretName: teleport-tls
   istioGateway:
     enabled: false
     annotations: {}
@@ -79,7 +74,7 @@ ingress:
     #   kind: ClusterIssuer
     annotations: {}
 
-# resources: {}
+resources: {}
 #   # We usually recommend not to specify default resources and to leave this as a conscious
 #   # choice for the user. This also increases chances charts run on environments with little
 #   # resources, such as Minikube. If you do want to specify resources, uncomment the following
