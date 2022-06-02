@@ -28,12 +28,27 @@ spec:
       serviceAccountName: {{ include "onlyoffice.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # initContainers:
+      #   - name: mysql-create-users
+      #     image: mysql
+      #     command: 
+      #       - sh
+      #       - -c
+      #       - |
+      #         echo "CREATE USER IF NOT EXISTS 'onlyoffice_user'@'%' IDENTIFIED BY '***';
+      #         CREATE USER IF NOT EXISTS 'mail_admin'@'%' IDENTIFIED BY '***';
+      #         GRANT ALL ON *.* TO 'root'@'%';
+      #         GRANT ALL ON *.* TO 'onlyoffice_user'@'%';
+      #         GRANT ALL ON *.* TO 'mail_admin'@'%';
+      #         FLUSH PRIVILEGES;" > setup.sql
+      #       - mysql -h "onlyoffice-mysql" -P 3306" -u root -p password my_database < setup.sql
       containers:
         - name: {{ .Chart.Name }}-community
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.community.repository }}:{{ .Values.image.community.tag }}"
           imagePullPolicy: {{ .Values.image.community.pullPolicy }}
+          # command: ["/sbin/init","&&","/app/run-community-server.sh"]
           ports:
             - name: http
               containerPort: 80
