@@ -9,9 +9,6 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-teleport:
-  domain: teleport.example.com
-
 teleport-cluster:
   # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
   chartMode: custom
