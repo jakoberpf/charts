@@ -13,7 +13,7 @@ teleport-cluster:
   # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
   chartMode: custom
   # image: ronaldmiranda/teleport-arm
-  teleportVersionOverride: 9.0.4
+  teleportVersionOverride: 9.3.3
   service:
     type: ClusterIP
   persistence:
