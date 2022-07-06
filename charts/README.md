@@ -12,6 +12,7 @@ The Charts with its functionality is listed below:
 - [ory](https://github.com/) as an end-to-end indentiy and access management replacement of Keycloak and work in progress
 - [bashub](https://github.com/) as terminal command history/repository with Bashhub
 - [vaultwarden](https://github.com/) as an end-to-end indentiy and access management with Keycloak
+- [teleport](https://github.com/) as an cluster, vm and database access tooling with Teleport
 
 ## How to use the charts
 

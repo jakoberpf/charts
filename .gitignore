@@ -1,7 +1,8 @@
-*.tls
-*.kube
+.tls
+.kube
 *generated-test-values.yaml
 charts/*/charts
 charts/*/Chart.lock
-/.monokle
-/.envrc
+.monokle
+.envrc
+.idea
