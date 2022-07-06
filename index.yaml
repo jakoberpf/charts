@@ -144,6 +144,20 @@ entries:
   teleport:
   - apiVersion: v2
     appVersion: 9.0.4
+    created: "2022-07-06T21:59:23.315747824Z"
+    dependencies:
+    - name: teleport-cluster
+      repository: file://clone/examples/chart/teleport-cluster
+      version: 10.0.0-dev
+    description: A Helm chart for Kubernetes
+    digest: a6c2b8f74cb5f5fb258641a4c0c160d09dead4a58282f75b57762e96f04710ee
+    name: teleport
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/teleport-0.0.2/teleport-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 9.0.4
     created: "2022-04-30T13:04:38.274324543Z"
     dependencies:
     - name: teleport-cluster
@@ -247,4 +261,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-20T10:59:12.010289545Z"
+generated: "2022-07-06T21:59:23.315827425Z"
