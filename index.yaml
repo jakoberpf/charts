@@ -172,6 +172,16 @@ entries:
     version: 0.0.1
   vaultwarden:
   - apiVersion: v2
+    appVersion: 1.25.0
+    created: "2022-07-08T22:57:23.447012866Z"
+    description: A Helm chart for Kubernetes
+    digest: 2b3b979ae233a14169c788f9cc7b1306915f7110adc2f61130190414c42c8b3b
+    name: vaultwarden
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.9/vaultwarden-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
     appVersion: 1.24.0
     created: "2022-05-05T23:01:48.836500073Z"
     description: A Helm chart for Kubernetes
@@ -261,4 +271,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-07-06T21:59:23.315827425Z"
+generated: "2022-07-08T22:57:23.447106168Z"
