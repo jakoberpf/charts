@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: vaultwarden/server # TODO Build own image jakoberpf/vaultwarden
   pullPolicy: Always
-  tag: "1.24.0"
+  tag: "1.25.0"
 
 imagePullSecrets: []
 nameOverride: ""
