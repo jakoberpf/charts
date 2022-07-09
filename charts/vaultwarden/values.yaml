@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: vaultwarden/server # TODO Build own image jakoberpf/vaultwarden
-  pullPolicy: Always
+  repository: vaultwarden/server
+  pullPolicy: IfNotPresent
   tag: "1.25.0"
 
 imagePullSecrets: []
