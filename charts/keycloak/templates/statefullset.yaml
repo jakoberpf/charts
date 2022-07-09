@@ -50,7 +50,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: keycloak-admin-secret
-                  key: KEYCLOAK_PASSWORD
+                  key: password
             - name: PROXY_ADDRESS_FORWARDING
               value: "true"
           ports:
