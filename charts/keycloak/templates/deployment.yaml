@@ -34,7 +34,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh","-c","mkdir -p /opt/jboss/keycloak/standalone/data/content && chmod -R 777 /opt/jboss/keycloak/standalone/data"]
           volumeMounts:
-            - name: keycloak
+            - name: keycloak-data
               mountPath: /opt/jboss/keycloak/standalone/data
       {{- end }}
       containers:
