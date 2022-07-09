@@ -1,43 +1,25 @@
 replicaCount: 1
 
 image:
-  repository: vaultwarden/server
+  repository: carlosedp/keycloak
   pullPolicy: IfNotPresent
-  tag: "1.25.0"
+  tag: "v11.0.2"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-app:
-  domain: https://vaultwarden.example.com
-  websocket_enabled: true
-  show_password_hint: false
-  web_vault_enabled: true
-  smtp:
-    host: smtp.example.com
-    from: vaultwarden@example.de
-    port: 587
-    ssl: true
-  signups:
-    allowed: false
-    verify: true
-    domains_whitelist: example.com
-
 persistence:
   enabled: false
   pv:
     create: false
-    name: vaultwarden-pv
+    name: keycloak-pv
   pvc: 
-    name: vaultwarden-pvc
+    name: keycloak-pvc
 
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
-  # Specifies whether a service account should be associated with role bindings and access controlls
-  rbac:
-    enabled: true
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -59,10 +41,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  http:
-    port: 80
-  websocket:
-    port: 3012
+  port: 8080
 
 ingress:
   enabled: false
@@ -71,13 +50,12 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts: []
-    # - host: vaultwarden.example.com
-    # - host: bitwarden.example.com
+    # - host: keycloak.example.com
   tls:
     enabled: false
     redirect: false
     mode: SIMPLE
-    # secretName: vaultwarden-tls
+    # secretName: keycloak-tls
   istioGateway:
     enabled: false
     annotations: {}
@@ -88,20 +66,24 @@ ingress:
     #   kind: ClusterIssuer
     annotations: {}
 
-resources:
-  requests:
-    memory: "64Mi"
-    cpu: "250m"
-  limits:
-    memory: "128Mi"
-    cpu: "500m"
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 1
+  maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 
