@@ -45,11 +45,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: KEYCLOAK_USER
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-credentials
+                  key: user
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-admin-secret
+                  name: keycloak-admin-credentials
                   key: password
             - name: PROXY_ADDRESS_FORWARDING
               value: "true"
