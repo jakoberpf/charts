@@ -1,0 +1,30 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: keycloak
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`iam.erpf.de`) # Hostname to match
+      kind: Rule
+      services: # Service to redirect requests to
+        - name: keycloak
+          port: 80
+  tls:
+    secretName: iam-erpf-de-tls
+    
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: iam-erpf-de-tls
+spec:
+  secretName: iam-erpf-de-tls
+  issuerRef:
+    name: cloudflare-letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: iam.erpf.de
+  dnsNames:
+  - "iam.erpf.de"

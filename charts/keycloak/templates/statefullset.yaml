@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  serviceName: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      initContainers:
+        - name: alpine
+          image: alpine
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh","-c","mkdir -p /opt/jboss/keycloak/standalone/data/content && chmod -R 777 /opt/jboss/keycloak/standalone/data"]
+          volumeMounts:
+            - name: keycloak
+              mountPath: /opt/jboss/keycloak/standalone/data
+      containers:
+      - name: keycloak
+        image: carlosedp/keycloak:v11.0.2
+        imagePullPolicy: Always
+        # envFrom:
+        env:
+          - name: KEYCLOAK_USER
+            value: "admin"
+          - name: KEYCLOAK_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-admin-secret
+                key: KEYCLOAK_PASSWORD
+          - name: PROXY_ADDRESS_FORWARDING
+            value: "true"
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        # resources:
+        #   requests:
+        #     memory: "64Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        volumeMounts:
+        - name: keycloak
+          mountPath: /opt/jboss/keycloak/standalone/data
+      volumes:
+        - name: keycloak
+          persistentVolumeClaim:
+            claimName: keycloak
+
