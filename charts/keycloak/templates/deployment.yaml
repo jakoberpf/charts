@@ -27,6 +27,7 @@ spec:
       serviceAccountName: {{ include "keycloak.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.persistence.enabled }}
       initContainers:
         - name: volume-permissions
           image: alpine
@@ -35,6 +36,7 @@ spec:
           volumeMounts:
             - name: keycloak
               mountPath: /opt/jboss/keycloak/standalone/data
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
