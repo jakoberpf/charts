@@ -14,20 +14,10 @@ spec:
   selector:
     {{- include "keycloak.selectorLabels" . | nindent 4 }}
 
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: keycloak
-  labels:
-    app: keycloak
-spec:
-  selector: 
-    app: keycloak
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
-  # - name: https
-  #   port: 443
-  #   targetPort: 8443
+# spec:
+#   selector: 
+#     app: keycloak
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: 8080
