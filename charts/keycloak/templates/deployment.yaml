@@ -1,6 +1,5 @@
----
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "keycloak.fullname" . }}
   labels:
@@ -12,7 +11,6 @@ spec:
   selector:
     matchLabels:
       {{- include "keycloak.selectorLabels" . | nindent 6 }}
-  serviceName: {{ include "keycloak.fullname" . }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -30,7 +28,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        - name: alpine
+        - name: volume-permissions
           image: alpine
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh","-c","mkdir -p /opt/jboss/keycloak/standalone/data/content && chmod -R 777 /opt/jboss/keycloak/standalone/data"]
@@ -43,23 +41,23 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: KEYCLOAK_USER
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-admin-credentials
-                  key: user
-            - name: KEYCLOAK_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-admin-credentials
-                  key: password
-            - name: PROXY_ADDRESS_FORWARDING
-              value: "true"
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+          env:
+            - name: KEYCLOAK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "keycloak.fullname" . }}-admin-credentials
+                  key: user
+            - name: KEYCLOAK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "keycloak.fullname" . }}-admin-credentials
+                  key: password
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"
           livenessProbe:
             httpGet:
               path: /
@@ -68,13 +66,19 @@ spec:
             httpGet:
               path: /
               port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: keycloak-data
               mountPath: /opt/jboss/keycloak/standalone/data
           {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: keycloak-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.pvc.name }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -87,10 +91,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.persistence.enabled }}
-      volumes:
-        - name: keycloak-data
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.pvc.name }}
-      {{- end }}
-
