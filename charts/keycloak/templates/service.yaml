@@ -13,11 +13,3 @@ spec:
       name: http
   selector:
     {{- include "keycloak.selectorLabels" . | nindent 4 }}
-
-# spec:
-#   selector: 
-#     app: keycloak
-#   ports:
-#   - name: http
-#     port: 80
-#     targetPort: 8080
