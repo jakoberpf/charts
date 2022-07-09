@@ -57,8 +57,8 @@ spec:
             - name: PROXY_ADDRESS_FORWARDING
               value: "true"
           ports:
-            - cname: http
-              ontainerPort: 8080
+            - name: http
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
