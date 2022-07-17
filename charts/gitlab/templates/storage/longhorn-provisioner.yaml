@@ -9,6 +9,7 @@ metadata:
 spec:
   template:
     spec:
+      serviceAccountName: longhorn-provisioner
       containers:
         - name: longhorn-configurator
           image: jakoberpf/longhorn-api
