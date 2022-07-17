@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-volumes
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-weight: "1"
+data:   
+  config.yaml: |
+    volumes:
+      - name: gitlab-dev-postgresql-data-0
+        size: 8
+        pv: data-gitlab-dev-postgresql-0
+        pvc: data-gitlab-dev-postgresql-0
+      - name: gitlab-dev-minio
+        size: 10
+        pv: gitlab-dev-minio
+        pvc: 
+      - name: gitlab-dev-prometheus-server
+        size: 8
+        pv: gitlab-dev-prometheus-server
+        pvc: gitlab-prometheus-server
+      - name: gitlab-dev-redis-master-0
+        size: 8
+        pv: redis-data-gitlab-dev-redis-master-0
+        pvc: redis-data-gitlab-redis-master-0
+      - name: gitlab-dev-gitaly-data-0
+        size: 8
+        pv: repo-data-gitlab-dev-gitaly-0
+        pvc: repo-data-gitlab-gitaly-0 
