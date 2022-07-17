@@ -10,4 +10,7 @@ metadata:
 rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["persistentvolumes"]
-  verbs: ["get", "watch", "list", "create", "delete"]
+  verbs: ["get", "watch", "list", "create"] # , "delete"
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["persistentvolumeclaims"]
+  verbs: ["get", "watch", "list", "create"] # , "delete"
