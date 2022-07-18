@@ -1,3 +1,4 @@
+{{- if .Values.persistence.provisioner.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -33,4 +34,5 @@ data:
         namespace: gitlab-dev
         size: 8
         pv: repo-data-gitlab-dev-gitaly-0
-        pvc: repo-data-gitlab-gitaly-0 
+        pvc: repo-data-gitlab-gitaly-0
+{{- end }}

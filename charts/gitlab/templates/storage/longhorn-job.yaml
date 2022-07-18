@@ -1,3 +1,4 @@
+{{- if .Values.persistence.provisioner.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -26,3 +27,4 @@ spec:
           configMap:
             name: longhorn-volumes
   backoffLimit: 1
+{{- end }}
