@@ -60,7 +60,7 @@ spec:
     - {{ .host }}
     {{- end }}
   gateways:
-    - {{ $fullName }}-gitlab
+    - {{ $fullName }}
   http:
     - match:
       - uri:
