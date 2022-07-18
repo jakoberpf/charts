@@ -22,16 +22,26 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - gitlab.dev.erpf.de
+        {{- range .Values.ingress.hosts.gitlab }}
+        - {{ .host }}
+        {{- end }}
+      {{- if or .Values.ingress.tls.enabled }}
+        {{- if .Values.ingress.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
     - port:
         number: 443
         name: https
         protocol: HTTPS
       tls:
-        mode: "SIMPLE"
-        credentialName: gitlab-dev-tls
+        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
+        credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
       hosts:
-        - gitlab.dev.erpf.de
+        {{- range .Values.ingress.hosts.gitlab }}
+        - {{ .host }}
+        {{- end }}
+      {{- end }}
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -46,7 +56,9 @@ metadata:
   {{- end }}  
 spec:
   hosts:
-    - gitlab.dev.erpf.de
+    {{- range .Values.ingress.hosts.gitlab }}
+    - {{ .host }}
+    {{- end }}
   gateways:
     - {{ $fullName }}-gitlab
   http:
