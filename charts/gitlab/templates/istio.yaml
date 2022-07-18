@@ -1,6 +1,6 @@
 {{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}}
 {{- $root := . -}}
-{{- $fullName := include "gitlab.fullname" . -}}
+{{- $fullName := include "gitlab-umbrella.fullname" . -}}
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -8,7 +8,7 @@ kind: Gateway
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -49,7 +49,7 @@ kind: VirtualService
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -77,7 +77,7 @@ kind: Gateway
 metadata:
   name: {{ $fullName }}-registry
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -108,7 +108,7 @@ kind: VirtualService
 metadata:
   name: {{ $fullName }}-registry
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -134,7 +134,7 @@ kind: Gateway
 metadata:
   name: {{ $fullName }}-minio
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -165,7 +165,7 @@ kind: VirtualService
 metadata:
   name: {{ $fullName }}-minio
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.istioGateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

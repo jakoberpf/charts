@@ -1,6 +1,6 @@
 {{- if .Values.ingress.certManager.enabled -}}
-{{- $fullName := include "gitlab.fullname" . -}}
-{{- $certManagerLabels := include "gitlab.labels" . -}}
+{{- $fullName := include "gitlab-umbrella.fullname" . -}}
+{{- $certManagerLabels := include "gitlab-umbrella.labels" . -}}
 
 ---
 apiVersion: cert-manager.io/v1

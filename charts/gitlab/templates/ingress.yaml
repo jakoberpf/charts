@@ -1,5 +1,5 @@
 {{- if and .Values.ingress.enabled ( not .Values.ingress.istioGateway.enabled ) -}}
-{{- $fullName := include "gitlab.fullname" . -}}
+{{- $fullName := include "gitlab-umbrella.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -17,7 +17,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "gitlab.labels" . | nindent 4 }}
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
