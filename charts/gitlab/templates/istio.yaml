@@ -69,7 +69,7 @@ spec:
       - destination:
           port:
             number: 8181
-          host: {{ .Release.Namespace }}-webservice-default
+          host: {{ .Release.Name }}-webservice-default
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -126,7 +126,7 @@ spec:
       - destination:
           port:
             number: 5000
-          host: {{ .Release.Namespace }}-registry
+          host: {{ .Release.Name }}-registry
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -183,5 +183,5 @@ spec:
       - destination:
           port:
             number: 9000
-          host: {{ .Release.Namespace }}-minio-svc
+          host: {{ .Release.Name }}-minio-svc
 {{- end }}
