@@ -1,0 +1,187 @@
+{{- if and .Values.ingress.enabled .Values.ingress.istioGateway.enabled -}}
+{{- $root := . -}}
+{{- $fullName := include "gitlab-umbrella.fullname" . -}}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        {{- range .Values.ingress.hosts.gitlab }}
+        - {{ .host }}
+        {{- end }}
+      {{- if or .Values.ingress.tls.enabled }}
+        {{- if .Values.ingress.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
+        credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
+      hosts:
+        {{- range .Values.ingress.hosts.gitlab }}
+        - {{ .host }}
+        {{- end }}
+      {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    {{- range .Values.ingress.hosts.gitlab }}
+    - {{ .host }}
+    {{- end }}
+  gateways:
+    - {{ $fullName }}
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 8181
+          host: {{ .Release.Name }}-webservice-default
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullName }}-registry
+  labels:
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - registry.dev.erpf.de
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: "SIMPLE"
+        credentialName: registry-dev-tls
+      hosts:
+        - registry.dev.erpf.de
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullName }}-registry
+  labels:
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    - registry.dev.erpf.de
+  gateways:
+    - {{ $fullName }}-registry
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 5000
+          host: {{ .Release.Name }}-registry
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullName }}-minio
+  labels:
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - minio.dev.erpf.de
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: "SIMPLE"
+        credentialName: minio-dev-tls
+      hosts:
+        - minio.dev.erpf.de
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullName }}-minio
+  labels:
+    {{- include "gitlab-umbrella.labels" . | nindent 4 }}
+  {{- with .Values.ingress.istioGateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    - minio.dev.erpf.de
+  gateways:
+    - {{ $fullName }}-minio
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 9000
+          host: {{ .Release.Name }}-minio-svc
+{{- end }}

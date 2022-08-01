@@ -1,0 +1,16 @@
+apiVersion: v2
+name: gitlab-umbrella
+description: A Helm chart for Kubernetes
+type: application
+version: 0.0.1
+appVersion: "6.1.2"
+dependencies:
+- name: gitlab
+  version: "6.1.2"
+  repository: https://charts.gitlab.io/
+- name: postgresql-ha
+  version: "6.1.2"
+  repository: https://charts.bitnami.com/bitnami 
+# - name: redis
+#   version: ""
+#   repository: https://charts.bitnami.com/bitnami 
