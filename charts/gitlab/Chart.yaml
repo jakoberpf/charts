@@ -8,3 +8,9 @@ dependencies:
 - name: gitlab
   version: "6.1.2"
   repository: https://charts.gitlab.io/
+- name: postgresql-ha
+  version: "6.1.2"
+  repository: https://charts.bitnami.com/bitnami 
+# - name: redis
+#   version: ""
+#   repository: https://charts.bitnami.com/bitnami 
