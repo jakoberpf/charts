@@ -1,0 +1,44 @@
+apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ include "anonaddy.fullname" . }}-mariabdb
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "anonaddy.fullname" . }}-mariabdb
+  selector:
+    matchLabels:
+      {{- include "anonaddy.selectorLabelsMariaDB" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        {{- include "anonaddy.selectorLabelsMariaDB" . | nindent 8 }}
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10.5
+          ports:
+            - containerPort: 3306
+              name: mariadb
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MYSQL_DATABASE
+              value: anonaddy
+            - name: MYSQL_USER
+              value: anonaddy
+            - name: MYSQL_PASSWORD
+              value: anonaddy
+        # volumeMounts:
+        # - name: data
+        #   mountPath: /var/lib/mysql
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: data
+  #   spec:
+  #     accessModes: [ "ReadWriteOnce" ]
+  #     resources:
+  #       requests:
+  #         storage: 1Gi
+  #     storageClassName: thin-disk

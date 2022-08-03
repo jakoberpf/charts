@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "anonaddy.fullname" . }}
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.mail.port }}
+      targetPort: 25
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.http.port }}
+      targetPort: 8000
+      protocol: TCP
+      name: websocket
+  selector:
+    {{- include "anonaddy.selectorLabels" . | nindent 4 }}
