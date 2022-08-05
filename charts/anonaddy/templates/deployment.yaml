@@ -40,7 +40,10 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          env:
+            - name: rspamd
+              containerPort: 11334
+              protocol: TCP
+          env: # https://github.com/anonaddy/docker
             - name: TZ
               value: "Europe/Berlin"
 
@@ -72,9 +75,9 @@ spec:
             - name: ANONADDY_ENABLE_REGISTRATION
               value: "true"
             - name: ANONADDY_DOMAIN
-              value: "erpf.de"
+              value: "anonaddy.erpf.de"
             - name: ANONADDY_ALL_DOMAINS
-              value: "erpf.de"
+              value: "erpf.de,boghdady.de"
             - name: ANONADDY_HOSTNAME
               value: "anonaddy.erpf.de"
             - name: ANONADDY_DNS_RESOLVER
@@ -104,6 +107,8 @@ spec:
 
             - name: DB_HOST
               value: {{ include "anonaddy.fullname" . }}-mariadb
+            - name: DB_PORT
+              value: "3306"
             - name: DB_DATABASE
               value: anonaddy
             - name: DB_USERNAME

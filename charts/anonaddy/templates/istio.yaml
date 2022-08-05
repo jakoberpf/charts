@@ -68,14 +68,6 @@ spec:
       route:
       - destination:
           port:
-            number: 25
-          host: {{ $fullName }}
-    - match:
-      - uri:
-          prefix: /
-      route:
-      - destination:
-          port:
             number: 80
           host: {{ $fullName }}
 {{- end }}
