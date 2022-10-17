@@ -95,7 +95,7 @@ persistence:
 subnet: 10.42.0.0/16
 
 # Version of mailu docker images to use when not specified otherwise
-mailuVersion: 1.9.26
+mailuVersion: master # 1.9.26
 
 # default log level. can be overridden globally or per service
 logLevel: WARNING
@@ -139,7 +139,7 @@ ingress:
 front:
   # logLevel: WARNING
   image:
-    repository: mailu/nginx
+    repository: jakoberpf/mailu-nginx
     # tag defaults to mailuVersion
     # tag: master
   resources:
@@ -193,7 +193,7 @@ front:
 admin:
   # logLevel: WARNING
   image:
-    repository: mailu/admin
+    repository: jakoberpf/mailu-admin
     # tag defaults to mailuVersion
     # tag: master
   persistence:
@@ -260,7 +260,7 @@ redis:
 postfix:
   # logLevel: WARNING
   image:
-    repository: mailu/postfix
+    repository: jakoberpf/mailu-postfix
     # tag defaults to mailuVersion
     # tag: master
   containerSecurityContext: {}
@@ -299,7 +299,7 @@ dovecot:
   enabled: true
   # logLevel: WARNING
   image:
-    repository: mailu/dovecot
+    repository: jakoberpf/mailu-dovecot
     # tag defaults to mailuVersion
     # tag: master
   containerSecurityContext: {}
@@ -365,7 +365,7 @@ rspamd_clamav_persistence:
 rspamd:
   # logLevel: WARNING
   image:
-    repository: mailu/rspamd
+    repository: jakoberpf/mailu-rspamd
     # tag defaults to mailuVersion
     # tag: master
   persistence:
@@ -399,7 +399,7 @@ clamav:
   enabled: true
   # logLevel: WARNING
   image:
-    repository: mailu/clamav
+    repository: jakoberpf/mailu-clamav
     # tag defaults to mailuVersion
     # tag: master
   persistence:
@@ -445,7 +445,7 @@ roundcube:
   enabled: true
   # logLevel: WARNING
   image:
-    repository: mailu/roundcube
+    repository: jakoberpf/mailu-roundcube
     # tag defaults to mailuVersion
     # tag: master
   persistence:
@@ -481,7 +481,7 @@ webdav:
   enabled: false
   # logLevel: WARNING
   image:
-    repository: mailu/radicale
+    repository: jakoberpf/mailu-radicale
     # tag defaults to mailuVersion
     # tag: master
   persistence:
@@ -539,7 +539,7 @@ fetchmail:
   enabled: false
   # logLevel: WARNING
   image:
-    repository: mailu/fetchmail
+    repository: jakoberpf/mailu-fetchmail
     # tag defaults to mailuVersion
     # tag: master
   persistence:
