@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: vaultwarden/server
   pullPolicy: IfNotPresent
-  tag: "1.25.0"
+  tag: "1.26.0"
 
 imagePullSecrets: []
 nameOverride: ""
