@@ -22,7 +22,7 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - {{ .Values.ingress.host }}
+        - {{ .Values.ingress.host | quote }}
       {{- if or .Values.ingress.tls.enabled }}
         {{- if .Values.ingress.tls.redirect }}
       tls:
@@ -36,7 +36,7 @@ spec:
         mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
         credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
       hosts:
-        - {{- .Values.ingress.host }}
+        - {{ .Values.ingress.host | quote }}
       {{- end }}
 
 ---
