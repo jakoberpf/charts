@@ -48,25 +48,30 @@ spec:
               containerPort: 8080
               protocol: TCP
           env:
-            - name: KEYCLOAK_USER
+            - name: KC_HOSTNAME_URL
+              value: https://{{ .Values.ingress.host }}
+            - name: KEYCLOAK_ADMIN
               valueFrom:
                 secretKeyRef:
                   name: {{ include "keycloak.fullname" . }}-admin-credentials
                   key: user
-            - name: KEYCLOAK_PASSWORD
+            - name: KEYCLOAK_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ include "keycloak.fullname" . }}-admin-credentials
                   key: password
             - name: PROXY_ADDRESS_FORWARDING
               value: "true"
+            - name: KC_PROXY
+              value: "passthrough"
+          args: ["start-dev"]
           livenessProbe:
             httpGet:
-              path: /
+              path: /realms/master
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /realms/master
               port: http
           {{- if .Values.persistence.enabled }}
           volumeMounts:

@@ -1,9 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: carlosedp/keycloak
-  pullPolicy: IfNotPresent
-  tag: "v11.0.2"
+  repository: quay.io/keycloak/keycloak
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
@@ -49,8 +48,8 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts: []
-    # - host: keycloak.example.com
+  host: keycloak.example.com
+  paths: []
   tls:
     enabled: false
     redirect: false
