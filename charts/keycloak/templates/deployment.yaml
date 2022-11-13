@@ -64,13 +64,14 @@ spec:
               value: "true"
             - name: KC_PROXY
               value: "passthrough"
+          args: ["start-dev"]
           livenessProbe:
             httpGet:
-              path: /
+              path: /realms/master
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /realms/master
               port: http
           {{- if .Values.persistence.enabled }}
           volumeMounts:
