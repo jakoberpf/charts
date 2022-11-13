@@ -1,3 +1,0 @@
-[submodule "charts/teleport/clone"]
-	path = charts/teleport/clone
-	url = https://github.com/gravitational/teleport.git
