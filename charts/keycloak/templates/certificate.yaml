@@ -19,9 +19,7 @@ spec:
     name: {{ .Values.ingress.certManager.issuerRef.name }}
     kind: {{ .Values.ingress.certManager.issuerRef.kind | default "ClusterIssuer" }}
   dnsNames:
-    {{- range .Values.ingress.hosts }}
-    - {{ .host }}
-    {{- end }}
+    - {{ .Values.ingress.host }}
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  
