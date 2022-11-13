@@ -143,6 +143,16 @@ entries:
     version: 0.1.0
   keycloak:
   - apiVersion: v2
+    appVersion: 20.0.1
+    created: "2022-11-13T17:13:16.558917356Z"
+    description: A Helm chart for Kubernetes
+    digest: ae9e79bba0e12584cc0bc1d0bd721bc0df030cc8a3726822323010c1f7758b75
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/keycloak-0.0.2/keycloak-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     appVersion: v11.0.2
     created: "2022-07-09T02:05:25.36527602Z"
     description: A Helm chart for Kubernetes
@@ -326,4 +336,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-17T18:44:00.17415507Z"
+generated: "2022-11-13T17:13:16.559000059Z"
