@@ -32,10 +32,10 @@ spec:
         - name: volume-permissions
           image: alpine
           imagePullPolicy: IfNotPresent
-          command: ["/bin/sh","-c","mkdir -p /opt/jboss/keycloak/standalone/data/content && chmod -R 777 /opt/jboss/keycloak/standalone/data"]
+          command: ["/bin/sh","-c","mkdir -p /opt/keycloak/data/h2/content && chmod -R 777 /opt/keycloak/data/h2"]
           volumeMounts:
             - name: keycloak-data
-              mountPath: /opt/jboss/keycloak/standalone/data
+              mountPath: /opt/keycloak/data/h2
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -76,7 +76,7 @@ spec:
           {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: keycloak-data
-              mountPath: /opt/jboss/keycloak/standalone/data
+              mountPath: /opt/keycloak/data/h2
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
