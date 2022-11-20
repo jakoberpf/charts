@@ -7,6 +7,8 @@ metadata:
 spec:
   serviceName: {{ include "postgres.fullname" . }}
   replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       {{- include "postgres.selectorLabels" . | nindent 6 }}
@@ -36,14 +38,24 @@ spec:
             - name: postgres
               containerPort: 5432
               protocol: TCP
-          livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - bash 
+          #       - "-c" 
+          #       - |
+          #         PGPASSWORD=$POSTGRES_PASSWORD psql -U$POSTGRES_USER -d$POSTGRES_DB -c SELECT 1
+          #   initialDelaySeconds: 45
+          #   timeoutSeconds: 2
           # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          #   exec:
+          #     command:
+          #       - bash 
+          #       - "-c" 
+          #       - |
+          #         PGPASSWORD=$POSTGRES_PASSWORD psql -U$POSTGRES_USER -d$POSTGRES_DB -c SELECT 1
+          #   initialDelaySeconds: 15
+          #   timeoutSeconds: 2
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
@@ -57,6 +69,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "postgres.fullname" . }}-credentials
                   key: app.db.user
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "postgres.fullname" . }}-credentials
+                  key: app.db.name
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
           {{- if .Values.persistence.enabled }}

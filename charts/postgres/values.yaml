@@ -13,7 +13,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 persistence:
-  enabled: false
+  enabled: true
   pv:
     create: false
     name: postgres-pv
