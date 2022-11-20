@@ -38,24 +38,16 @@ spec:
             - name: postgres
               containerPort: 5432
               protocol: TCP
-          # livenessProbe:
-          #   exec:
-          #     command:
-          #       - bash 
-          #       - "-c" 
-          #       - |
-          #         PGPASSWORD=$POSTGRES_PASSWORD psql -U$POSTGRES_USER -d$POSTGRES_DB -c SELECT 1
-          #   initialDelaySeconds: 45
-          #   timeoutSeconds: 2
-          # readinessProbe:
-          #   exec:
-          #     command:
-          #       - bash 
-          #       - "-c" 
-          #       - |
-          #         PGPASSWORD=$POSTGRES_PASSWORD psql -U$POSTGRES_USER -d$POSTGRES_DB -c SELECT 1
-          #   initialDelaySeconds: 15
-          #   timeoutSeconds: 2
+          livenessProbe:
+            exec:
+              command: [ "bash", "-c", "PGPASSWORD=$POSTGRES_PASSWORD psql -U$POSTGRES_USER -d$POSTGRES_DB -c SELECT 1"]                  
+            initialDelaySeconds: 45
+            timeoutSeconds: 2
+          readinessProbe:
+            exec:
+              command: [ "bash", "-c", "PGPASSWORD=$POSTGRES_PASSWORD psql -U$POSTGRES_USER -d$POSTGRES_DB -c SELECT 1"]
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
