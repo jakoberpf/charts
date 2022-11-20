@@ -12,6 +12,14 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+persistence:
+  enabled: false
+  pv:
+    create: false
+    name: postgres-pv
+  pvc: 
+    name: postgres-pvc
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
