@@ -218,6 +218,20 @@ entries:
   vault:
   - apiVersion: v2
     appVersion: 1.12.0
+    created: "2022-11-21T21:20:14.234775007Z"
+    dependencies:
+    - name: vault
+      repository: https://helm.releases.hashicorp.com
+      version: 0.22.1
+    description: A Helm chart for Hashcorp Vault
+    digest: f9a4b21213883711669d516ff08bcb2516acc99a647fe24af6b84658d46e260f
+    name: vault
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/vault-0.0.2/vault-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 1.12.0
     created: "2022-11-21T20:41:05.301996453Z"
     dependencies:
     - name: vault
@@ -361,4 +375,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-21T20:41:05.302153582Z"
+generated: "2022-11-21T21:20:14.234842608Z"
