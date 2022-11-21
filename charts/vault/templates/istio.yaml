@@ -22,7 +22,9 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - {{ .Values.ingress.host | quote }}
+        {{- range .Values.ingress.hosts }}
+        - {{ .host }}
+        {{- end }}
       {{- if or .Values.ingress.tls.enabled }}
         {{- if .Values.ingress.tls.redirect }}
       tls:
@@ -36,7 +38,9 @@ spec:
         mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
         credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
       hosts:
-        - {{ .Values.ingress.host | quote }}
+        {{- range .Values.ingress.hosts }}
+        - {{ .host }}
+        {{- end }}
       {{- end }}
 
 ---
@@ -52,7 +56,9 @@ metadata:
   {{- end }}  
 spec:
   hosts:
-    - {{ .Values.ingress.host }}
+    {{- range .Values.ingress.hosts }}
+    - {{ .host }}
+    {{- end }}
   gateways:
     - {{ $fullName }}
   http:
@@ -62,6 +68,6 @@ spec:
       route:
       - destination:
           port:
-            number: {{ .Values.service.port }}
+            number: 8200
           host: {{ $fullName }}
 {{- end }}
