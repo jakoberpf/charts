@@ -215,6 +215,21 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/teleport-0.0.1/teleport-0.0.1.tgz
     version: 0.0.1
+  vault:
+  - apiVersion: v2
+    appVersion: 1.12.0
+    created: "2022-11-21T20:41:05.301996453Z"
+    dependencies:
+    - name: vault
+      repository: https://helm.releases.hashicorp.com
+      version: 0.22.1
+    description: A Helm chart for Hashcorp Vault
+    digest: f37607c858f55ac19a1a8180c989dfc3dd1155d687b6e2d2cc3c5a9c227d5e50
+    name: vault
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/vault-0.0.1/vault-0.0.1.tgz
+    version: 0.0.1
   vaultwarden:
   - apiVersion: v2
     appVersion: 1.26.0
@@ -346,4 +361,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-14T22:33:49.664934364Z"
+generated: "2022-11-21T20:41:05.302153582Z"
