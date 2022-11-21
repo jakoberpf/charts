@@ -9,12 +9,12 @@ Some charts are used by Devtron for its functionality and other charts are also 
 
 The Charts with its functionality is listed below:
 
-- [keycloak](https://github.com/) as an end-to-end identity and access management
+- [keycloak](https://github.com/jakoberpf/charts/tree/main/charts/keycloak) as an end-to-end identity and access management
 - [ory](https://github.com/) as an end-to-end identity and access management (replacement of Keycloak)
-- [bashub](https://github.com/) as terminal command history/repository with Bashhub
-- [vaultwarden](https://github.com/) as an personal password manager
-- [vault](https://github.com/) as an secret manager and store
-- [teleport](https://github.com/) as an cluster, virtual machine and database access service
+- [bashub](https://github.com/jakoberpf/charts/tree/main/charts/bashhub) as terminal command history/repository with Bashhub
+- [vaultwarden](https://github.com/jakoberpf/charts/tree/main/charts/vaultwarden) as an personal password manager
+- [vault](https://github.com/jakoberpf/charts/tree/main/charts/vault) as an secret manager and store
+- [teleport](https://github.com/jakoberpf/charts/tree/main/charts/teleport) as an cluster, virtual machine and database access service
 
 ## How to use the charts
 
