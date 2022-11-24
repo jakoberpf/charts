@@ -172,6 +172,17 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/keycloak-0.0.1/keycloak-0.0.1.tgz
     version: 0.0.1
+  postgres:
+  - apiVersion: v2
+    appVersion: "13"
+    created: "2022-11-24T19:33:27.80082804Z"
+    description: A Helm chart for Kubernetes (non HA) PostgreSQL database
+    digest: 62898ce62b72a559ac90ce278fe316c00bbd9db600735786f7d49432d9f302b1
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/postgres-0.0.1/postgres-0.0.1.tgz
+    version: 0.0.1
   teleport:
   - apiVersion: v2
     appVersion: 10.0.2
@@ -399,4 +410,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-24T10:13:15.149219365Z"
+generated: "2022-11-24T19:33:27.801069943Z"
