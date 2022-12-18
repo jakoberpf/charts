@@ -4,16 +4,11 @@ fullnameOverride: ""
 
 teleport-cluster:
   # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
-  chartMode: custom
-  image: jakoberpf/teleport
-  teleportVersionOverride: 10.0.2
   service:
     type: ClusterIP
   persistence:
     enabled: false
     existingClaimName: teleport-pvc
-  extraArgs:
-    - --insecure-no-tls
 
 service:
   type: ClusterIP
@@ -28,10 +23,9 @@ ingress:
   hosts: []
     # - host: teleport.example.com
   tls:
-    enabled: false
+    enabled: true
     redirect: false
-    mode: SIMPLE
-    # secretName: teleport-tls
+    mode: PASSTHROUGH
   istioGateway:
     enabled: false
     annotations: {}

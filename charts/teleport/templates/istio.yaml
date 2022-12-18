@@ -25,23 +25,20 @@ spec:
         {{- range .Values.ingress.hosts }}
         - {{ .host }}
         {{- end }}
-      {{- if or .Values.ingress.tls.enabled }}
-        {{- if .Values.ingress.tls.redirect }}
+      {{- if .Values.ingress.tls.redirect }}
       tls:
         httpsRedirect: true
-        {{- end }}
+      {{- end }}
     - port:
         number: 443
         name: https
         protocol: HTTPS
       tls:
-        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
-        credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
+        mode: {{ .Values.ingress.tls.mode | default "PASSTHROUGH" }}
       hosts:
         {{- range .Values.ingress.hosts }}
         - {{ .host }}
         {{- end }}
-      {{- end }}
 
 ---
 apiVersion: networking.istio.io/v1alpha3
