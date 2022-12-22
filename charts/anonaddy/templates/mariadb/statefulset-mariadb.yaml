@@ -33,7 +33,7 @@ spec:
               name: mariadb
           env:
             - name: MYSQL_ALLOW_EMPTY_PASSWORD
-              value: "yes"
+              value: "no"
             - name: MYSQL_DATABASE
               value: anonaddy
             - name: MYSQL_USER
