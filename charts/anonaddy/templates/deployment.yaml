@@ -73,7 +73,7 @@ spec:
             - name: ANONADDY_ADMIN_USERNAME
               value: "admin"
             - name: ANONADDY_ENABLE_REGISTRATION
-              value: "true"
+              value: "false"
             - name: ANONADDY_DOMAIN
               value: "anonaddy.erpf.de"
             - name: ANONADDY_ALL_DOMAINS
