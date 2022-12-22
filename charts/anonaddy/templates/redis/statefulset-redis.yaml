@@ -1,3 +1,4 @@
+{{- if .Values.redis.enabled -}}
 apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
 kind: StatefulSet
 metadata:
@@ -15,9 +16,18 @@ spec:
       labels:
         {{- include "anonaddy.selectorLabelsRedis" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "anonaddy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      strategy:
+        type: Recreate
       containers:
       - name: redis
-        image: redis:4.0
+        image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
         ports:
         - containerPort: 6379
           name: redis
@@ -33,3 +43,4 @@ spec:
   #       requests:
   #         storage: 1Gi
   #     storageClassName: thin-disk
+{{- end }}

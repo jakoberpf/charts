@@ -1,3 +1,4 @@
+{{- if .Values.mariadb.enabled -}}
 apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
 kind: StatefulSet
 metadata:
@@ -15,9 +16,18 @@ spec:
       labels:
         {{- include "anonaddy.selectorLabelsMariaDB" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "anonaddy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      strategy:
+        type: Recreate
       containers:
         - name: mariadb
-          image: mariadb:10.5
+          image: "{{ .Values.mariadb.image.repository }}:{{ .Values.mariadb.image.tag }}"
           ports:
             - containerPort: 3306
               name: mariadb
@@ -42,3 +52,4 @@ spec:
   #       requests:
   #         storage: 1Gi
   #     storageClassName: thin-disk
+{{- end }}

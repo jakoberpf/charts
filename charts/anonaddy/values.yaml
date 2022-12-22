@@ -2,8 +2,8 @@ replicaCount: 1
 
 image:
   repository: anonaddy/anonaddy
-  pullPolicy: IfNotPresent
-  tag: "0.13.4"
+  pullPolicy: Always
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -11,6 +11,22 @@ fullnameOverride: ""
 
 app:
   domain: https://anonaddy.example.com
+
+mariadb:
+  enabled: true
+  image:
+    repository: mariadb
+    pullPolicy: Always
+    tag: "10.5"
+  host: ""
+
+redis:
+  enabled: true
+  image:
+    repository: redis
+    pullPolicy: Always
+    tag: "4.0"
+  host: ""
 
 persistence:
   enabled: false
