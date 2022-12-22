@@ -12,7 +12,7 @@ spec:
       {{- include "anonaddy.selectorLabelsMariaDB" . | nindent 6 }}
   replicas: 1
   updateStrategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
