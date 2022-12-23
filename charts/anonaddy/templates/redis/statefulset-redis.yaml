@@ -29,18 +29,22 @@ spec:
       - name: redis
         image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
         ports:
-        - containerPort: 6379
-          name: redis
-        # volumeMounts:
-        # - name: www
-        #   mountPath: /usr/share/nginx/html
-  # volumeClaimTemplates:
-  # - metadata:
-  #     name: www
-  #   spec:
-  #     accessModes: [ "ReadWriteOnce" ]
-  #     resources:
-  #       requests:
-  #         storage: 1Gi
-  #     storageClassName: thin-disk
+          - containerPort: 6379
+            name: redis
+        {{- if .Values.redis.persistence.enabled }}
+        volumeMounts:
+          - name: redis-data
+            mountPath: /data
+        {{- end }}
+  {{- if .Values.redis.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+      #   resources:
+      #     requests:
+      #       storage: 1Gi
+      #   storageClassName: "longhorn-static"
+  {{- end }}
 {{- end }}

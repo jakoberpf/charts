@@ -19,6 +19,13 @@ mariadb:
     pullPolicy: Always
     tag: "10.5"
   host: ""
+  persistence:
+    enabled: false
+    pv:
+      create: false
+      name: anonaddy-mariadb-pv
+    pvc: 
+      name: anonaddy-mariadb-pvc
 
 redis:
   enabled: true
@@ -27,6 +34,13 @@ redis:
     pullPolicy: Always
     tag: "4.0"
   host: ""
+  persistence:
+    enabled: false
+    pv:
+      create: false
+      name: anonaddy-redis-pv
+    pvc: 
+      name: anonaddy-redis-pvc
 
 persistence:
   enabled: false

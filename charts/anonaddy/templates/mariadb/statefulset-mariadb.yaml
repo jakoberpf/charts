@@ -2,7 +2,7 @@
 apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
 kind: StatefulSet
 metadata:
-  name: {{ include "anonaddy.fullname" . }}-mariabdb
+  name: {{ include "anonaddy.fullname" . }}-mariadb
   labels:
     {{- include "anonaddy.labels" . | nindent 4 }}
 spec:
@@ -32,24 +32,30 @@ spec:
             - containerPort: 3306
               name: mariadb
           env:
-            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+            - name: MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
               value: "no"
-            - name: MYSQL_DATABASE
+            - name: MARIADB_DATABASE
               value: anonaddy
-            - name: MYSQL_USER
+            - name: MARIADB_USER
               value: anonaddy
-            - name: MYSQL_PASSWORD
+            - name: MARIADB_PASSWORD
               value: anonaddy
-        # volumeMounts:
-        # - name: data
-        #   mountPath: /var/lib/mysql
-  # volumeClaimTemplates:
-  # - metadata:
-  #     name: data
-  #   spec:
-  #     accessModes: [ "ReadWriteOnce" ]
-  #     resources:
-  #       requests:
-  #         storage: 1Gi
-  #     storageClassName: thin-disk
+            - name: MARIADB_ROOT_PASSWORD
+              value: anonaddy
+          {{- if .Values.mariadb.persistence.enabled }}
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+          {{- end }}
+  {{- if .Values.mariadb.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: mariadb-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+      #   resources:
+      #     requests:
+      #       storage: 1Gi
+      #   storageClassName: "longhorn-static"
+  {{- end }}
 {{- end }}
