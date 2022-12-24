@@ -21,11 +21,11 @@ mariadb:
   host: ""
   persistence:
     enabled: false
-    pv:
-      create: false
-      name: anonaddy-mariadb-pv
+    # pv:
+    #   create: false
+    #   name: anonaddy-mariadb
     pvc: 
-      name: anonaddy-mariadb-pvc
+      name: anonaddy-mariadb
 
 redis:
   enabled: true
@@ -36,11 +36,11 @@ redis:
   host: ""
   persistence:
     enabled: false
-    pv:
-      create: false
-      name: anonaddy-redis-pv
+    # pv:
+    #   create: false
+    #   name: anonaddy-redis
     pvc: 
-      name: anonaddy-redis-pvc
+      name: anonaddy-redis
 
 persistence:
   enabled: false
