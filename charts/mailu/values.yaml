@@ -118,13 +118,6 @@ mail:
   messageRatelimit: 200/day
   # messageRatelimitExemption:
 
-# certmanager settings
-certmanager:
-  enabled: true
-  issuerType: ClusterIssuer
-  issuerName: letsencrypt
-  apiVersion: cert-manager.io/v1
-
 # Set ingress and loadbalancer config
 ingress:
   externalIngress: true
@@ -134,6 +127,13 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
   realIpHeader: X-Forwarded-For
   realIpFrom: 0.0.0.0/0
+  certManager:
+    enabled: false
+    # issuerRef: 
+    #   name: letsencrypt
+    #   kind: ClusterIssuer
+    apiVersion: cert-manager.io/v1
+    annotations: {}
 
 # Frontend load balancer for non-HTTP(s) services
 front:
@@ -376,12 +376,12 @@ rspamd:
     #annotations:
     #  "helm.sh/resource-policy": keep
   resources:
-    requests:
-      memory: 100Mi
-      cpu: 100m
-    limits:
-      memory: 200Mi
-      cpu: 200m
+      limits:
+        cpu: 600m
+        memory: 500Mi
+      requests:
+        cpu: 500m
+        memory: 500Mi
   startupProbe: # give it 15 minutes for initial rule compilation
     periodSeconds: 10
     failureThreshold: 90
