@@ -3,7 +3,7 @@
 {{- $certManagerLabels := include "vaultwarden.labels" . -}}
 
 ---
-apiVersion: cert-manager.io/v1
+apiVersion: {{ .Values.ingress.certManager.apiVersion }}
 kind: Certificate
 metadata:
   name: {{ $fullName }}

@@ -84,8 +84,9 @@ ingress:
   certManager:
     enabled: false
     # issuerRef: 
-    #   name: cloudflare-letsencrypt-prod
+    #   name: letsencrypt
     #   kind: ClusterIssuer
+    apiVersion: cert-manager.io/v1
     annotations: {}
 
 resources:
