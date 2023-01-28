@@ -7,6 +7,8 @@ metadata:
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
   {{- end }}
   selector:
     matchLabels:
@@ -34,19 +36,31 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+            - name: nfs
+              containerPort: {{ .Values.service.port.nfs }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            - name: mountd
+              containerPort: {{ .Values.service.port.mountd }}
+              protocol: TCP
+            - name: rpcbind
+              containerPort: {{ .Values.service.port.rpcbind }}
+              protocol: TCP
+          env:
+            - name: SHARED_DIRECTORY
+              value: /volume
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: nfs-data
+              mountPath: /volume
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: nfs-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.pvc.name }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

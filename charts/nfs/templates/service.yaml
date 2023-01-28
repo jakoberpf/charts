@@ -7,9 +7,17 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.service.port.nfs }}
+      targetPort: nfs
       protocol: TCP
-      name: http
+      name: nfs
+    - port: {{ .Values.service.port.mountd }}
+      targetPort: mountd
+      protocol: TCP
+      name: mountd
+    - port: {{ .Values.service.port.rpcbind }}
+      targetPort: rpcbind
+      protocol: TCP
+      name: rpcbind
   selector:
     {{- include "nfs.selectorLabels" . | nindent 4 }}

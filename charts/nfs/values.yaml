@@ -5,14 +5,22 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: jakoberpf/nfs-server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+persistence:
+  enabled: false
+  pv:
+    create: false
+    name: nfs-pv
+  pvc: 
+    name: nfs-pvc
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -28,7 +36,8 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  privileged: true
   # capabilities:
   #   drop:
   #   - ALL
@@ -38,7 +47,10 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port:
+    nfs: 2049
+    mountd: 20048
+    rpcbind: 111
 
 ingress:
   enabled: false
