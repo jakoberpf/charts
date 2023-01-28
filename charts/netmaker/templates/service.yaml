@@ -1,15 +1,60 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "netmaker.fullname" . }}
   labels:
     {{- include "netmaker.labels" . | nindent 4 }}
+  name: '{{ include "netmaker.fullname" . }}-ui'
 spec:
-  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  - port: {{ .Values.service.uiPort }}
+    protocol: TCP
+    targetPort: {{ .Values.service.uiPort }}
   selector:
-    {{- include "netmaker.selectorLabels" . | nindent 4 }}
+    app: '{{ include "netmaker.fullname" . }}-ui'
+  sessionAffinity: None
+  type: '{{ .Values.service.type }}'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  name: '{{ include "netmaker.fullname" . }}-rest'
+spec:
+  ports:
+  - name: rest
+    port: {{ .Values.service.restPort }}
+    protocol: TCP
+    targetPort: {{ .Values.service.restPort }}
+  selector:
+    app: '{{ include "netmaker.fullname" . }}'
+  sessionAffinity: None
+  type: {{ .Values.service.type }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  name: '{{ include "netmaker.fullname" . }}-wireguard'
+  {{- with .Values.wireguard.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  externalTrafficPolicy: Local
+  type: {{ .Values.wireguard.service.serviceType }}
+  ports:
+  {{ $count := (add .Values.wireguard.networkLimit 1 | int) }}
+  {{- range untilStep 1 $count 1 }}
+  - port: {{ add 31820 . }}
+    nodePort: {{ add 31820 . }}
+    protocol: UDP
+    targetPort: {{ add 31820 . }}
+    name: wg-iface-{{ add 31820 . }}
+  {{- end }}
+  selector:
+    app: '{{ include "netmaker.fullname" . }}'

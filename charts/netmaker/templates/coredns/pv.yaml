@@ -1,0 +1,16 @@
+{{- if and .Values.dns.persistence.enabled (eq .Values.dns.persistence.type "interal-dns") -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "netmaker.fullname" . }}-dns
+spec:
+  capacity:
+    storage: {{ .Values.dns.storageSize }}
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: netmaker-nfs
+    path: "/"
+  mountOptions:
+    - nfsvers=4.2
+{{- end }}

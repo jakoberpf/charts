@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "netmaker.fullname" . }}-ui
   labels:
-    {{- include "netmaker.ui.labels" . | nindent 4 }}
+    {{- include "netmaker.labels" . | nindent 4 }}
     app: {{ include "netmaker.fullname" . }}-ui
 spec:
   {{- if not .Values.ui.autoscaling.enabled }}
@@ -11,7 +11,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "netmaker.ui.selectorLabels" . | nindent 6 }}
+      {{- include "netmaker.selectorLabels" . | nindent 6 }}
       app: {{ include "netmaker.fullname" . }}-ui
   template:
     metadata:
@@ -20,14 +20,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "netmaker.ui.selectorLabels" . | nindent 8 }}
+        {{- include "netmaker.selectorLabels" . | nindent 8 }}
         app: {{ include "netmaker.fullname" . }}-ui
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "netmaker.ui.serviceAccountName" . }}
+      serviceAccountName: {{ include "netmaker.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.ui.podSecurityContext | nindent 8 }}
       containers:

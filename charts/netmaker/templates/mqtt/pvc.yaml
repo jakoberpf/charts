@@ -1,0 +1,26 @@
+{{- if .Values.mq.persistence.enabled -}}
+  {{- if eq .Values.mq.persistence.type "interal-dns" -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "netmaker.fullname" . }}-shared-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.mq.storageSize }}
+  {{- else }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "netmaker.fullname" . }}-shared-data
+spec:
+  storageClassName: {{ required "A valid .Values.RWXStorageClassName entry required! Specify an available RWX storage class." .Values.mq.persistence.RWXStorageClassName}}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.mq.storageSize }}
+  {{- end }}
+{{- end }}
