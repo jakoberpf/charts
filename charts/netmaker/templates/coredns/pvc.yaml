@@ -1,16 +1,4 @@
 {{- if .Values.dns.persistence.enabled -}}
-  {{- if eq .Values.dns.persistence.type "interal-dns" -}}
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ include "netmaker.fullname" . }}-dns
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: {{ .Values.dns.storageSize }}
-  {{- else }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -22,5 +10,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.dns.storageSize }}
-  {{- end }}
 {{- end }}

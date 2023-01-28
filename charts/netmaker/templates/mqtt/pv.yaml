@@ -1,4 +1,4 @@
-{{- if and .Values.mq.persistence.enabled (eq .Values.mq.persistence.type "interal-dns") -}}
+{{- if and .Values.mq.persistence.enabled -}}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
