@@ -5,7 +5,6 @@
 replicaCount: 3
 
 image:
-  repository: gravitl/netmaker
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v0.17.1"
@@ -85,11 +84,13 @@ service:
   uiPort: 80
 
 ingress:
-  # -- attempts to configure ingress if true
-  enabled: false
+  enabled: true
+  className: "istio"
   tls:
-    enabled: false
-    issuerName: "letsencrypt-prod"
+    enabled: true
+    redirect: true
+    mode: SIMPLE
+    # secretName: netmaker-tls
   annotations:
     ui: {}
     rest: {}
@@ -112,13 +113,17 @@ ingress:
       traefik.ingress.kubernetes.io/redirect-permanent: "true"
       # -- rule type
       traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    istio: {}
   hostPrefix:
-    # -- ui route subdomain
-    ui: 'dashboard.'
-    # -- api (REST) route subdomain
-    rest: 'api.'
-    # -- mqtt route subdomain
-    broker: 'broker.'
+    ui: dashboard.
+    rest: api.
+    broker: broker.
+  certManager:
+    enabled: true
+    issuerRef: 
+      name: cloudflare-letsencrypt-prod
+      kind: ClusterIssuer
+    annotations: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -160,7 +165,7 @@ postgres:
   enabled: false
   postgres:
     username: netmaker
-    password: netmaker
+    password: ScppdtI9mAYsCCZHY6vJLdrDlyJvQvXMp210OOUmvAs=
     database: netmaker
     persistence:
       size: 1Gi
@@ -169,7 +174,7 @@ postgres-ha:
   enabled: false
   postgres:
     username: netmaker
-    password: netmaker
+    password: ScppdtI9mAYsCCZHY6vJLdrDlyJvQvXMp210OOUmvAs=
     database: netmaker
     persistence:
       size: 1Gi
