@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled ( eq .Values.ingress.className "istio" ) -}}
 {{- $fullName := include "netmaker.fullname" . -}}
 {{- $fullUIName := printf "%s-%s" $fullName "ui" -}}
 {{- $fullRESTName := printf "%s-%s" $fullName "rest" -}}
@@ -6,12 +6,13 @@
 {{- $uiSvcPort := .Values.service.uiPort -}}
 {{- $restSvcPort := .Values.service.restPort -}}
 {{- $mqSvcPort := 8883 -}}
-{{- $classname := required "A valid .Values.ingress.className entry required! Please set this to your ingress class (nginx, traefik)" .Values.ingress.className}}
+{{- $classname := required "A valid .Values.ingress.className entry required! Please set this to your ingress class (nginx, traefik or istio)" .Values.ingress.className}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
   {{- end }}
 {{- end }}
+
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -33,10 +34,10 @@ metadata:
     {{- if eq .className "traefik" }}
     {{- toYaml .annotations.traefik | nindent 4 }}
     {{- end }}
-    {{- if and .tls.enabled (eq .tls.issuerName "" )}}
+    {{- if and .tls.enabled (eq .certManager.issuerRef.name "" )}}
     {{- toYaml .annotations.tls | nindent 4 }}
     {{- else if .tls.enabled}}
-    cert-manager.io/cluster-issuer: {{ .tls.issuerName }}
+    cert-manager.io/cluster-issuer: {{ .certManager.issuerRef.name }}
     {{- end }}
     {{- with .annotations.ui }}
       {{- toYaml . | nindent 4 }}
@@ -94,10 +95,10 @@ metadata:
     {{- if eq .className "traefik" }}
     {{- toYaml .annotations.traefik | nindent 4 }}
     {{- end }}
-    {{- if and .tls.enabled (eq .tls.issuerName "" )}}
+    {{- if and .tls.enabled (eq .certManager.issuerRef.name "" )}}
     {{- toYaml .annotations.tls | nindent 4 }}
     {{- else if .tls.enabled}}
-    cert-manager.io/cluster-issuer: {{ .tls.issuerName }}
+    cert-manager.io/cluster-issuer: {{ .certManager.issuerRef.name }}
     {{- end }}
     {{- with .annotations.rest }}
       {{- toYaml . | nindent 4 }}
@@ -150,10 +151,10 @@ metadata:
   {{- with .Values.ingress }}
   annotations:
     {{- toYaml .annotations.nginx | nindent 4 }}
-    {{- if and .tls.enabled (eq .tls.issuerName "" )}}
+    {{- if and .tls.enabled (eq .certManager.issuerRef.name "" )}}
     {{- toYaml .annotations.tls | nindent 4 }}
     {{- else if .tls.enabled}}
-    cert-manager.io/cluster-issuer: {{ .tls.issuerName }}
+    cert-manager.io/cluster-issuer: {{ .certManager.issuerRef.name }}
     {{- end }}
     {{- with .annotations.mq }}
       {{- toYaml . | nindent 4 }}
