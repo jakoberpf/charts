@@ -65,7 +65,7 @@ jobs:
       - name: Submodules
         run: git submodule update --init
       - name: Start Minikube
-        uses: manusa/actions-setup-minikube
+        uses: manusa/actions-setup-minikube@v2.7.2
         with:
           minikube version: v1.24.0
           kubernetes version: v1.22.7
