@@ -24,8 +24,7 @@ metadata:
   name: '{{ include "netmaker.fullname" . }}-rest'
 spec:
   ports:
-  - name: rest
-    port: {{ .Values.service.restPort }}
+  - port: {{ .Values.service.restPort }}
     protocol: TCP
     targetPort: {{ .Values.service.restPort }}
   selector:
@@ -50,11 +49,11 @@ spec:
   ports:
   {{ $count := (add .Values.wireguard.networkLimit 1 | int) }}
   {{- range untilStep 1 $count 1 }}
-  - port: {{ add 31820 . }}
+  - name: wg-iface-{{ add 31820 . }}
+    port: {{ add 31820 . }}
     nodePort: {{ add 31820 . }}
     protocol: UDP
     targetPort: {{ add 31820 . }}
-    name: wg-iface-{{ add 31820 . }}
   {{- end }}
   selector:
     app: '{{ include "netmaker.fullname" . }}'

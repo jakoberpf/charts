@@ -1,3 +1,4 @@
+baseDomain: ""
 # Default values for netmaker.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -36,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 ui:
-  replicaCount: 2
+  replicaCount: 3
   autoscaling:
     enabled: false
     minReplicas: 1
@@ -45,7 +46,7 @@ ui:
     # targetMemoryUtilizationPercentage: 80
 
 mq:
-  replicas: 2
+  replicas: 3
   singlenode: false
   storageSize: 128Mi
   password: 3yyerWGdds43yegGR
@@ -80,7 +81,7 @@ setIpForwarding:
 service:
   type: ClusterIP
   restPort: 8081
-  mqPort: 443
+  mqPort: 8883 # Defined the public mqtt interface
   uiPort: 80
 
 ingress:

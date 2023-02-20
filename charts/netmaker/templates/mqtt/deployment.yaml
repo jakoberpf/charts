@@ -9,8 +9,6 @@ spec:
     matchLabels:
       app: {{ include "netmaker.fullname" . }}-mqtt
   replicas:  {{ .Values.mq.replicas }}
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:

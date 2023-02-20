@@ -201,7 +201,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: HostSNI(`{{ .Values.ingress.hostPrefix.mq }}{{ .Values.baseDomain }}`)
+  - match: HostSNI(`{{ .Values.ingress.hostPrefix.broker }}{{ .Values.baseDomain }}`)
     services:
     - name: {{ $fullMQName }}
       port: {{ $mqSvcPort }}
@@ -209,7 +209,7 @@ spec:
     passthrough: true
     secretName: {{ $fullMQName }}-tls-secret
     domains:
-    - main: {{ .Values.ingress.hostPrefix.mq }}{{ .Values.baseDomain }}
+    - main: {{ .Values.ingress.hostPrefix.broker }}{{ .Values.baseDomain }}
 {{- if and .Values.ingress.tls.enabled (not (eq .Values.ingress.tls.issuerName "" ))}}
 ---
 apiVersion: cert-manager.io/v1
@@ -222,7 +222,7 @@ metadata:
   name: {{ $fullMQName }}-tls-secret
 spec:
   dnsNames:
-  - {{ .Values.ingress.hostPrefix.mq }}{{ .Values.baseDomain }}
+  - {{ .Values.ingress.hostPrefix.broker }}{{ .Values.baseDomain }}
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer
