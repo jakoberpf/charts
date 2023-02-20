@@ -3,17 +3,12 @@ nameOverride: ""
 fullnameOverride: ""
 
 teleport-cluster:
-  # https://github.com/gravitational/teleport/blob/master/examples/chart/teleport/values.yaml
-  chartMode: custom
-  image: jakoberpf/teleport
-  teleportVersionOverride: 10.0.2
+  chartMode: standalone
   service:
     type: ClusterIP
   persistence:
     enabled: false
-    existingClaimName: teleport-pvc
-  extraArgs:
-    - --insecure-no-tls
+    existingClaimName: teleport-data
 
 service:
   type: ClusterIP
