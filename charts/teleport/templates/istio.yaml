@@ -35,8 +35,7 @@ spec:
         name: https
         protocol: HTTPS
       tls:
-        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
-        credentialName: {{ .Values.ingress.tls.secretName | default $fullName }}
+        mode: {{ .Values.ingress.tls.mode | default "PASSTHROUGH" }}
       hosts:
         {{- range .Values.ingress.hosts }}
         - {{ .host }}
@@ -61,10 +60,15 @@ spec:
     {{- end }}
   gateways:
     - {{ $fullName }}
-  http:
+  tls:
     - match:
       - uri:
           prefix: /
+        port: 443
+        sniHosts:
+          {{- range .Values.ingress.hosts }}
+          - {{ .host }}
+          {{- end }}
       route:
       - destination:
           port:

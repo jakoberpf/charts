@@ -5,6 +5,8 @@ fullnameOverride: ""
 teleport-cluster:
   clusterName: teleport.example.com
   chartMode: standalone
+  acme: true
+  acmeEmail: "exmaple@example.com"
   service:
     type: ClusterIP
   persistence:
@@ -26,8 +28,7 @@ ingress:
   tls:
     enabled: false
     redirect: false
-    mode: SIMPLE
-    # secretName: teleport-tls
+    mode: PASSTHROUGH
   istioGateway:
     enabled: false
     annotations: {}
