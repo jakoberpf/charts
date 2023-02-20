@@ -172,6 +172,27 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/keycloak-0.0.1/keycloak-0.0.1.tgz
     version: 0.0.1
+  netmaker:
+  - apiVersion: v2
+    appVersion: 0.17.1
+    created: "2023-02-20T17:51:57.520026594Z"
+    description: A Helm chart for Kubernetes
+    digest: b6a2588625ef684c88d0179c024fcd4283df82bc84995781aa7395d3d35500a2
+    name: netmaker
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/netmaker-0.1.0/netmaker-0.1.0.tgz
+    version: 0.1.0
+  nfs:
+  - apiVersion: v2
+    created: "2023-02-20T17:51:57.631292849Z"
+    description: A Helm chart for Kubernetes
+    digest: 55f03d5b2956f3927933fa66bbfd39e2eae5995a74f4bf32f301b679648360b4
+    name: nfs
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/nfs-0.1.0/nfs-0.1.0.tgz
+    version: 0.1.0
   postgres:
   - apiVersion: v2
     appVersion: "13"
@@ -410,4 +431,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-24T19:33:27.801069943Z"
+generated: "2023-02-20T17:51:57.631422552Z"
