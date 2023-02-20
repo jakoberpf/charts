@@ -67,11 +67,12 @@ jobs:
       - name: Start Minikube
         uses: manusa/actions-setup-minikube@v2.7.2
         with:
-          kubernetes version: v1.22.7
+          minikube version: v1.28.0
+          kubernetes version: v1.25.6
       - name: Install Istio CommandLineTool
         uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
         with:
-          version: '1.13.2'
+          version: '1.17.0'
       - name: Install YamlQueryTool
         uses: mikefarah/yq@v4.24.2
       - name: Deploy istio
