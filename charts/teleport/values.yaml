@@ -3,6 +3,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 teleport-cluster:
+  clusterName: teleport.example.com
   chartMode: standalone
   service:
     type: ClusterIP
