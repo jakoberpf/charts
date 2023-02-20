@@ -1,0 +1,16 @@
+{{- if and .Values.mq.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "netmaker.fullname" . }}-shared-data
+spec:
+  capacity:
+    storage: {{ .Values.mq.storageSize }}
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: netmaker-nfs
+    path: "/"
+  mountOptions:
+    - nfsvers=4.2
+{{- end }}

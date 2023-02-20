@@ -34,10 +34,6 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.12.10
-          - v1.13.12
-          - v1.14.10
-          - v1.15.11
           - v1.16.8
           - v1.17.4
           - v1.18.20
@@ -69,14 +65,14 @@ jobs:
       - name: Submodules
         run: git submodule update --init
       - name: Start Minikube
-        uses: manusa/actions-setup-minikube@v2.4.3
+        uses: manusa/actions-setup-minikube@v2.7.2
         with:
-          minikube version: v1.24.0
-          kubernetes version: v1.22.7
+          minikube version: v1.28.0
+          kubernetes version: v1.25.6
       - name: Install Istio CommandLineTool
         uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
         with:
-          version: '1.13.2'
+          version: '1.17.0'
       - name: Install YamlQueryTool
         uses: mikefarah/yq@v4.24.2
       - name: Deploy istio

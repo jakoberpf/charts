@@ -1,0 +1,135 @@
+{{- if and .Values.ingress.enabled ( eq .Values.ingress.className "istio" ) -}}
+{{- $root := . -}}
+{{- $fullName := include "netmaker.fullname" . -}}
+{{- $fullUIName := printf "%s-%s" $fullName "ui" -}}
+{{- $fullRESTName := printf "%s-%s" $fullName "rest" -}}
+{{- $fullMQName := printf "%s-%s" $fullName "mqtt" -}}
+
+{{- $tlsSecretName := printf "%s-%s" $fullName "tls" -}}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullUIName }}
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations.istio }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - {{ .Values.ingress.hostPrefix.ui }}{{ .Values.baseDomain }}
+      {{- if or .Values.ingress.tls.enabled }}
+        {{- if .Values.ingress.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
+        credentialName: {{ .Values.ingress.tls.tlsSecretName | default $tlsSecretName }}
+      hosts:
+        - {{ .Values.ingress.hostPrefix.ui }}{{ .Values.baseDomain }}
+      {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullUIName }}
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations.istio }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    - {{ .Values.ingress.hostPrefix.ui }}{{ .Values.baseDomain }}
+  gateways:
+    - {{ $fullUIName }}
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 80
+          host: {{ $fullUIName }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullRESTName }}
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations.istio }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - {{ .Values.ingress.hostPrefix.rest }}{{ .Values.baseDomain }}
+      {{- if or .Values.ingress.tls.enabled }}
+        {{- if .Values.ingress.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
+        credentialName: {{ .Values.ingress.tls.tlsSecretName | default $tlsSecretName }}
+      hosts:
+        - {{ .Values.ingress.hostPrefix.rest }}{{ .Values.baseDomain }}
+      {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullRESTName }}
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations.istio }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    - {{ .Values.ingress.hostPrefix.rest }}{{ .Values.baseDomain }}
+  gateways:
+    - {{ $fullRESTName }}
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 8081
+          host: {{ $fullRESTName }}
+{{- end }}

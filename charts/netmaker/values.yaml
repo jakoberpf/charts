@@ -1,0 +1,181 @@
+baseDomain: "netmaker.example.de"
+# Default values for netmaker.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v0.17.1"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+ui:
+  replicaCount: 3
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+mq:
+  replicas: 3
+  singlenode: false
+  storageSize: 128Mi
+  password: 3yyerWGdds43yegGR
+
+  persistence:
+    enabled: true
+    # type: internal-nfs
+    RWXStorageClassName: longhorn
+    # pv:
+    #   create: false
+    #   name: nfs-pv
+    # pvc: 
+    #   name: nfs-pvc
+
+dns:
+  enabled: false
+  storageSize: 128Mi
+
+  persistence:
+    enabled: false
+    # type: internal-nfs
+    # RWXStorageClassName: longhorn
+    # pv:
+    #   create: false
+    #   name: nfs-pv
+    # pvc: 
+    #   name: nfs-pvc
+
+setIpForwarding:
+  enabled: true
+
+service:
+  type: ClusterIP
+  restPort: 8081
+  mqPort: 8883 # Defined the public mqtt interface
+  uiPort: 80
+
+ingress:
+  enabled: true
+  className: "istio"
+  tls:
+    enabled: true
+    redirect: true
+    mode: SIMPLE
+    # secretName: netmaker-tls
+  annotations:
+    ui: {}
+    rest: {}
+    mq: {}
+    base:
+      # -- annotation to generate ACME certs if available
+      kubernetes.io/ingress.allow-http: "false"
+    tls:
+      # -- use acme cert if available
+      kubernetes.io/tls-acme: "true"
+    nginx:
+      # -- Redirect http to https
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+      # -- destination addr for route
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik:
+      # -- Redirect to https
+      traefik.ingress.kubernetes.io/redirect-entry-point: https
+      # -- Redirect to https permanently
+      traefik.ingress.kubernetes.io/redirect-permanent: "true"
+      # -- rule type
+      traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    istio: {}
+  hostPrefix:
+    ui: dashboard.
+    rest: api.
+    broker: broker.
+  certManager:
+    enabled: true
+    issuerRef: 
+      name: cloudflare-letsencrypt-prod
+      kind: ClusterIssuer
+    annotations: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+wireguard:
+  # -- whether or not to use WireGuard on server
+  enabled: true
+  service:
+    annotations: {}
+    serviceType: NodePort
+  # -- whether or not to use Kernel WG (should be false unless WireGuard is installed on hosts).
+  kernel: false
+  # -- max number of networks that Netmaker will support if running with WireGuard enabled
+  networkLimit: 10
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+postgres:
+  enabled: false
+  postgres:
+    username: netmaker
+    password: ScppdtI9mAYsCCZHY6vJLdrDlyJvQvXMp210OOUmvAs=
+    database: netmaker
+    persistence:
+      size: 1Gi
+
+postgres-ha:
+  enabled: false
+  postgres:
+    username: netmaker
+    password: ScppdtI9mAYsCCZHY6vJLdrDlyJvQvXMp210OOUmvAs=
+    database: netmaker
+    persistence:
+      size: 1Gi

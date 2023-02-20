@@ -1,0 +1,13 @@
+{{- if .Values.dns.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "netmaker.fullname" . }}-dns
+spec:
+  storageClassName: {{ required "A valid .Values.dns.RWX.storageClassName entry required! Specify an available RWX storage class." .Values.dns.persistence.RWXStorageClassName}}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.dns.storageSize }}
+{{- end }}

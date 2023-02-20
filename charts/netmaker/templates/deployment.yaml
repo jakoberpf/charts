@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "netmaker.fullname" . }}-ui
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+    app: {{ include "netmaker.fullname" . }}-ui
+spec:
+  {{- if not .Values.ui.autoscaling.enabled }}
+  replicas: {{ .Values.ui.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "netmaker.selectorLabels" . | nindent 6 }}
+      app: {{ include "netmaker.fullname" . }}-ui
+  template:
+    metadata:
+      {{- with .Values.ui.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "netmaker.selectorLabels" . | nindent 8 }}
+        app: {{ include "netmaker.fullname" . }}-ui
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "netmaker.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ui.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "netmaker.fullname" . }}-ui
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: gravitl/netmaker-ui:{{ .Values.image.tag | default .Chart.AppVersion }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.uiPort }}
+              protocol: TCP
+          env:
+            - name: BACKEND_URL
+              value: 'https://{{ .Values.ingress.hostPrefix.rest }}{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}'
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      terminationGracePeriodSeconds: 15
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
