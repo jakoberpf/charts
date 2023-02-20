@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "anonaddy.fullname" . }}
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "anonaddy.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "anonaddy.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "anonaddy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: mail
+              containerPort: 25
+              protocol: TCP
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+            - name: rspamd
+              containerPort: 11334
+              protocol: TCP
+          env: # https://github.com/anonaddy/docker
+            - name: TZ
+              value: "Europe/Berlin"
+
+            - name: MEMORY_LIMIT
+              value: "256M"
+            - name: UPLOAD_MAX_SIZE
+              value: "16M"
+            - name: OPCACHE_MEM_SIZE
+              value: "128"
+
+            - name: REAL_IP_FROM
+              value: "0.0.0.0/32"
+            - name: REAL_IP_HEADER
+              value: "X-Forwarded-For"
+            - name: LOG_IP_VAR
+              value: "remote_addr"
+
+            - name: APP_KEY
+              value: "ra+8RGJCVnnTDFOtEG34fpLL46LPrNCR"
+            - name: APP_DEBUG
+              value: "true"
+            - name: APP_URL
+              value: "http://anonaddy.erpf.de"
+
+            - name: ANONADDY_RETURN_PATH
+              value: "bouncer@erpf.de"
+            - name: ANONADDY_ADMIN_USERNAME
+              value: "admin"
+            - name: ANONADDY_ENABLE_REGISTRATION
+              value: "false"
+            - name: ANONADDY_DOMAIN
+              value: "anonaddy.erpf.de"
+            - name: ANONADDY_ALL_DOMAINS
+              value: "erpf.de,boghdady.de"
+            - name: ANONADDY_HOSTNAME
+              value: "anonaddy.erpf.de"
+            - name: ANONADDY_DNS_RESOLVER
+              value: "127.0.0.1"
+            - name: ANONADDY_SECRET
+              value: "oeVebBNY2EAxk3KfKxspHPRBf9V5lcZI"
+            - name: ANONADDY_LIMIT
+              value: "200"
+            - name: ANONADDY_BANDWIDTH_LIMIT
+              value: "104857600"
+            - name: ANONADDY_NEW_ALIAS_LIMIT
+              value: "10"
+            - name: ANONADDY_ADDITIONAL_USERNAME_LIMIT
+              value: "3"
+
+            - name: MAIL_FROM_NAME
+              value: "AnonAddy"
+            - name: MAIL_FROM_ADDRESS
+              value: "anonaddy@erpf.de"
+
+            - name: POSTFIX_DEBUG
+              value: "false"
+            - name: POSTFIX_SMTPD_TLS
+              value: "false"
+            - name: POSTFIX_SMTP_TLS
+              value: "false"
+
+            - name: DB_HOST
+              value: {{ include "anonaddy.fullname" . }}-mariadb
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_DATABASE
+              value: anonaddy
+            - name: DB_USERNAME
+              value: anonaddy
+            - name: DB_PASSWORD
+              value: anonaddy
+            - name: REDIS_HOST
+              value: {{ include "anonaddy.fullname" . }}-redis
+          # {{- if .Values.persistence.enabled }}
+          # volumeMounts:
+          #   - name: anonaddy-data
+          #     mountPath: /data
+          # {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      # {{- if .Values.persistence.enabled }}
+      # volumes:
+      #   - name: anonaddy-data
+      #     persistentVolumeClaim:
+      #       claimName: {{ .Values.persistence.pvc.name }}
+      # {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

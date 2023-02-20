@@ -1,0 +1,42 @@
+{{- if and .Values.serviceAccount.enabled .Values.serviceAccount.rbac.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "anonaddy.fullname" . }}
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    resourceNames:
+      - "anonaddy"
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    resourceNames:
+      - "anonaddy-smtp"
+      - "anonaddy-tls"
+    verbs:
+      - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "anonaddy.fullname" . }}
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "anonaddy.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "anonaddy.serviceAccountName" . }}
+{{- end }}

@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint-chart:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -18,7 +18,7 @@ jobs:
           config: .github/ct.yaml
         
   lint-docs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: lint-chart
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
         run: .github/helm-docs.sh
 
   kubeval-chart:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - lint-chart
       - lint-docs
@@ -53,7 +53,7 @@ jobs:
         run: .github/kubeval.sh
 
   minikube-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - lint-chart
       - lint-docs

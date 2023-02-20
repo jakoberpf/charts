@@ -1,0 +1,17 @@
+{{- if .Values.redis.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "anonaddy.fullname" . }}-redis
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
+      name: redis
+  selector:
+    {{- include "anonaddy.selectorLabelsRedis" . | nindent 4 }}
+{{- end }}

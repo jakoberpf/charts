@@ -1,0 +1,61 @@
+{{- if .Values.mariadb.enabled -}}
+apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ include "anonaddy.fullname" . }}-mariadb
+  labels:
+    {{- include "anonaddy.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "anonaddy.fullname" . }}-mariabdb
+  selector:
+    matchLabels:
+      {{- include "anonaddy.selectorLabelsMariaDB" . | nindent 6 }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "anonaddy.selectorLabelsMariaDB" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "anonaddy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: mariadb
+          image: "{{ .Values.mariadb.image.repository }}:{{ .Values.mariadb.image.tag }}"
+          ports:
+            - containerPort: 3306
+              name: mariadb
+          env:
+            - name: MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
+              value: "no"
+            - name: MARIADB_DATABASE
+              value: anonaddy
+            - name: MARIADB_USER
+              value: anonaddy
+            - name: MARIADB_PASSWORD
+              value: anonaddy
+            - name: MARIADB_ROOT_PASSWORD
+              value: anonaddy
+          {{- if .Values.mariadb.persistence.enabled }}
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+          {{- end }}
+  {{- if .Values.mariadb.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: mariadb-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+      #   resources:
+      #     requests:
+      #       storage: 1Gi
+      #   storageClassName: "longhorn-static"
+  {{- end }}
+{{- end }}
