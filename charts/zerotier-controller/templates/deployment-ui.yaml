@@ -6,7 +6,7 @@ metadata:
     {{- include "zerotier-controller.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.ui.replicaCount }}
   {{- end }}
   strategy:
     type: Recreate # https://www.weave.works/blog/kubernetes-deployment-strategies
