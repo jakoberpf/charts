@@ -459,4 +459,14 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-20T19:45:16.546554317Z"
+  zerotier-controller:
+  - apiVersion: v2
+    created: "2023-04-07T14:26:00.511270844Z"
+    description: A Helm chart for Kubernetes
+    digest: 858d8ed56922f9b8e2c2fb65283a7cf649ecec3923f611736d496e332e1afaaa
+    name: zerotier-controller
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/zerotier-controller-0.0.1/zerotier-controller-0.0.1.tgz
+    version: 0.0.1
+generated: "2023-04-07T14:26:00.511748747Z"
