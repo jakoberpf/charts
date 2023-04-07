@@ -69,5 +69,5 @@ spec:
       - destination:
           port:
             number: 80
-          host: {{ $fullName }}
+          host: {{ $fullName }}-ui
 {{- end }}
