@@ -47,9 +47,15 @@ spec:
             - name: ZU_SECURE_HEADERS
               value: "true"
             - name: ZU_DEFAULT_USERNAME
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name:  {{ .Values.ui.admin.usernameSecretName }}
+                  key: {{ .Values.ui.admin.usernameSecretKey }}
             - name: ZU_DEFAULT_PASSWORD
-              value: zero-ui
+              valueFrom:
+                secretKeyRef:
+                  name:  {{ .Values.ui.admin.passwordSecretName }}
+                  key: {{ .Values.ui.admin.passwordSecretkey }}
           # livenessProbe:
           #   httpGet:
           #     path: /
