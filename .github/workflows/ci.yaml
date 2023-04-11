@@ -73,8 +73,6 @@ jobs:
         uses: mikefarah/yq@v4.33.3
       - name: Deploy secrets
         run: .github/deploy-secrets.sh
-      - name: Generate certificates
-        run: .github/deploy-tls.sh
       - name: Deploy charts
         run: .github/deploy-charts.sh
       # - name: Verify Istio
