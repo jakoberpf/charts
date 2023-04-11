@@ -74,7 +74,7 @@ jobs:
         with:
           version: '1.17.0'
       - name: Install YamlQueryTool
-        uses: mikefarah/yq@v4.24.2
+        uses: mikefarah/yq@v4.33.3
       - name: Deploy istio
         run: .github/deploy-istio.sh
       - name: Deploy secrets
