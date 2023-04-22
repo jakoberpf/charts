@@ -4,6 +4,8 @@ set -euo pipefail
 GIT_ROOT=$(git rev-parse --show-toplevel)
 CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
 
+echo $CHART_DIRS
+
 for CHART_DIR in ${CHART_DIRS}; do
   if [ -f "${CHART_DIR}/test-secrets.yaml" ]; then
     CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"

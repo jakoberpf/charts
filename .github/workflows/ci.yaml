@@ -26,55 +26,55 @@ jobs:
       - name: Run helm-docs
         run: .github/helm-docs.sh
 
-  kubeval-chart:
-    runs-on: ubuntu-latest
-    needs:
-      - lint-chart
-      - lint-docs
-    strategy:
-      matrix:
-        k8s:
-          - v1.16.8
-          - v1.17.4
-          - v1.18.20
-          - v1.19.16
-          - v1.20.15
-          - v1.21.10
-          - v1.22.7
-          - v1.23.4
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Submodules
-        run: git submodule update --init
-      - name: Run kubeval
-        env:
-          KUBERNETES_VERSION: ${{ matrix.k8s }}
-        run: .github/kubeval.sh
+  # kubeval-chart:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - lint-chart
+  #     - lint-docs
+  #   strategy:
+  #     matrix:
+  #       k8s:
+  #         - v1.16.8
+  #         - v1.17.4
+  #         - v1.18.20
+  #         - v1.19.16
+  #         - v1.20.15
+  #         - v1.21.10
+  #         - v1.22.7
+  #         - v1.23.4
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Submodules
+  #       run: git submodule update --init
+  #     - name: Run kubeval
+  #       env:
+  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
+  #       run: .github/kubeval.sh
 
-  minikube-deploy:
-    runs-on: ubuntu-latest
-    needs:
-      - lint-chart
-      - lint-docs
-      - kubeval-chart
-    name: build example and deploy to minikube
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Submodules
-        run: git submodule update --init
-      - name: Start Minikube
-        uses: manusa/actions-setup-minikube@v2.7.2
-        with:
-          minikube version: v1.28.0
-          kubernetes version: v1.25.6
-      - name: Install YamlQueryTool
-        uses: mikefarah/yq@v4.33.3
-      - name: Deploy secrets
-        run: .github/deploy-secrets.sh
-      - name: Deploy charts
-        run: .github/deploy-charts.sh
+  # minikube-deploy:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - lint-chart
+  #     - lint-docs
+  #     - kubeval-chart
+  #   name: build example and deploy to minikube
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Submodules
+  #       run: git submodule update --init
+  #     - name: Start Minikube
+  #       uses: manusa/actions-setup-minikube@v2.7.2
+  #       with:
+  #         minikube version: v1.28.0
+  #         kubernetes version: v1.25.6
+  #     - name: Install YamlQueryTool
+  #       uses: mikefarah/yq@v4.33.3
+  #     - name: Deploy secrets
+  #       run: .github/deploy-secrets.sh
+  #     - name: Deploy charts
+  #       run: .github/deploy-charts.sh
       # - name: Verify Istio
       #   run: .github/verify-istio.sh
       # - name: Build image

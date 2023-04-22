@@ -1,7 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-istioctl operator init --hub=docker.io/querycapistio --tag=1.13.1 # get version from https://github.com/querycap/istio
+GIT_ROOT=$(git rev-parse --show-toplevel)
+cd $GIT_ROOT
+
+ISTIO_VERSION="1.17.0"
+
+istioctl operator init --tag=$ISTIO_VERSION
 
 ISTIO_NAMESPACE=istio-system
 if [ ! "$(kubectl get namespaces -o json | jq -r ".items[].metadata.name | select (. == \"$ISTIO_NAMESPACE\")")" == "$ISTIO_NAMESPACE" ]; then
@@ -16,9 +21,8 @@ apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
   namespace: istio-system
-  name: artemis-istiocontrolplane
+  name: istiocontrolplane
 spec:
-  hub: docker.io/querycapistio
   profile: demo
   components:
     ingressGateways:
@@ -50,13 +54,3 @@ spec:
                 port: 15443
                 targetPort: 15443
 EOF
-
-while [ "$(kubectl get pods -l=name='istio-operator' -n istio-operator -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
-   sleep 2
-   echo "Waiting for Istio-Operator to be ready."
-done
-
-while [ "$(kubectl get pods -l=app='istio-ingressgateway' -n istio-system -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true" ]; do
-   sleep 2
-   echo "Waiting for Istio-IngressGateway to be ready."
-done
