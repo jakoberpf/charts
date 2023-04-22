@@ -7,7 +7,6 @@ ui:
   image:
     repository: dec0dos/zero-ui
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
     tag: "1.5.1"
   persistence:
     enabled: false
@@ -27,7 +26,6 @@ controller:
   image:
     repository: zyclonite/zerotier
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
     tag: "1.10.6"
   persistence:
     enabled: false
