@@ -48,7 +48,7 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  host: keycloak.example.com
+  host: keycloak.kind.local
   paths: []
   tls:
     enabled: false
