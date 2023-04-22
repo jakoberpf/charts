@@ -42,6 +42,7 @@ jobs:
           for CHART_DIR in $(ls -d */Chart.yaml | cut -d '/' -f 1); do
             CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
             echo "Packaging ${CHART_NAME} chart"
+            helm dependency build ${CHART_DIR}
             helm package ${CHART_DIR}
             PKG_NAME=`ls *.tgz`
             echo "Pushing ${CHART_NAME} chart"
