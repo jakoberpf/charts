@@ -14,6 +14,8 @@ The Charts with its functionality is listed below:
 - [vaultwarden](https://github.com/jakoberpf/charts/tree/main/charts/vaultwarden) as an personal password manager
 - [vault](https://github.com/jakoberpf/charts/tree/main/charts/vault) as an secret manager and store
 - [teleport](https://github.com/jakoberpf/charts/tree/main/charts/teleport) as an cluster, virtual machine and database access service
+- [netmaker](https://github.com/jakoberpf/charts/tree/main/charts/netmaker) as a wireguard based software defined network service
+- [zerotier](https://github.com/jakoberpf/charts/tree/main/charts/zerotier-controller) as a controller for the zerotier software defined network
 
 ## How to use the charts
 
