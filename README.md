@@ -1,13 +1,10 @@
 # charts
 
-This Repository contains all the charts used by jakoberpf for different components and is maintained by Jakob Boghdady.
 These charts are mainly developed for community use and for the `Erpf & Boghdady` cloud.
 
 - TODO update CI with https://github.com/sagikazarmark/helm-charts
 
 ## Introduction
-
-Some charts are used by Devtron for its functionality and other charts are also provided which can be used to add additional features and components in Devtron Cluster.
 
 The Charts with its functionality is listed below:
 
@@ -27,4 +24,10 @@ These charts are currently not available on the official helm repository therefo
 ```bash
 helm repo add erpf http://helm.erpf.de
 helm install <release-name> erpf/<chart-name>
+```
+
+These chart are also pushed into the Github OCI registry.
+
+```bash
+helm install <release-name> oci://ghcr.io/jakoberpf/charts/<chart-name> --version <chart-version>
 ```
