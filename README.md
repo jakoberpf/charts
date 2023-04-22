@@ -3,6 +3,8 @@
 This Repository contains all the charts used by jakoberpf for different components and is maintained by Jakob Boghdady.
 These charts are mainly developed for community use and for the `Erpf & Boghdady` cloud.
 
+- TODO update CI with https://github.com/sagikazarmark/helm-charts
+
 ## Introduction
 
 Some charts are used by Devtron for its functionality and other charts are also provided which can be used to add additional features and components in Devtron Cluster.
