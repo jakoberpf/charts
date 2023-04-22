@@ -1,8 +1,12 @@
 .tls
 .kube
-*generated-test-values.yaml
-charts/*/charts
-charts/*/Chart.lock
 .monokle
 .envrc
 .idea
+
+.gitlab-ci-local*
+
+*generated-test-values.yaml
+
+charts/*/charts
+charts/*/Chart.lock
