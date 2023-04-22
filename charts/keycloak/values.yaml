@@ -11,7 +11,7 @@ fullnameOverride: ""
 persistence:
   enabled: false
   pv:
-    create: false
+    create: true
     name: keycloak-pv
   pvc: 
     name: keycloak-pvc
@@ -43,7 +43,7 @@ service:
   port: 8080
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
@@ -56,7 +56,7 @@ ingress:
     mode: SIMPLE
     # secretName: keycloak-tls
   istioGateway:
-    enabled: false
+    enabled: true
     annotations: {}
   certManager:
     enabled: false
