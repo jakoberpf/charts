@@ -38,6 +38,7 @@ jobs:
       - name: Pushing Helm Chart
         run: |
           REPO_OWNER=`echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]'`
+          echo "$(cd charts && ls -d */)"
           cd charts && helm package keycloak
           PKG_NAME=`ls *.tgz`
           helm push ${PKG_NAME} oci://ghcr.io/${REPO_OWNER}/charts
