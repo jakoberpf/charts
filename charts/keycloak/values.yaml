@@ -11,7 +11,7 @@ fullnameOverride: ""
 persistence:
   enabled: false
   pv:
-    create: true
+    create: false
     name: keycloak-pv
   pvc: 
     name: keycloak-pvc
