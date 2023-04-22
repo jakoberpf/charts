@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'charts/**'
-    #   - '.github/workflows'
 
 jobs:
   release:
@@ -23,19 +20,17 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Release Charts
-        uses: helm/chart-releaser-action@v1.4.1
-        with:
-          charts_dir: charts
-        env:
-          CR_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-
-      - name: Login to container registry
+      - name: Login to Container Registry
         run: |
           REPO_OWNER=`echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]'`
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Release Charts to Github Pages
+        uses: helm/chart-releaser-action@v1.4.1
+        env:
+          CR_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           
-      - name: Pushing Helm Chart
+      - name: Push Charts to Container Registry
         run: |
           REPO_OWNER=`echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]'`
           echo "$(cd charts && ls -d */)"
