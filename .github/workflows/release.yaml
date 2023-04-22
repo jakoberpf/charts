@@ -40,8 +40,9 @@ jobs:
         run: |
           REPO_OWNER=`echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]'`
           for CHART_DIR in $(ls -d */Chart.yaml | cut -d '/' -f 1); do
-            CHART_NAME="$(yq '.name' $CHART_DIR/Chart.yaml)"
-            helm package $CHART_NAME
+            CHART_NAME="$(yq '.name' ${CHART_DIR}/Chart.yaml)"
+            helm package ${CHART_NAME}
             PKG_NAME=`ls *.tgz`
             helm push ${PKG_NAME} oci://ghcr.io/${REPO_OWNER}/charts
+            rm ${PKG_NAME}
           done
