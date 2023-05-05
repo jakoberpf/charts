@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ephemera/bashhub-server # TODO Build own image jakoberpf/bashhub-server
+  repository: jakoberpf/app-bashhub-server
   pullPolicy: Always
   tag: "latest"
 
