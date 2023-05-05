@@ -3,6 +3,16 @@ entries:
   bashhub:
   - apiVersion: v2
     appVersion: 0.2.5
+    created: "2023-05-05T16:52:20.594215552Z"
+    description: A Helm chart for Kubernetes
+    digest: e3db43a441cad13127ad7e032530f79e018079c566804b4cde87c11e43892519
+    name: bashhub
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/bashhub-0.1.14/bashhub-0.1.14.tgz
+    version: 0.1.14
+  - apiVersion: v2
+    appVersion: 0.2.5
     created: "2022-05-20T10:59:12.009994532Z"
     description: A Helm chart for Kubernetes
     digest: e99dfa06c8c1fa4b2f45a534cfafe40b0e0e8b3c465d6ed5a9cacabc0c4d5a87
@@ -534,4 +544,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/zerotier-controller-0.0.1/zerotier-controller-0.0.1.tgz
     version: 0.0.1
-generated: "2023-04-22T20:50:58.35599174Z"
+generated: "2023-05-05T16:52:20.594361654Z"
