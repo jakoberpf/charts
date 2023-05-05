@@ -1,9 +1,6 @@
 .tls
-.kube
-.monokle
 .envrc
 .idea
-
 .gitlab-ci-local*
 
 *generated-test-values.yaml
