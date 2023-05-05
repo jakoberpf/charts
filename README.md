@@ -1,4 +1,4 @@
-# charts
+# 🚢 Regularly and Automatically Updated Helm Charts
 
 These charts are mainly developed for community use and for the `Erpf & Boghdady` cloud.
 
@@ -15,7 +15,8 @@ The Charts with its functionality is listed below:
 - [vault](https://github.com/jakoberpf/charts/tree/main/charts/vault) as an secret manager and store
 - [teleport](https://github.com/jakoberpf/charts/tree/main/charts/teleport) as an cluster, virtual machine and database access service
 - [netmaker](https://github.com/jakoberpf/charts/tree/main/charts/netmaker) as a wireguard based software defined network service
-- [zerotier](https://github.com/jakoberpf/charts/tree/main/charts/zerotier-controller) as a controller for the zerotier software defined network
+- [zerotier-bridge](https://github.com/jakoberpf/charts/tree/main/charts/zerotier-bridge) as a bridge into a zerotier network
+- [zerotier-controller](https://github.com/jakoberpf/charts/tree/main/charts/zerotier-controller) as a controller for the zerotier software defined network
 
 ## How to use the charts
 
@@ -24,11 +25,11 @@ The Charts with its functionality is listed below:
 These charts are currently not available on the official helm repository therefore you need to download it to install.
 
 ```bash
-helm repo add erpf http://helm.erpf.de
-helm install <release-name> erpf/<chart-name>
+helm repo add jakoberpf https://jakoberpf.github.io/charts/
+helm install <release-name> jakoberpf/<chart-name>
 ```
 
-These chart are also pushed into the Github OCI registry.
+These chart are also pushed into the Github Registry.
 
 ```bash
 helm install <release-name> oci://ghcr.io/jakoberpf/charts/<chart-name> --version <chart-version>
