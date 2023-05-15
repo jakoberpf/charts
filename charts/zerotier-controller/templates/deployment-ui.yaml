@@ -86,7 +86,7 @@ spec:
       volumes:
       - name: zerotier-one-data
         persistentVolumeClaim:
-          claimName: zerotier-one-data
+          claimName: {{ .Values.controller.persistence.pvc.name }}
       - name: zerotier-ui-data
         persistentVolumeClaim:
-          claimName: zerotier-ui-data
+          claimName: {{ .Values.ui.persistence.pvc.name }}
