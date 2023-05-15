@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Run helm-docs
-        run: .github/helm-docs.sh
+        run: .ci/helm-docs.sh
 
   # kubeval-chart:
   #   runs-on: ubuntu-latest
