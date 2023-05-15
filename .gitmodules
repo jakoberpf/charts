@@ -1,0 +1,12 @@
+[submodule ".ci/helpers/bats"]
+	path = .ci/helpers/bats
+	url = https://github.com/bats-core/bats-core.git
+[submodule ".ci/helpers/bats-support"]
+	path = .ci/helpers/bats-support
+	url = https://github.com/bats-core/bats-support.git
+[submodule ".ci/helpers/bats-assert"]
+	path = .ci/helpers/bats-assert
+	url = https://github.com/bats-core/bats-assert.git
+[submodule ".ci/helpers/bats-file"]
+	path = .ci/helpers/bats-file
+	url = https://github.com/bats-core/bats-file.git
