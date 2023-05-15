@@ -14,7 +14,9 @@ ui:
       create: false
       name: zerotier-ui-pv
     pvc: 
+      create: false
       name: zerotier-ui-pvc
+      size: 200Mi
   admin:
     usernameSecretName: zerotier-admin-credentials
     usernameSecretKey: username
@@ -32,8 +34,10 @@ controller:
     pv:
       create: false
       name: zerotier-one-pv
-    pvc: 
+    pvc:
+      create: false
       name: zerotier-one-pvc
+      size: 100Mi
 
 imagePullSecrets: []
 nameOverride: ""
