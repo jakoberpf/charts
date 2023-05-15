@@ -1,5 +1,4 @@
 {{- if and .Values.controller.persistence.enabled .Values.controller.persistence.pvc.create -}}
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -10,18 +9,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.controller.persistence.pvc.size }}
-{{- end }}
-
-{{- if and .Values.ui.persistence.enabled .Values.ui.persistence.pvc.create -}}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ .Values.ui.persistence.pvc.name }}
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: {{ .Values.ui.persistence.pvc.size }}
 {{- end }}
