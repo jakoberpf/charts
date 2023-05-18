@@ -23,7 +23,7 @@ kind: Service
 metadata:
   name: {{ include "netmaker.fullname" . }}-mqtt-external
 spec: 
-  type: NodePort
+  type: NodePort # {{ .Values.service.type }}
   ports:
   - name: mqtt2
     port: 8883

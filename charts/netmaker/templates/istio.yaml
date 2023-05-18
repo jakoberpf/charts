@@ -132,4 +132,67 @@ spec:
           port:
             number: 8081
           host: {{ $fullRESTName }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $fullMQName }}
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations.istio }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: TCP
+      hosts:
+        - {{ .Values.ingress.hostPrefix.broker }}{{ .Values.baseDomain }}
+      {{- if or .Values.ingress.tls.enabled }}
+        {{- if .Values.ingress.tls.redirect }}
+      tls:
+        httpsRedirect: true
+        {{- end }}
+    - port:
+        number: 443
+        name: https
+        protocol: TLS
+      tls:
+        mode: {{ .Values.ingress.tls.mode | default "SIMPLE" }}
+        credentialName: {{ .Values.ingress.tls.tlsSecretName | default $tlsSecretName }}
+      hosts:
+        - {{ .Values.ingress.hostPrefix.broker }}{{ .Values.baseDomain }}
+      {{- end }}
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $fullMQName }}
+  labels:
+    {{- include "netmaker.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations.istio }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+spec:
+  hosts:
+    - {{ .Values.ingress.hostPrefix.broker }}{{ .Values.baseDomain }}
+  gateways:
+    - {{ $fullMQName }}
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          port:
+            number: 8883
+          host: {{ $fullMQName }}
 {{- end }}

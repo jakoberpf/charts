@@ -8,7 +8,7 @@ replicaCount: 3
 image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.17.1"
+  tag: "v0.18.1"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -81,7 +81,7 @@ setIpForwarding:
 service:
   type: ClusterIP
   restPort: 8081
-  mqPort: 8883 # Defined the public mqtt interface
+  mqPort: 443 # Defined the public mqtt interface
   uiPort: 80
 
 ingress:
