@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vaultwarden-smtp
+type: Opaque
+stringData:
+  user: ZGEzaytzZzlVb009Cg==
+  password: ZG1EYjhQU1VacW8zVG84MVR6M1JuYkpIYkw2d21MRUsK
