@@ -49,12 +49,12 @@ spec:
             - name: ZU_DEFAULT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name:  {{ .Values.ui.admin.usernameSecretName }}
+                  name:  {{ .Values.ui.admin.secretName }}
                   key: {{ .Values.ui.admin.usernameSecretKey }}
             - name: ZU_DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name:  {{ .Values.ui.admin.passwordSecretName }}
+                  name:  {{ .Values.ui.admin.secretName }}
                   key: {{ .Values.ui.admin.passwordSecretkey }}
           # livenessProbe:
           #   httpGet:

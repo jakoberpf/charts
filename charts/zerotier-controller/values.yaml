@@ -18,9 +18,9 @@ ui:
       name: zerotier-ui-pvc
       size: 200Mi
   admin:
-    usernameSecretName: zerotier-admin-credentials
+    generate: true
+    secretName: zerotier-admin-credentials
     usernameSecretKey: username
-    passwordSecretName: zerotier-admin-credentials
     passwordSecretkey: password
 
 controller:

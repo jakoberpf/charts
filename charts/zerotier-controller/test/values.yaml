@@ -1,13 +1,3 @@
-ui:
-  persistence:
-    enabled: true
-    pvc:
-      create: true
-controller:
-  persistence:
-    enabled: true
-    pvc:
-      create: true
 ingress:
   enabled: true
   hosts:
