@@ -56,7 +56,8 @@ jobs:
         run: ct install --target-branch main
 
       - name: Show kubernetes resources (debug)
-        if: steps.list-changed.outputs.changed == 'true'
+        if: always() 
+        # steps.list-changed.outputs.changed == 'true'
         run: |
           kubectl get pods --all-namespaces
           kubectl get pvc --all-namespaces
