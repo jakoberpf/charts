@@ -1,0 +1,6 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: zerotier.example.com
+  istioGateway:
+    enabled: true
