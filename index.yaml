@@ -491,6 +491,18 @@ entries:
     version: 0.1.0
   zerotier-controller:
   - apiVersion: v2
+    created: "2023-05-19T17:58:23.798558944Z"
+    description: A Helm chart for Kubernetes
+    digest: 0fad0412e0db85e990015ba7da10975f90b47510a4f58270c623fc1c1a38dacb
+    maintainers:
+    - email: github@jakoberpf.de
+      name: jakoberpf
+    name: zerotier-controller
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/zerotier-controller-0.0.9/zerotier-controller-0.0.9.tgz
+    version: 0.0.9
+  - apiVersion: v2
     created: "2023-04-22T20:50:58.355837836Z"
     description: A Helm chart for Kubernetes
     digest: 98885fa36191396c9c04344f4f42684c4e86f2f38305c16367eb8dda1fba940d
@@ -544,4 +556,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/zerotier-controller-0.0.1/zerotier-controller-0.0.1.tgz
     version: 0.0.1
-generated: "2023-05-05T16:52:20.594361654Z"
+generated: "2023-05-19T17:58:23.798681344Z"
