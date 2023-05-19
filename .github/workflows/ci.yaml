@@ -14,6 +14,17 @@ jobs:
   lint:
     name: Lint charts
     runs-on: ubuntu-latest
+    # strategy:
+    #   matrix:
+    #     k8s:
+    #       - v1.16.8
+    #       - v1.17.4
+    #       - v1.18.20
+    #       - v1.19.16
+    #       - v1.20.15
+    #       - v1.21.10
+    #       - v1.22.7
+    #       - v1.23.4
     steps:
 
       - name: Checkout
@@ -50,6 +61,7 @@ jobs:
       - name: Create kind cluster
         if: steps.list-changed.outputs.changed == 'true'
         uses: helm/kind-action@v1.4.0
+        # version: ${{ matrix.k8s }}
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
@@ -62,8 +74,9 @@ jobs:
           kubectl get pvc --all-namespaces
           kubectl get pv --all-namespaces
 
-  generate-matrix:
-    name: Generate matrix
+  prepare-tests:
+    name: Prepare tests
+    needs: lint
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -127,67 +140,45 @@ jobs:
           # Set output
           echo "matrix=$( echo "$JSON" )" >> $GITHUB_OUTPUT
 
-  # kubeval-chart:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint-chart
-  #     - lint-docs
-  #   strategy:
-  #     matrix:
-  #       k8s:
-  #         - v1.16.8
-  #         - v1.17.4
-  #         - v1.18.20
-  #         - v1.19.16
-  #         - v1.20.15
-  #         - v1.21.10
-  #         - v1.22.7
-  #         - v1.23.4
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Submodules
-  #       run: git submodule update --init
-  #     - name: Run kubeval
-  #       env:
-  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
-  #       run: .github/kubeval.sh
+  test:
+    name: Test "${{ matrix.directory }}" chart
+    needs: prepare-tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix: ${{fromJson(needs.prepare-tests.outputs.matrix)}}
+    steps:
 
-  # minikube-deploy:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint-chart
-  #     - lint-docs
-  #     - kubeval-chart
-  #   name: build example and deploy to minikube
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Submodules
-  #       run: git submodule update --init
-  #     - name: Start Minikube
-  #       uses: manusa/actions-setup-minikube@v2.7.2
-  #       with:
-  #         minikube version: v1.28.0
-  #         kubernetes version: v1.25.6
-  #     - name: Install YamlQueryTool
-  #       uses: mikefarah/yq@v4.33.3
-  #     - name: Deploy secrets
-  #       run: .github/deploy-secrets.sh
-  #     - name: Deploy charts
-  #       run: .github/deploy-charts.sh
-      # - name: Verify Istio
-      #   run: .github/verify-istio.sh
-      # - name: Build image
-      #   run: |
-      #     export SHELL=/bin/bash
-      #     eval $(minikube -p minikube docker-env)
-      #     docker build -f ./Dockerfile -t local/example .
-      #     echo -n "verifying images:"
-      #     docker images        
-      # - name: Test service URLs
-      #   run: |
-      #     minikube service list
-      #     minikube service example --url
-      #     echo "------------------opening the service------------------"
-      #     curl $(minikube service example --url)
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.11.2
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          check-latest: true
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.4.0
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install KinD Kubernetes
+        uses: helm/kind-action@v1.4.0
+        with:
+          install_only: true
+
+      - uses: zufardhiyaulhaq/setup-istioctl@v1.0.0
+        with:
+          version: 1.17.2
+
+      - name: Run bats tests
+        run: |
+          ./test/helpers/bats/bin/bats ${{ matrix.directory }}/test/test.bats --print-output-on-failure
