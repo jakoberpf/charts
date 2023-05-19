@@ -12,7 +12,7 @@ on:
 jobs:
 
   lint:
-    name:
+    name: Lint charts
     runs-on: ubuntu-latest
     steps:
 
