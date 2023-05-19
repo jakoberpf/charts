@@ -105,23 +105,13 @@ jobs:
           JSON="{\"include\":["
 
           # Loop by lines
-          while read path; do
-            # Set $directory to substring before /
-            directory="$( echo $path | cut -d'/' -f1 -s )"
-
-            if [ -z "$directory" ]; then
-              continue # Exclude root directory
-            elif [ "$directory" == docs ]; then
-              continue # Exclude docs directory
-            elif [ "$path" == *.rst ]; then
-              continue # Exclude *.rst files
-            fi
+          while read chart; do
 
             # Set $os. "ubuntu-latest" by default.
             os="ubuntu-latest"
 
             # Add build to the matrix only if it is not already included
-            JSONline="{\"directory\": \"$directory\", \"os\": \"$os\"},"
+            JSONline="{\"directory\": \"$chart\", \"os\": \"$os\"},"
             if [[ "$JSON" != *"$JSONline"* ]]; then
               JSON="$JSON$JSONline"
             fi
