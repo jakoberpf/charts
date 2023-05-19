@@ -9,12 +9,12 @@ ui:
     pullPolicy: IfNotPresent
     tag: "1.5.1"
   persistence:
-    enabled: false
+    enabled: true
     pv:
       create: false
       name: zerotier-ui-pv
     pvc:
-      create: false
+      create: true
       name: zerotier-ui-pvc
       size: 200Mi
   admin:
@@ -30,12 +30,12 @@ controller:
     pullPolicy: IfNotPresent
     tag: "1.10.6"
   persistence:
-    enabled: false
+    enabled: true
     pv:
       create: false
       name: zerotier-one-pv
     pvc:
-      create: false
+      create: true
       name: zerotier-one-pvc
       size: 100Mi
 
