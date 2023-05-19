@@ -146,7 +146,7 @@ jobs:
           echo "matrix=$( echo "$JSON" )" >> $GITHUB_OUTPUT
 
   test:
-    name: Test "${{ matrix.directory }}" chart
+    name: Test "${{ matrix.directory }}"
     needs: prepare-tests
     runs-on: ${{ matrix.os }}
     strategy:
