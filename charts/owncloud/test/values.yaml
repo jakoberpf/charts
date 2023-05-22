@@ -1,0 +1,13 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: owncloud.example.com
+  tls:
+    enabled: true
+    mode: SIMPLE
+  istioGateway:
+    enabled: true
+  certManager:
+    enabled: true
+    issuerRef:
+      name: selfsigned-cluster-issuer
