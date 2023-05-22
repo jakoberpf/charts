@@ -10,3 +10,6 @@
 [submodule "test/helpers/bats"]
 	path = test/helpers/bats
 	url = https://github.com/bats-core/bats-core.git
+[submodule "charts/owncloud/subcharts/ocis-charts"]
+	path = charts/owncloud/subcharts/ocis-charts
+	url = https://github.com/owncloud/ocis-charts.git
