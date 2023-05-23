@@ -1,12 +1,6 @@
 ocis:
-  externalDomain: owncloud.example.com
-  insecure:
-    # disables ssl certificate checking for connections to the openID connect identity provider.
-    # Not recommended for production setups, but we don't have valid certificates in minikube
-    oidcIdpInsecure: true
-    # disables ssl certificate checking for connections to the oCIS http apis.
-    # Not recommended for production setups, but we don't have valid certificates in minikube
-    ocisHttpApiInsecure: true
+  image:
+    tag: 3.0.0-rc.4
 
 # Default values for owncloud.
 # This is a YAML-formatted file.

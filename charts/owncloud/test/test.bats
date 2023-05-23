@@ -39,7 +39,7 @@ setup_file() {
 
     # helm repo add jetstack https://charts.jetstack.io
     # helm repo add emberstack https://emberstack.github.io/helm-charts
-    helm repo update
+    # helm repo update
 
     helm upgrade --install \
         cert-manager jetstack/cert-manager \
@@ -54,15 +54,17 @@ setup_file() {
     
     kubectl apply -f $GIT_ROOT/test/cert-manager-selfsinged.yaml
 
-    # Deploy Zerotier controller
+    kubectl get secret owncloud -n $TEST_NAMESPACE -o json | jq '.data."ca.crt"' | xargs | base64 --decode >> $GIT_ROOT/charts/owncloud/test/ca.crt
+
+    # Deploy Owncloud
     helm upgrade --install owncloud $GIT_ROOT/charts/owncloud --values $GIT_ROOT/charts/owncloud/test/values.yaml -n $TEST_NAMESPACE
-    helm upgrade --install ocis $GIT_ROOT/charts/owncloud/subcharts/ocis-charts/charts/ocis --values $GIT_ROOT/charts/owncloud/test/values-ocis.yaml -n $TEST_NAMESPACE
-    # Wait for Zerotier controller to be ready
+    # Wait for Owncloud to be ready
     # while ! curl -I --silent --fail --header "Host: $TEST_HOST" http://$TEST_UI; do
-    #     echo >&2 'Zerotier Controller down, retrying in 1s...'
+    #     echo >&2 'Owncloud down, retrying in 1s...'
     #     ((c++)) && ((c==60)) && exit 0
     #     sleep 1
     # done
+    sleep 60
 }
 
 @test "should get a redirect to https on http port" {

@@ -23,7 +23,7 @@ version: 0.0.1
 # It is recommended to use it with quotes.
 appVersion: "0.2.0"
 
-# dependencies:
-#   - name: ocis
-#     repository: file://charts/ocis-charts/charts/ocis
-#     version: 0.2.0
+dependencies:
+  - name: ocis
+    repository: file://subcharts/ocis-charts/charts/ocis
+    version: 0.2.0

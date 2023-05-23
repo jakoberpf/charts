@@ -1,10 +1,14 @@
+ocis:
+  externalDomain: owncloud.example.com
+  insecure:
+    oidcIdpInsecure: true
+    ocisHttpApiInsecure: true
 ingress:
   enabled: true
   hosts:
     - host: owncloud.example.com
   tls:
     enabled: true
-    mode: SIMPLE
   istioGateway:
     enabled: true
   certManager:
