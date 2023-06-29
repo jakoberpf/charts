@@ -17,7 +17,7 @@ app:
   smtp:
     secret:
       generate: true
-      secretName: vaultwarden-smpt
+      secretName: vaultwarden-smtp
       usernameSecretKey: username
       passwordSecretkey: password
     host: smtp.example.com

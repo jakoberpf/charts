@@ -36,10 +36,10 @@ setup_file() {
 
     ## Use template script -- END
 
-    # Generate secrets
-    argon2bash64=$(echo -n "super-secret-password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4)
-    kubectl create secret generic vaultwarden-token -n $TEST_NAMESPACE --from-literal=token=$argon2bash64 --dry-run=client -o yaml | kubectl apply -f -
-    kubectl create secret generic vaultwarden-smtp -n $TEST_NAMESPACE --from-literal=user=vaultwarden@example.com --from-literal=password=$(openssl rand 32 | base64) --dry-run=client -o yaml | kubectl apply -f -
+    # # Generate secrets
+    # argon2bash64=$(echo -n "super-secret-password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4)
+    # kubectl create secret generic vaultwarden-token -n $TEST_NAMESPACE --from-literal=token=$argon2bash64 --dry-run=client -o yaml | kubectl apply -f -
+    # kubectl create secret generic vaultwarden-smtp -n $TEST_NAMESPACE --from-literal=user=vaultwarden@example.com --from-literal=password=$(openssl rand 32 | base64) --dry-run=client -o yaml | kubectl apply -f -
 
     # Deploy Vaultwarden
     helm upgrade --install vaultwarden $GIT_ROOT/charts/vaultwarden --values $GIT_ROOT/charts/vaultwarden/test/values.yaml -n $TEST_NAMESPACE

@@ -49,18 +49,18 @@ spec:
           - name: SMTP_USERNAME
             valueFrom:
               secretKeyRef:
-                name: {{ include "vaultwarden.fullname" . }}-smtp
-                key: user
+                name: {{ .Values.app.smtp.secret.secretName }}
+                key: {{ .Values.app.smtp.secret.usernameSecretKey }}
           - name: SMTP_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ include "vaultwarden.fullname" . }}-smtp
-                key: password
+                name: {{ .Values.app.smtp.secret.secretName }}
+                key: {{ .Values.app.smtp.secret.passwordSecretkey }}
           - name: ADMIN_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ include "vaultwarden.fullname" . }}-token
-                key: token
+                name: {{ .Values.app.admin.secret.secretName }}
+                key: {{ .Values.app.admin.secret.tokenSecretKey }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: vaultwarden-data
