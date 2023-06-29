@@ -34,3 +34,5 @@ These chart are also pushed into the Github Registry.
 ```bash
 helm install <release-name> oci://ghcr.io/jakoberpf/charts/<chart-name> --version <chart-version>
 ```
+
+- Add vaultwarden backup https://github.com/ttionya/vaultwarden-backup/tree/master
