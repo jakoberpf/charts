@@ -29,7 +29,7 @@ persistence:
   pv:
     create: false
     name: vaultwarden-pv
-  pvc: 
+  pvc:
     name: vaultwarden-pvc
 
 serviceAccount:
@@ -83,7 +83,7 @@ ingress:
     annotations: {}
   certManager:
     enabled: false
-    # issuerRef: 
+    # issuerRef:
     #   name: cloudflare-letsencrypt-prod
     #   kind: ClusterIssuer
     annotations: {}
