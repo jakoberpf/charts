@@ -15,10 +15,20 @@ app:
   show_password_hint: false
   web_vault_enabled: true
   smtp:
+    secret:
+      generate: true
+      secretName: vaultwarden-smtp
+      usernameSecretKey: username
+      passwordSecretkey: password
     host: smtp.example.com
     from: vaultwarden@example.de
     port: 587
     ssl: true
+  admin:
+    secret:
+      generate: true
+      secretName: vaultwarden-token
+      tokenSecretKey: token
   signups:
     allowed: false
     verify: true
@@ -29,7 +39,7 @@ persistence:
   pv:
     create: false
     name: vaultwarden-pv
-  pvc: 
+  pvc:
     name: vaultwarden-pvc
 
 serviceAccount:
@@ -83,7 +93,7 @@ ingress:
     annotations: {}
   certManager:
     enabled: false
-    # issuerRef: 
+    # issuerRef:
     #   name: cloudflare-letsencrypt-prod
     #   kind: ClusterIssuer
     annotations: {}

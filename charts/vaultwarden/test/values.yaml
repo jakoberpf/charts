@@ -1,0 +1,6 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: vaultwarden.example.com
+  istioGateway:
+    enabled: true
