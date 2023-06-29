@@ -17,7 +17,7 @@ persistence:
   pv:
     create: false
     name: postgres-pv
-  pvc: 
+  pvc:
     name: postgres-pvc
 
 serviceAccount:
