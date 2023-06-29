@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: vaultwarden-token
-type: Opaque
-stringData:
-  user: admin
-  password: MTIvU3lqV21qK2J3UStYSTVZZDRWb01HcWo0OVdra2wrSytPb3lMaThwL2NDVy9WZ3hjSElPS2lnd1BvUE5YeQo=
