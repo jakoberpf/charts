@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "postgresql.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Values.admin.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -12,9 +12,9 @@ If release name contains chart name it will be used as a full name.
 */}}
 {{- define "postgresql.fullname" -}}
 {{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- .Values.admin.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- $name := default .Chart.Name .Values.admin.nameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -54,9 +54,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "postgresql.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "postgresql.fullname" .) .Values.serviceAccount.name }}
+{{- if .Values.admin.serviceAccount.create }}
+{{- default (include "postgresql.fullname" .) .Values.admin.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default "default" .Values.admin.serviceAccount.name }}
 {{- end }}
 {{- end }}
