@@ -4,6 +4,12 @@
 
 postgresql-ha:
   fullnameOverride: "postgresql"
+  postgresql:
+    generateSecret: true
+    existingSecret: "postgresql-pgpool"
+  pgpool:
+    generateSecret: true
+    existingSecret: "postgresql-postgresql"
 
 admin:
   replicaCount: 1
