@@ -1,0 +1,6 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: postgresql.example.com
+  istioGateway:
+    enabled: true
