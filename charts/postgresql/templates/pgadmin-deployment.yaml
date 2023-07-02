@@ -45,14 +45,14 @@ spec:
             - name: http
               containerPort: {{ .Values.admin.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
           resources:
             {{- toYaml .Values.admin.resources | nindent 12 }}
       {{- with .Values.admin.nodeSelector }}
