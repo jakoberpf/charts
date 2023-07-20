@@ -47,7 +47,7 @@ setup_file() {
     done
 }
 
-@test "should get a the PGAdmin Web UI" {
+@test "should get a the PostgreSQL Admin Web UI" {
     run bash -c "curl -s --header 'Host: $TEST_HOST' $TEST_UI"
     assert_output --partial 'Vaultwarden Web Vault'
 }
