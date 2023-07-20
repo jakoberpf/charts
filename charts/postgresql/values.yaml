@@ -6,10 +6,10 @@ postgresql-ha:
   fullnameOverride: "postgresql"
   postgresql:
     generateSecret: true
-    existingSecret: "postgresql-pgpool"
+    existingSecret: "postgresql-postgresql"
   pgpool:
     generateSecret: true
-    existingSecret: "postgresql-postgresql"
+    existingSecret: "postgresql-pgpool"
 
 admin:
   replicaCount: 1
