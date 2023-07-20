@@ -37,7 +37,7 @@ setup_file() {
     ## Use template script -- END
 
     # Deploy PostgreSQL
-    helm dependency build
+    helm dependency build $GIT_ROOT/charts/postgresql
     helm upgrade --install postgresql $GIT_ROOT/charts/postgresql --values $GIT_ROOT/charts/postgresql/test/values.yaml -n $TEST_NAMESPACE
     # Wait for PGAdmin to be ready
     while ! curl -I --silent --fail --header "Host: $TEST_HOST" $TEST_UI; do
