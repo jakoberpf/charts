@@ -173,7 +173,7 @@ jobs:
         uses: helm/chart-testing-action@v2.4.0
 
       - name: Setup Docker
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Install KinD Kubernetes
         uses: helm/kind-action@v1.4.0
