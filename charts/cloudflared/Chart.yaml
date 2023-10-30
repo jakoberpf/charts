@@ -1,6 +1,9 @@
 apiVersion: v2
 name: cloudflare-tunnel
 description: Manage and use cloudflare tunnels (also known as argo tunnels) on k8s cluster
+maintainers:
+  - name: jakoberpf
+    email: github@jakoberpf.de
 
 # A chart can be either an 'application' or a 'library' chart.
 #
