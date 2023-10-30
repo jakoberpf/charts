@@ -166,7 +166,7 @@ jobs:
 
       - name: Decrypt secrets
         run: |
-          sops --decrypt test/tunnel-credentials.json.enc > test/tunnel-credentials.json
+          sops --output-type json --decrypt test/tunnel-credentials.json.enc > test/tunnel-credentials.json
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
 
