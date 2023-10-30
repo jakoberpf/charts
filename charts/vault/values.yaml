@@ -28,7 +28,7 @@ ingress:
     annotations: {}
   certManager:
     enabled: false
-    # issuerRef: 
+    # issuerRef:
     #   name: cloudflare-letsencrypt-prod
     #   kind: ClusterIssuer
     annotations: {}
