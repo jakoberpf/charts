@@ -53,5 +53,5 @@ setup_file() {
 }
 
 # teardown_file() {
-#     kind delete cluster --name zerotier-gateway
+#     kind delete cluster --name charts
 # }
