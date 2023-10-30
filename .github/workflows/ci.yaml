@@ -64,7 +64,7 @@ jobs:
 
       - name: Create kind cluster
         if: steps.list-changed.outputs.changed == 'true'
-        uses: helm/kind-action@v1.4.0
+        uses: helm/kind-action@v1.8.0
         # with:
         #   kubectl_version: ${{ matrix.k8s }}
 
@@ -176,7 +176,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Install KinD Kubernetes
-        uses: helm/kind-action@v1.4.0
+        uses: helm/kind-action@v1.8.0
         with:
           install_only: true
 
