@@ -79,10 +79,7 @@ jobs:
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          jq '.AccountTag' test/tunnel-credentials.json | xargs
-          jq '.TunnelSecret' test/tunnel-credentials.json | xargs
-          jq '.TunnelID' test/tunnel-credentials.json | xargs
-          ct install --target-branch main
+          ct install --target-branch main --excluded-charts cloudflared
 
       - name: Show kubernetes resources (debug)
         if: steps.list-changed.outputs.changed == 'true' || failure()
