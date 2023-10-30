@@ -37,6 +37,14 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Sops Binary Installer
+        uses: mdgreenwald/mozilla-sops-action@v1.4.1
+        id: install
+
+      - name: Decrypt secrets
+        run: |
+          sops --decrypt test/tunnel-credentials.json.enc > test/tunnel-credentials.json
+
       - name: Set up Helm
         uses: azure/setup-helm@v3
         with:
@@ -70,7 +78,11 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch main
+        run: |
+          jq '.AccountTag' test/tunnel-credentials.json | xargs
+          jq '.TunnelSecret' test/tunnel-credentials.json | xargs
+          jq '.TunnelID' test/tunnel-credentials.json | xargs
+          ct install --target-branch main
 
       - name: Show kubernetes resources (debug)
         if: steps.list-changed.outputs.changed == 'true' || failure()
