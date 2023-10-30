@@ -70,7 +70,8 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch main
+        run: |
+          ct install --target-branch main --excluded-charts cloudflared
 
       - name: Show kubernetes resources (debug)
         if: steps.list-changed.outputs.changed == 'true' || failure()
@@ -158,6 +159,16 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+
+      - name: Sops Binary Installer
+        uses: mdgreenwald/mozilla-sops-action@v1.4.1
+        id: install
+
+      - name: Decrypt secrets
+        run: |
+          sops --output-type json --decrypt test/tunnel-credentials.json.enc > test/tunnel-credentials.json
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
 
       - name: Set up Helm
         uses: azure/setup-helm@v3

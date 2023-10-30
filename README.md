@@ -35,6 +35,12 @@ These chart are also pushed into the Github Registry.
 helm install <release-name> oci://ghcr.io/jakoberpf/charts/<chart-name> --version <chart-version>
 ```
 
+## Secrets
+
+```bash
+sops --encrypt test/tunnel-credentials.json > test/tunnel-credentials.json.enc
+```
+
 ## Roadmap
 
 - Add vaultwarden backup solution https://github.com/ttionya/vaultwarden-backup/tree/master
