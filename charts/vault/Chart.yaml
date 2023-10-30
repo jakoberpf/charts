@@ -2,8 +2,11 @@ apiVersion: v2
 name: vault
 description: A Helm chart for Hashcorp Vault
 type: application
-version: 0.0.3
-appVersion: "1.12.0"
+maintainers:
+  - name: jakoberpf
+    email: github@jakoberpf.de
+version: 0.0.4
+appVersion: "0.26.0"
 dependencies:
 - name: vault
   version: "0.26.0"
