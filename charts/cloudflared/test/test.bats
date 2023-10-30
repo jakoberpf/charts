@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# Run via ./test/helpers/bats/bin/bats ./charts/cloudflared/test/test.bats --print-output-on-failure
 GIT_ROOT=$(git rev-parse --show-toplevel)
 
 # Environment variables -- Standart
@@ -36,18 +36,18 @@ setup_file() {
     # Deploy secrets
     kubectl create secret generic tunnel-credentials --from-file=credentials.json=$GIT_ROOT/test/tunnel-credentials.json -n cloudflared --dry-run=client -o yaml | kubectl apply -f -
 
-    # Deploy Vaultwarden
+    # Deploy Cloudflared
     helm upgrade --install cloudflared $GIT_ROOT/charts/cloudflared --values $GIT_ROOT/charts/cloudflared/test/values.yaml -n $TEST_NAMESPACE
-    # Wait for Vaultwarden to be ready
-    while ! curl -I --silent --fail --header "Host: $TEST_HOST" $TEST_UI; do
-        echo >&2 'Vaultwarden down, retrying in 1s...'
+    # Wait for Cloudflared to be ready
+    while ! curl -I --silent --fail https://kubernetes-charts-testing-local.erpf.de; do
+        echo >&2 'Cloudflared down, retrying in 1s...'
         ((c++)) && ((c==60)) && exit 0
         sleep 1
     done
 }
 
-@test "should get a the vaultwarden web ui" {
-    run bash -c "curl -s https://kubernetes-charts-testing-local.erpf.de/"
+@test "should get a the Cloudflared Example UI" {
+    run bash -c "curl -s https://kubernetes-charts-testing-local.erpf.de"
     assert_output --partial 'Cloudflare Tunnel Connection'
     assert_output --partial 'Congrats! You created a tunnel!'
 }
