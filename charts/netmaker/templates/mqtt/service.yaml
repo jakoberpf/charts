@@ -25,11 +25,16 @@ metadata:
 spec: 
   type: NodePort # {{ .Values.service.type }}
   ports:
+  - name: mqtt
+    port: 1883
+    nodePort: 1883
+    protocol: TCP
+    targetPort: mqtt 
   - name: mqtt2
     port: 8883
     nodePort: 8883
     protocol: TCP
-    targetPort: mqtt2    
+    targetPort: mqtt2 
   selector:
     app: {{ include "netmaker.fullname" . }}-mqtt
   sessionAffinity: None

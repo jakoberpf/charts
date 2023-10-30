@@ -37,6 +37,10 @@ spec:
       #           values:
       #           - {{ include "netmaker.fullname" . }}
       #       topologyKey: "kubernetes.io/hostname"
+      # hostAliases:
+      # - ip: "192.168.1.11"
+      #   hostnames:
+      #   - "broker.netmaker.test.erpf.de"
       containers:
       - name: {{ include "netmaker.fullname" . }}
         securityContext:
@@ -45,11 +49,13 @@ spec:
         image: gravitl/netmaker:{{ .Values.image.tag | default .Chart.AppVersion }}
         env:
         - name: SERVER_NAME
-          value: broker.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}
+          value: broker.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain }}
         - name: SERVER_API_CONN_STRING
-          value: api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}:443
+          value: api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain }}:443
         - name: SERVER_HTTP_HOST
-          value: api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}
+          value: api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain }}
+        - name: SERVER_HOST
+          value: "192.168.1.11"
         - name: API_PORT
           value: "8081"
         {{- if not .Values.wireguard.kernel }}
@@ -77,11 +83,11 @@ spec:
               apiVersion: v1
               fieldPath: metadata.name
         - name: SQL_HOST
-          value: 'netmaker-postgres.{{ .Release.Namespace }}.svc.cluster.local'
+          value: {{ .Values.server.postgres.host }}
         - name: SQL_PORT
-          value: "5432"
+          value: {{ .Values.server.postgres.port | quote }}
         - name: SQL_DB
-          value: {{ index .Values.postgres.postgres.database }}
+          value: {{ .Values.server.postgres.database }}
         - name: SQL_USER
           value: {{ index .Values.postgres.postgres.username }}
         - name: SQL_PASS

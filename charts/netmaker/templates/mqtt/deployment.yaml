@@ -29,7 +29,7 @@ spec:
       - env:
         - name: NETMAKER_SERVER_HOST
           value: https://api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}
-        image: eclipse-mosquitto:2.0.11-openssl
+        image: eclipse-mosquitto:2.0.15-openssl
         command: ["/mosquitto/config/wait.sh"]
         imagePullPolicy: Always
         name: mosquitto
