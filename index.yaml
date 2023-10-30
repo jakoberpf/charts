@@ -153,6 +153,20 @@ entries:
     version: 0.1.0
   cloudflare-tunnel:
   - apiVersion: v2
+    appVersion: 2023.8.2
+    created: "2023-10-30T16:42:51.346125684Z"
+    description: Manage and use cloudflare tunnels (also known as argo tunnels) on
+      k8s cluster
+    digest: 878fad727fdc23943a58868d7b16cb20898ba521e06bc7b91cf181dc6745f006
+    maintainers:
+    - email: github@jakoberpf.de
+      name: jakoberpf
+    name: cloudflare-tunnel
+    type: application
+    urls:
+    - https://github.com/jakoberpf/charts/releases/download/cloudflare-tunnel-0.0.2/cloudflare-tunnel-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     appVersion: 2023.5.1
     created: "2023-10-30T15:28:56.120516016Z"
     description: Manage and use cloudflare tunnels (also known as argo tunnels) on
@@ -597,4 +611,4 @@ entries:
     urls:
     - https://github.com/jakoberpf/charts/releases/download/zerotier-controller-0.0.1/zerotier-controller-0.0.1.tgz
     version: 0.0.1
-generated: "2023-10-30T15:28:56.120633118Z"
+generated: "2023-10-30T16:42:51.346293787Z"
