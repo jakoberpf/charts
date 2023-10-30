@@ -159,6 +159,14 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Sops Binary Installer
+        uses: mdgreenwald/mozilla-sops-action@v1.4.1
+        id: install
+
+      - name: Decrypt secrets
+        run: |
+          sops --decrypt test/tunnel-credentials.json.enc > test/tunnel-credentials.json
+
       - name: Set up Helm
         uses: azure/setup-helm@v3
         with:
