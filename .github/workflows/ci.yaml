@@ -54,7 +54,7 @@ jobs:
         id: list-changed
         run: |
           git branch -a
-          changed=$(ct list-changed --target-branch remotes/origin/main)
+          changed=$(ct list-changed --target-branch main --config .ci/config.yaml)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
