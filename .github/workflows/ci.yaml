@@ -53,7 +53,6 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          git branch -a
           changed=$(ct list-changed --target-branch main --config .ci/ct-config.yaml)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
