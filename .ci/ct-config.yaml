@@ -1,3 +1,5 @@
 remote: upstream
+before_script:
+  - git branch "main" "origin/main"
 chart-repos:
   - hashicorp=https://helm.releases.hashicorp.com
