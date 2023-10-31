@@ -1,0 +1,2 @@
+chart-repos:
+  - hashicorp=https://helm.releases.hashicorp.com
