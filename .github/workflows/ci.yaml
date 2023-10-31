@@ -71,7 +71,7 @@ jobs:
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          ct install --target-branch main --excluded-charts cloudflared
+          ct install --target-branch main --config .ci/config.yaml --excluded-charts cloudflared
 
       - name: Show kubernetes resources (debug)
         if: steps.list-changed.outputs.changed == 'true' || failure()
