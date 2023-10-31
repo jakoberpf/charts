@@ -53,6 +53,7 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
+          git branch
           changed=$(ct list-changed --target-branch main)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
