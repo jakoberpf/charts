@@ -10,4 +10,4 @@ appVersion: "0.26.0"
 dependencies:
 - name: vault
   version: "0.26.0"
-  repository: "@hashicorp"
+  repository: "https://helm.releases.hashicorp.com"
