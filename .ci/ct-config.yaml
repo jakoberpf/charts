@@ -1,5 +1,5 @@
 remote: upstream
 before_script:
-  - git branch "main" "origin/main"
+  - git branch "$target_branch" "origin/$target_branch"
 chart-repos:
   - hashicorp=https://helm.releases.hashicorp.com
