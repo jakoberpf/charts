@@ -32,7 +32,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -54,7 +54,7 @@ jobs:
         id: list-changed
         run: |
           git branch -a
-          changed=$(ct list-changed --target-branch main)
+          changed=$(ct list-changed --target-branch remotes/origin/main)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
