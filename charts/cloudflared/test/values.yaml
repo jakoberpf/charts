@@ -1,0 +1,8 @@
+cloudflared:
+  tunnel: <will-be-replaced>
+  ingress:
+    - hostname: kubernetes-charts-testing-local.erpf.de
+      service: hello_world
+    - service: http_status:404
+  serviceMonitor:
+    enabled: false
