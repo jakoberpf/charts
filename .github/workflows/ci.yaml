@@ -70,7 +70,7 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch main
+        run: ct install --target-branch main --config .ci/config.yaml
 
       - name: Show kubernetes resources (debug)
         if: steps.list-changed.outputs.changed == 'true' || failure()
