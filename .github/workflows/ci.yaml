@@ -68,6 +68,10 @@ jobs:
         # with:
         #   kubectl_version: ${{ matrix.k8s }}
 
+      - name: Run bats tests
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami 
+
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
         run: |
