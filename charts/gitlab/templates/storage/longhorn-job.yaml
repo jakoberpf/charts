@@ -1,0 +1,30 @@
+{{- if .Values.persistence.provisioner.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: longhorn-provisioner
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook-weight: "2"
+spec:
+  template:
+    spec:
+      serviceAccountName: longhorn-provisioner
+      containers:
+        - name: longhorn-configurator
+          image: jakoberpf/longhorn-api
+          imagePullPolicy: Always
+          # command: ["/bin/bash"]
+          # args: ["-c", "pyhton handler.py"]
+          volumeMounts:
+          - name: config
+            mountPath: "/longhorn/config.yaml"
+            subPath: config.yaml
+      restartPolicy: Never
+      volumes:
+        - name: config
+          configMap:
+            name: longhorn-volumes
+  backoffLimit: 1
+{{- end }}
