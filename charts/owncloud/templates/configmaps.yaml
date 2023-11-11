@@ -1,0 +1,22 @@
+# https://doc.owncloud.com/ocis/next/deployment/container/orchestration/tab-pages/generic-configs-tab-1.html
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storage-users
+data:
+  # how to generate: create a UUIDv4
+  # example generation command: `cat /proc/sys/kernel/random/uuid`
+  # Only set to "1284d238-aa92-42ce-bdc4-0b0000009157" if you
+  # migrate an existing oCIS installation from 2.0.0-rc.1 and earlier.
+  storage-uuid: MDVmYzVlMWEtN2Y5Ni00ZjVjLWEwM2EtMWUzMTAwYzQxNzFjCg==
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: graph
+data:
+  # how to generate: create a UUIDv4
+  # example generation command: `cat /proc/sys/kernel/random/uuid`
+  application-id: MDVmYzVlMWEtN2Y5Ni00ZjVjLWEwM2EtMWUzMTAwYzQxNzFjCg==
