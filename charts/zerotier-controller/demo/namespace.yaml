@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zerotier-demo
+  labels:
+    app: zerotier
+    istio-injection: enabled
