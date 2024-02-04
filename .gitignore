@@ -1,7 +1,7 @@
 .tls
+.kube
 .envrc
 .idea
-.gitlab-ci-local*
 
 *generated-test-values.yaml
 
