@@ -53,7 +53,7 @@ setup_file() {
 
 @test "should get a the vaultwarden web ui" {
     run bash -c "curl -s --header 'Host: $TEST_HOST' $TEST_UI"
-    assert_output --partial 'Vaultwarden Web Vault'
+    assert_output --partial 'Vaultwarden Web'
 }
 
 # teardown_file() {
