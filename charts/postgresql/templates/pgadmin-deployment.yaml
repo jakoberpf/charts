@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "postgresql.fullname" . }}-pgadmin
+  labels:
+    {{- include "postgresql.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.admin.autoscaling.enabled }}
+  replicas: {{ .Values.admin.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: pgadmin
+      {{- include "postgresql.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.admin.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: pgadmin
+        {{- include "postgresql.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.admin.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{ include "postgresql.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.admin.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.admin.securityContext | nindent 12 }}
+          image: "{{ .Values.admin.image.repository }}:{{ .Values.admin.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.admin.image.pullPolicy }}
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: contact@jakoberpf.de
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: SuByyjuUHtM=
+            # https://www.pgadmin.org/docs/pgadmin4/development/oauth2.html
+          ports:
+            - name: http
+              containerPort: {{ .Values.admin.service.port }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.admin.resources | nindent 12 }}
+      {{- with .Values.admin.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.admin.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.admin.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      #   volumeMounts:
+      #     - name: storage
+      #       mountPath: /var/lib/pgadmin4/storage
+      #   resources: {}
+      # volumes:
+      # - name: storage
+      #   emptyDir: {}
+      
