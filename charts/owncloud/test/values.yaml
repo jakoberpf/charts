@@ -1,0 +1,17 @@
+ocis:
+  externalDomain: owncloud.example.com
+  insecure:
+    oidcIdpInsecure: true
+    ocisHttpApiInsecure: true
+ingress:
+  enabled: true
+  hosts:
+    - host: owncloud.example.com
+  tls:
+    enabled: true
+  istioGateway:
+    enabled: true
+  certManager:
+    enabled: true
+    issuerRef:
+      name: selfsigned-cluster-issuer
