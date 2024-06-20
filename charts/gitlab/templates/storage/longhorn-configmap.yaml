@@ -1,0 +1,21 @@
+{{- if .Values.persistence.provisioner.enabled -}}
+{{- $namespace := .Release.Namespace -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-volumes
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-weight: "1"
+data:   
+  config.yaml: |
+    volumes:
+  {{- range .Values.persistence.volumes }}
+      - name: {{ .name }}
+        namespace: {{ $namespace }}
+        size: {{ .size }}
+        pv: {{ .pv }}
+        pvc: {{ .pvc }}
+  {{- end }}
+{{- end }}

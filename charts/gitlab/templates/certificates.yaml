@@ -1,0 +1,85 @@
+{{- if .Values.ingress.certManager.enabled -}}
+{{- $fullName := include "gitlab-umbrella.fullname" . -}}
+{{- $certManagerLabels := include "gitlab-umbrella.labels" . -}}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-tls
+  labels:
+    {{- $certManagerLabels | nindent 4 }}
+  {{- with .Values.ingress.certManager.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ $fullName }}-tls
+  issuerRef:
+    name: {{ .Values.ingress.certManager.issuerRef.name }}
+    kind: {{ .Values.ingress.certManager.issuerRef.kind | default "ClusterIssuer" }}
+  dnsNames:
+    {{- range .Values.ingress.hosts.gitlab }}
+    - {{ .host }}
+    {{- end }}
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "istio-system"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "istio-system"
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-registry-tls
+  labels:
+    {{- $certManagerLabels | nindent 4 }}
+  {{- with .Values.ingress.certManager.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ $fullName }}-registry-tls
+  issuerRef:
+    name: {{ .Values.ingress.certManager.issuerRef.name }}
+    kind: {{ .Values.ingress.certManager.issuerRef.kind | default "ClusterIssuer" }}
+  dnsNames:
+    {{- range .Values.ingress.hosts.registry }}
+    - {{ .host }}
+    {{- end }}
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "istio-system"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "istio-system"
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-minio-tls
+  labels:
+    {{- $certManagerLabels | nindent 4 }}
+  {{- with .Values.ingress.certManager.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ $fullName }}-minio-tls
+  issuerRef:
+    name: {{ .Values.ingress.certManager.issuerRef.name }}
+    kind: {{ .Values.ingress.certManager.issuerRef.kind | default "ClusterIssuer" }}
+  dnsNames:
+    {{- range .Values.ingress.hosts.minio }}
+    - {{ .host }}
+    {{- end }}
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "istio-system"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "istio-system"
+{{- end }}
